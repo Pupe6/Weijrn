@@ -10,6 +10,8 @@ byte nuidPICC[4];
 #define joyX A0
 #define joyY A1
 
+bool exitbutton = false;
+
 int xValue;
 int yValue;
 int op = 0;
@@ -118,20 +120,24 @@ void loop()
     
     case 1: // IZBIRAM NFC
      //ASK FOR MAIN OP
-    confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
+      confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
 
       if(confirmation == true)
       { // VLIZAM V NFC
         Serial.println("az sum v NFC list");
+
+                    confirmation = false; //fix
+                    op = 1;
         opNFC = ReadJoystick(opNFC); //ASK FOR opNFC
-        
+             
+
         if(opNFC == 1)
         {
-            Serial.println("az sum v NFC list option1")
+            Serial.println("az sum v NFC list option1");
             confirmation = false;
             
             confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
-            
+
             if(confirmation == true)
             {
                readNFC();
@@ -140,7 +146,7 @@ void loop()
             
         }else if(opNFC == 2)
         {
-            Serial.println("az sum v NFC list option2")
+            Serial.println("az sum v NFC list option2");
             confirmation = false;
 
             confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
@@ -154,7 +160,7 @@ void loop()
             
         }else if(opNFC == 3)
         {
-            Serial.println("az sum v NFC list option2")
+            Serial.println("az sum v NFC list option2");
             confirmation = false;
 
             confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
@@ -164,22 +170,32 @@ void loop()
                 formatNFC();
              }
             
+        }else if(exitbutton == true)
+        {
+            op = 0;
+            confirmation = 0;
+            opNFC = 0;
+            break;
         }else 
         {
           opNFC = ReadJoystick(opNFC);
         }
         
        }//conf na NFC scob 😂
+       break;
      default:
-        op = ReadJoystick(op);     
+        op = ReadJoystick(op);
+        break;     
      } // skobata na switcha
       
-    }
+    
     Serial.print("option -> ");
     Serial.println(op);
     Serial.print("conf -> ");
     Serial.println(confirmation);
-    delay(100);
+    Serial.print("NFCop -> ");
+    Serial.println(opNFC);
+    delay(1000);
     
 }
 
