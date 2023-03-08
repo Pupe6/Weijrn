@@ -9,14 +9,10 @@ router.post("/tag", verifyMAC, async (req, res) => {
 		const { nickname, data, type } = req.body;
 		const user = req.user;
 
-		if (!nickname)
+		if (!(nickname && data && type))
 			return res
 				.status(400)
-				.json({ message: "Tag nickname is required." });
-		if (!data)
-			return res.status(400).json({ message: "Tag data is required." });
-		if (!type)
-			return res.status(400).json({ message: "Tag type is required." });
+				.json({ message: "Please fullfil all fields." });
 
 		let errorMessage = "";
 
@@ -32,6 +28,18 @@ router.post("/tag", verifyMAC, async (req, res) => {
 			return res.status(400).json({ message: errorMessage });
 
 		const tag = await Tag.create({ nickname, data, type });
+
+		// check for validation errors
+		if (tag.err) {
+			let { err } = tag;
+			let duplicateErrCodes = [11000, 11001];
+
+			if (duplicateErrCodes.includes(err.code)) {
+				return res.status(409).json(formatDuplicateError(err));
+			}
+
+			return res.status(400).json(formatValidationError(err));
+		}
 
 		user._tags.push(tag._id);
 		await user.save();

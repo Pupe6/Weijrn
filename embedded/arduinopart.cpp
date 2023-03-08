@@ -2,6 +2,7 @@
 #include <PN532_I2C.h>
 #include <PN532.h>
 #include <NfcAdapter.h>
+
 PN532_I2C pn532_i2c(Wire);
 NfcAdapter nfc = NfcAdapter(pn532_i2c);
 String tagId = "None";
@@ -14,9 +15,56 @@ bool exitbutton = false;
 
 int xValue;
 int yValue;
-int op = 0;
-int opNFC = 0;
-bool confirmation = false;
+
+int menu [5][5] = 
+{
+  {1,2,3,4,5},
+  {6,7,8,9,10},
+  {11,12,13,14,15},
+  {16,17,18,19,20},
+  {21,22,23,24,25}  
+  
+};
+
+
+
+int currentJoystickValue = 0;
+int previousJoystickValue = 0;
+
+//Joystick values
+#define up    0
+#define right 1
+#define down  2
+#define left  3
+#define enter 4
+#define none  5
+
+
+
+
+void move_up(int* i, int* j) {
+  if (*i > 0) {
+    (*i)--;
+  }
+}
+
+void move_down(int* i, int* j) {
+  if (*i < 4) {
+    (*i)++;
+  }
+}
+
+void move_left(int* i, int* j) {
+  if (*j < 4) {
+    (*j)++;
+  }
+}
+
+void move_right(int* i, int* j) {
+  if (*j > 0) {
+    (*j)--;
+  }
+}
 
 
 void writeNFC() 
@@ -64,139 +112,72 @@ void readNFC()
  delay(5000);
 }
 
-int ReadJoystick(int option)
+
+int read_joystick() 
 {
-    xValue = analogRead(joyX);
+  int output;
+  yValue = analogRead(joyY);
+  xValue = analogRead(joyX);
   
-    if(xValue < 300)
-    {
-      option--;
-      delay(100);
-    }else if(xValue > 550)
-    { 
-      option++;
-      delay(100);
-    }
-  delay(10);
-  return option;
-  
+  if (yValue < 300) {
+    output = left;
+  } else if (yValue > 500) {
+    output = right;
+  } else if (xValue < 300) {
+    output = up;
+  } else if (xValue > 500) {
+    output = down;
+  }
+  return output;
 }
 
-int ReadConfirmation(int conf)
-{
-    yValue = analogRead(joyY);
 
-    if(yValue < 300)
-    {
-      conf = true;
-    
-    }else if(yValue > 550)
-    {
-      conf = false;
-    }
-    delay(10);
-    return conf;
 
-}
+
 void setup(void) 
 {
  Serial.begin(115200);
  Serial.println("System initialized");
  nfc.begin();
- op = ReadJoystick(op);
 }
  
+
+int i = 0;
+int j = 0;
+
 void loop() 
 {
-
-  ///ADD BUTTONS CODE!!!
-
-  ///ADD UART CODE TO RASPBERRY
-  //ReadJoystick(op);
-
   
-  switch(op)
-  {
+  int currentJoystickValue = read_joystick();
+
+  yValue = analogRead(joyY);
+  xValue = analogRead(joyX);
+  Serial.println(xValue);
+  Serial.println(yValue);
+
+
     
-    case 1: // IZBIRAM NFC
-     //ASK FOR MAIN OP
-      confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
-
-      if(confirmation == true)
-      { // VLIZAM V NFC
-        Serial.println("az sum v NFC list");
-
-                    confirmation = false; //fix
-                    op = 1;
-        opNFC = ReadJoystick(opNFC); //ASK FOR opNFC
-             
-
-        if(opNFC == 1)
-        {
-            Serial.println("az sum v NFC list option1");
-            confirmation = false;
-            
-            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
-
-            if(confirmation == true)
-            {
-               readNFC();
-               confirmation = false;
-            }
-            
-        }else if(opNFC == 2)
-        {
-            Serial.println("az sum v NFC list option2");
-            confirmation = false;
-
-            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
-
-            if(confirmation == true)
-            {
-               formatNFC();
-               writeNFC();
-               confirmation = false;
-            }
-            
-        }else if(opNFC == 3)
-        {
-            Serial.println("az sum v NFC list option2");
-            confirmation = false;
-
-            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
-
-            if(confirmation == true)
-             {
-                formatNFC();
-             }
-            
-        }else if(exitbutton == true)
-        {
-            op = 0;
-            confirmation = 0;
-            opNFC = 0;
-            break;
-        }else 
-        {
-          opNFC = ReadJoystick(opNFC);
-        }
-        
-       }//conf na NFC scob 😂
-       break;
-     default:
-        op = ReadJoystick(op);
-        break;     
-     } // skobata na switcha
-      
+    switch (currentJoystickValue) 
+    {
+      case up:
+        move_up(&i, &j);        
+        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        break;
+      case down:
+        move_down(&i, &j);
+        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        break;
+      case right:
+        move_right(&i, &j);
+        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        break;
+      case left:
+        move_left(&i, &j);
+       Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        break;
+      default: break;
+    }
     
-    Serial.print("option -> ");
-    Serial.println(op);
-    Serial.print("conf -> ");
-    Serial.println(confirmation);
-    Serial.print("NFCop -> ");
-    Serial.println(opNFC);
-    delay(1000);
-    
+    delay(100);   
+ 
 }
-
-
