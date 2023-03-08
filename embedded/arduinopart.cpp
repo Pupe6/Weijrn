@@ -12,8 +12,8 @@ byte nuidPICC[4];
 
 int xValue;
 int yValue;
-int op = 1;
-int opNFC = 10;
+int op = 0;
+int opNFC = 0;
 bool confirmation = false;
 
 
@@ -101,7 +101,7 @@ void setup(void)
  Serial.begin(115200);
  Serial.println("System initialized");
  nfc.begin();
- ReadJoystick(op);
+ op = ReadJoystick(op);
 }
  
 void loop() 
@@ -117,16 +117,21 @@ void loop()
   {
     
     case 1: // IZBIRAM NFC
-    ReadJoystick(op);
-    ReadConfirmation(confirmation);
+     //ASK FOR MAIN OP
+    confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
 
       if(confirmation == true)
       { // VLIZAM V NFC
-        ReadJoystick(opNFC);
+        Serial.println("az sum v NFC list");
+        opNFC = ReadJoystick(opNFC); //ASK FOR opNFC
         
         if(opNFC == 1)
         {
+            Serial.println("az sum v NFC list option1")
             confirmation = false;
+            
+            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
+            
             if(confirmation == true)
             {
                readNFC();
@@ -135,26 +140,38 @@ void loop()
             
         }else if(opNFC == 2)
         {
+            Serial.println("az sum v NFC list option2")
             confirmation = false;
+
+            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
+
             if(confirmation == true)
             {
                formatNFC();
-                writeNFC();
+               writeNFC();
                confirmation = false;
             }
             
         }else if(opNFC == 3)
         {
+            Serial.println("az sum v NFC list option2")
             confirmation = false;
+
+            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
+
             if(confirmation == true)
              {
                 formatNFC();
              }
             
+        }else 
+        {
+          opNFC = ReadJoystick(opNFC);
         }
         
-       }
-             
+       }//conf na NFC scob 😂
+     default:
+        op = ReadJoystick(op);     
      } // skobata na switcha
       
     }
