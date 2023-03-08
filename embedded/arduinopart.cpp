@@ -2,11 +2,69 @@
 #include <PN532_I2C.h>
 #include <PN532.h>
 #include <NfcAdapter.h>
+
 PN532_I2C pn532_i2c(Wire);
 NfcAdapter nfc = NfcAdapter(pn532_i2c);
 String tagId = "None";
 byte nuidPICC[4];
 
+#define joyX A0
+#define joyY A1
+
+bool exitbutton = false;
+
+int xValue;
+int yValue;
+
+int menu [5][5] = 
+{
+  {1,2,3,4,5},
+  {6,7,8,9,10},
+  {11,12,13,14,15},
+  {16,17,18,19,20},
+  {21,22,23,24,25}  
+  
+};
+
+
+
+int currentJoystickValue = 0;
+int previousJoystickValue = 0;
+
+//Joystick values
+#define up    0
+#define right 1
+#define down  2
+#define left  3
+#define enter 4
+#define none  5
+
+
+
+
+void move_up(int* i, int* j) {
+  if (*i > 0) {
+    (*i)--;
+  }
+}
+
+void move_down(int* i, int* j) {
+  if (*i < 4) {
+    (*i)++;
+  }
+}
+
+void move_left(int* i, int* j) {
+  if (*j < 4) {
+    (*j)++;
+  }
+}
+
+void move_right(int* i, int* j) {
+  if (*j > 0) {
+    (*j)--;
+  }
+}
 
 
 void writeNFC() 
@@ -55,6 +113,26 @@ void readNFC()
 }
 
 
+int read_joystick() 
+{
+  int output;
+  yValue = analogRead(joyY);
+  xValue = analogRead(joyX);
+  
+  if (yValue < 300) {
+    output = left;
+  } else if (yValue > 500) {
+    output = right;
+  } else if (xValue < 300) {
+    output = up;
+  } else if (xValue > 500) {
+    output = down;
+  }
+  return output;
+}
+
+
+
 
 void setup(void) 
 {
@@ -63,27 +141,43 @@ void setup(void)
  nfc.begin();
 }
  
+
+int i = 0;
+int j = 0;
+
 void loop() 
 {
-  int op = 0;
-  ///ADD JOYSTICK CODE!!!
-  ///ADD BUTTONS CODE!!!
-
-  ///ADD UART CODE TO RASPBERRY
-
-  switch(op)
-  {
-    case 1:
-      //Read
-      readNFC();
-    case 2:
-      //Write 
-      formatNFC();
-      writeNFC();
-    case 3:
-      //Only Format
-      formatNFC();
-
-  }
   
+  int currentJoystickValue = read_joystick();
+
+  yValue = analogRead(joyY);
+  xValue = analogRead(joyX);
+  Serial.println(xValue);
+  Serial.println(yValue);
+
+
+    
+    switch (currentJoystickValue) 
+    {
+      case up:
+        move_up(&i, &j);        
+        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        break;
+      case down:
+        move_down(&i, &j);
+        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        break;
+      case right:
+        move_right(&i, &j);
+        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        break;
+      case left:
+        move_left(&i, &j);
+       Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        break;
+      default: break;
+    }
+    
+    delay(100);   
+ 
 }
