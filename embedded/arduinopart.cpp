@@ -7,6 +7,14 @@ NfcAdapter nfc = NfcAdapter(pn532_i2c);
 String tagId = "None";
 byte nuidPICC[4];
 
+#define joyX A0
+#define joyY A1
+
+int xValue;
+int yValue;
+int op = 0;
+int opNFC = 0;
+bool confirmation = false;
 
 
 void writeNFC() 
@@ -54,36 +62,125 @@ void readNFC()
  delay(5000);
 }
 
+int ReadJoystick(int option)
+{
+    xValue = analogRead(joyX);
+  
+    if(xValue < 300)
+    {
+      option--;
+      delay(100);
+    }else if(xValue > 550)
+    { 
+      option++;
+      delay(100);
+    }
+  delay(10);
+  return option;
+  
+}
 
+int ReadConfirmation(int conf)
+{
+    yValue = analogRead(joyY);
 
+    if(yValue < 300)
+    {
+      conf = true;
+    
+    }else if(yValue > 550)
+    {
+      conf = false;
+    }
+    delay(10);
+    return conf;
+
+}
 void setup(void) 
 {
  Serial.begin(115200);
  Serial.println("System initialized");
  nfc.begin();
+ op = ReadJoystick(op);
 }
  
 void loop() 
 {
-  int op = 0;
-  ///ADD JOYSTICK CODE!!!
+
   ///ADD BUTTONS CODE!!!
 
   ///ADD UART CODE TO RASPBERRY
+  //ReadJoystick(op);
 
+  
   switch(op)
   {
-    case 1:
-      //Read
-      readNFC();
-    case 2:
-      //Write 
-      formatNFC();
-      writeNFC();
-    case 3:
-      //Only Format
-      formatNFC();
+    
+    case 1: // IZBIRAM NFC
+     //ASK FOR MAIN OP
+    confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
 
-  }
-  
+      if(confirmation == true)
+      { // VLIZAM V NFC
+        Serial.println("az sum v NFC list");
+        opNFC = ReadJoystick(opNFC); //ASK FOR opNFC
+        
+        if(opNFC == 1)
+        {
+            Serial.println("az sum v NFC list option1")
+            confirmation = false;
+            
+            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
+            
+            if(confirmation == true)
+            {
+               readNFC();
+               confirmation = false;
+            }
+            
+        }else if(opNFC == 2)
+        {
+            Serial.println("az sum v NFC list option2")
+            confirmation = false;
+
+            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
+
+            if(confirmation == true)
+            {
+               formatNFC();
+               writeNFC();
+               confirmation = false;
+            }
+            
+        }else if(opNFC == 3)
+        {
+            Serial.println("az sum v NFC list option2")
+            confirmation = false;
+
+            confirmation = ReadConfirmation(confirmation); //ASK FOR CONF
+
+            if(confirmation == true)
+             {
+                formatNFC();
+             }
+            
+        }else 
+        {
+          opNFC = ReadJoystick(opNFC);
+        }
+        
+       }//conf na NFC scob 😂
+     default:
+        op = ReadJoystick(op);     
+     } // skobata na switcha
+      
+    }
+    Serial.print("option -> ");
+    Serial.println(op);
+    Serial.print("conf -> ");
+    Serial.println(confirmation);
+    delay(100);
+    
 }
+
+
