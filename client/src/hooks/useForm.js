@@ -38,5 +38,5 @@ export default function useForm(initialState = {}) {
 		return Object.keys(validationErrors).length === 0;
 	};
 
-	return [formState];
+	return [formState, formErrors, handleChange, handleBlur, handleSubmit];
 }
