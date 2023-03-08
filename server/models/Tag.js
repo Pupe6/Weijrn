@@ -13,7 +13,11 @@ const tagSchema = new Schema(
 		type: {
 			type: String,
 			required: [true, "Tag type is required."],
-			enum: ["nfc", "rfid", "ir"],
+			enum: {
+				values: ["nfc", "rfid", "ir"],
+				message:
+					"Tag type must be one of the following: nfc, rfid, ir.",
+			},
 		},
 	},
 	{ timestamps: true, versionKey: false }

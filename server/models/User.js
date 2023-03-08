@@ -29,7 +29,6 @@ const userSchema = new Schema(
 		password: {
 			type: String,
 			required: [true, "Password is required."],
-			select: false,
 		},
 		_tags: {
 			type: [
@@ -42,7 +41,6 @@ const userSchema = new Schema(
 		},
 		_token: {
 			type: String,
-			select: false,
 		},
 	},
 	{ timestamps: true, versionKey: false }
