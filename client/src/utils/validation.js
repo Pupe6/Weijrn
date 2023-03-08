@@ -24,17 +24,22 @@ export function validateField(event, args) {
 				error = "Passwords do not match.";
 			}
 			break;
+		case "macAddress":
+			if (!validateMacAddress(value)) {
+				error = "Please enter a valid MAC address.";
+			}
+			break;
 		default:
 			break;
 	}
-	return { error, secondaryError };
+	return [error, secondaryError];
 }
 
 export function validateForm(formState, args) {
 	const errors = {};
 
 	for (key in formState) {
-		const { error, secondaryError } = validateField(
+		const [error, secondaryError] = validateField(
 			{ target: { name: key, value: formState[key] } },
 			args
 		);
@@ -65,4 +70,9 @@ export function validatePassword(password) {
 
 export function validateConfirmPassword(password, confirmPassword) {
 	return password === confirmPassword;
+}
+
+export function validateMacAddress(macAddress) {
+	const re = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+	return re.test(macAddress);
 }
