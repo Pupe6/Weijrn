@@ -1,41 +1,25 @@
 import React, { useState } from "react";
-import { validateForm, validateField } from "../utils/validation";
+import { validateForm } from "../utils/validation";
 
-export default function useForm(initialState = {}) {
-	const [values, setValues] = useState(initialState);
-	const [errors, setErrors] = useState({});
+export function useForm(initialState = {}) {
+	const [formState, setFormState] = useState(initialState);
+	const [formErrors, setFormErrors] = useState({});
 
-	const handleChange = (e, ...args) => {
-		setValues(values => ({ ...values, [e.target.name]: e.target.value }));
+	const handleChange = ({ field, value }) => {
+		setFormState(prevState => ({
+			...prevState,
+			[field]: value,
+		}));
+	};
 
-		if (errors[e.target.name]) {
-			const [error, secondaryError] = validateField(e, args);
-			setErrors({ ...errors, [e.target.name]: error || null });
+	const handleSubmit = () => {
+		const errors = validateForm(formState);
 
-			if (secondaryError) {
-				setErrors({
-					...errors,
-					[e.target.name]: secondaryError || null,
-				});
-			}
+		if (Object.keys(errors).length > 0) {
+			setFormErrors(errors);
 		}
+
+		return Object.keys(errors).length === 0;
 	};
-
-	const handleBlur = (e, ...args) => {
-		const [error, secondaryError] = validateField(e, args);
-		setErrors({ ...errors, [e.target.name]: error || null });
-
-		if (secondaryError) {
-			setErrors({ ...errors, [e.target.name]: secondaryError || null });
-		}
-	};
-
-	const handleSubmit = (e, ...args) => {
-		e.preventDefault();
-		const validationErrors = validateForm(e, args);
-		setErrors(validationErrors);
-		return Object.keys(validationErrors).length === 0;
-	};
-
-	return [formState, formErrors, handleChange, handleBlur, handleSubmit];
+	return [formState, formErrors, handleChange, handleSubmit];
 }

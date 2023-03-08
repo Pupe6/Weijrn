@@ -1,9 +1,7 @@
-export function validateField(event, args) {
-	const { name, value } = event.target;
+export function validateField({ field, value, ...args }) {
 	let error = null;
-	let secondaryError = null;
 
-	switch (name) {
+	switch (field) {
 		case "email":
 			if (!validateEmail(value)) {
 				error = "Please enter a valid email address.";
@@ -32,22 +30,30 @@ export function validateField(event, args) {
 		default:
 			break;
 	}
-	return [error, secondaryError];
+	return error;
 }
 
-export function validateForm(formState, args) {
+export function validateForm(formState) {
 	const errors = {};
 
-	for (key in formState) {
-		const [error, secondaryError] = validateField(
-			{ target: { name: key, value: formState[key] } },
-			args
-		);
+	for (let key in formState) {
+		if (key === "confirmPassword") {
+			const error = validateField({
+				field: key,
+				value: formState[key],
+				password: formState.password,
+			});
+			if (error) {
+				errors[key] = error;
+			}
+			continue;
+		}
+		const error = validateField({
+			field: key,
+			value: formState[key],
+		});
 		if (error) {
 			errors[key] = error;
-		}
-		if (secondaryError) {
-			errors[key] = secondaryError;
 		}
 	}
 	return errors;
