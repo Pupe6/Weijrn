@@ -4,7 +4,7 @@ import AppContainer from "./src/components/app-container";
 // import AdminComponent from "./src/components/AdminComponent";
 import BiometricsComponent from "./src/components/BiometricsComponent";
 import MainScreen from "./src/screens/home";
-import SignInScreen from "./src/screens/sign-in";
+// import SignInScreen from "./src/screens/sign-in";
 import Navbar from "./src/components/navbar";
 
 export default function App() {

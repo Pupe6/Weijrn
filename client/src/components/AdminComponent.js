@@ -1,3 +1,4 @@
+import { Button } from "native-base";
 import React from "react";
 
 
@@ -140,9 +141,7 @@ function Basic() {
 
 
 const AdminComponent = () => {
-    <SafeAreaView>
-    </SafeAreaView>
-
+  <Button></Button>
 }
 
 // const styles = StyleSheet.create({
