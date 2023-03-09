@@ -1,4 +1,4 @@
-import AdminComponent from "../components/AdminComponent";
+import AdminComponent from "../components/control-panel";
 
 export default function AdminScreen() {
 	return <AdminComponent />;

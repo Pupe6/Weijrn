@@ -1,17 +1,12 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import {
 	createDrawerNavigator,
 	DrawerContentScrollView,
 } from "@react-navigation/drawer";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
-	NativeBaseProvider,
-	Button,
 	Box,
-	HamburgerIcon,
 	Pressable,
-	Heading,
 	VStack,
 	Text,
 	Center,
@@ -19,18 +14,19 @@ import {
 	Divider,
 	Icon,
 } from "native-base";
+import HomeScreen from "../screens/home";
 
 global.__reanimatedWorkletInit = () => {};
 const Drawer = createDrawerNavigator();
-function Component(props) {
-	return (
-		<Center>
-			<Text mt="12" fontSize="18">
-				This is {props.route.name} page.
-			</Text>
-		</Center>
-	);
-}
+// function Component(props) {
+// 	return (
+// 		<Center>
+// 			<Text mt="12" fontSize="18">
+// 				This is {props.route.name} page.
+// 			</Text>
+// 		</Center>
+// 	);
+// }
 
 const getIcon = screenName => {
 	switch (screenName) {
@@ -178,7 +174,7 @@ export default function MyDrawer() {
 				{/* <Drawer.Screen name="Archive" component={Component} />
         <Drawer.Screen name="Trash" component={Component} />
         <Drawer.Screen name="Spam" component={Component} /> */}
-				<Drawer.Screen name="Inbox" component={Component} />
+				<Drawer.Screen name="Home" component={HomeScreen} />
 			</Drawer.Navigator>
 		</Box>
 	);
