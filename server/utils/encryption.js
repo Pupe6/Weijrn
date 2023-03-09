@@ -28,4 +28,12 @@ const decrypt = (hash, secretKey) => {
 	return decrypted.toString();
 };
 
-module.exports = { encrypt, decrypt };
+const encryptTag = tag => {
+	const { data } = tag;
+
+	const encryptedData = encrypt(data, process.env.ENCRYPTION_KEY);
+
+	return { ...tag.toJSON(), data: encryptedData };
+};
+
+module.exports = { encrypt, decrypt, encryptTag };

@@ -6,7 +6,7 @@ async function getUsers(query = {}) {
 	try {
 		const count = await User.countDocuments(query);
 
-		const users = await User.find(query).populate("_tags");
+		const users = await User.find(query).populate("_tags", ["-data"]);
 
 		return { count, users };
 	} catch (err) {
@@ -16,6 +16,11 @@ async function getUsers(query = {}) {
 
 async function updateUser(userId, body) {
 	try {
+		if (!body.password)
+			throw new Error(
+				"You must provide your password to update your account."
+			);
+
 		const userToUpdate = await User.findById(userId);
 
 		const user = body;
@@ -25,20 +30,11 @@ async function updateUser(userId, body) {
 		}
 
 		if (!userToUpdate)
-			throw new Error(
-				"Error 404: There is no such user with provided id."
-			);
+			throw new Error("There is no such user with provided id.");
 
 		// Verify User Ownership
-		if (
-			!(
-				(await User.findById(userId))._id.equals(userId) &&
-				(await bcrypt.compare(user.password, userToUpdate.password))
-			)
-		)
-			throw new Error(
-				"Error 401: The password you entered is incorrect."
-			);
+		if (!(await bcrypt.compare(user.password, userToUpdate.password)))
+			throw new Error("The password you entered is incorrect.");
 
 		const password = user.newPassword || user.password;
 
@@ -56,25 +52,16 @@ async function updateUser(userId, body) {
 	}
 }
 
-async function deleteUser(userId, user) {
+async function deleteUser(userId, userPassword) {
 	try {
 		const userToDelete = await User.findById(userId);
 
 		if (!userToDelete)
-			throw new Error(
-				"Error 404: There is no such user with provided id."
-			);
+			throw new Error("There is no such user with provided id.");
 
 		// Verify User Ownership
-		if (
-			!(
-				(await User.findById(userId))._id.equals(userId) &&
-				(await bcrypt.compare(user.password, userToDelete.password))
-			)
-		)
-			throw new Error(
-				"Error 401: The password you entered is incorrect."
-			);
+		if (!(await bcrypt.compare(userPassword, userToDelete.password)))
+			throw new Error("The password you entered is incorrect.");
 
 		await User.findByIdAndDelete(userId);
 
