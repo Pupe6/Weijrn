@@ -1,25 +1,25 @@
-import { createContext } from "react";
+import * as React from "react";
+import { useSecureStore } from "../hooks/useSecureStore";
 
-import { useSessionStorage } from "../hooks/useSessionStorage";
-
-export const AuthContext = createContext({
-	user: {
-		_id: "",
-		username: "",
-		email: "",
-		_tags: [],
-	},
-	setUser: user => {
-		return user;
-	},
-});
+export const authContext = React.useMemo(
+	() => ({
+		signIn: async data => {
+			dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+		},
+		signOut: () => dispatch({ type: "SIGN_OUT" }),
+		signUp: async data => {
+			dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+		},
+	}),
+	[]
+);
 
 export const AuthProvider = ({ children }) => {
-	const [user, setUser] = useSessionStorage("user", {});
+	const [state, dispatch] = useSecureStore();
 
 	return (
-		<AuthContext.Provider value={{ user, setUser }}>
+		<authContext.Provider value={{ state, dispatch }}>
 			{children}
-		</AuthContext.Provider>
+		</authContext.Provider>
 	);
 };

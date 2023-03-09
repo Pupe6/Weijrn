@@ -167,7 +167,8 @@ export default function MyDrawer() {
 	return (
 		<Box safeArea flex={1}>
 			<Drawer.Navigator
-				drawerContent={props => <CustomDrawerContent {...props} />}>
+				drawerContent={props => <CustomDrawerContent {...props} />}
+				initialRouteName="Home">
 				{/* <Drawer.Screen name="Inbox" component={All} />
 				<Drawer.Screen name="Outbox" component={ChatPage} />
 				<Drawer.Screen name="Favorites" component={SocialPage} /> */}

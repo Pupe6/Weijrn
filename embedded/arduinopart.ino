@@ -36,7 +36,7 @@ int previousJoystickValue = 0;
 #define left  3
 #define enter 4
 #define none  5
-#define neutral 6
+
 
 
 
@@ -117,8 +117,6 @@ int read_joystick()
   int output;
   yValue = analogRead(joyY);
   xValue = analogRead(joyX);
-  //Serial.println(xValue);
-  //Serial.println(yValue);
   
   if (yValue < 300) {
     output = left;
@@ -128,11 +126,12 @@ int read_joystick()
     output = up;
   } else if (xValue > 500) {
     output = down;
-  } else {output = neutral;}
+  } else {output = none;}
   delay(200);
   return output;
 }
 
+int message;
 
 
 
@@ -146,20 +145,22 @@ void setup(void)
 
 int i = 0;
 int j = 0;
-int message = 0;
 
 void loop() 
 {
   
-  currentJoystickValue = read_joystick();
+  int currentJoystickValue = read_joystick();
 
-  //yValue = analogRead(joyY);
-  //xValue = analogRead(joyX);
+  yValue = analogRead(joyY);
+  xValue = analogRead(joyX);
   //Serial.println(xValue);
   //Serial.println(yValue);
 
+
+    
     switch (currentJoystickValue) 
     {
+      
       case up:
         move_up(&i, &j);
         message = 0;
@@ -184,10 +185,11 @@ void loop()
         message += i*10 + j;
         Serial.println(String(message));
         break;
-      case neutral: break;
       default: break;
+      case none:
+        break;
     }
     
-    //add delay
+    delay(300);
  
 }

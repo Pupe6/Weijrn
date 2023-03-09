@@ -2,8 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, Text } from "react-native";
 import * as LocalAuthentication from "expo-local-authentication";
-import Navbar from "./navbar";
-import AdminComponent from "./control-panel";
+import MyDrawer from "./navbar";
 
 export default function BiometricsComponent() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,7 +18,11 @@ export default function BiometricsComponent() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<Text>
-				{isAuthenticated == true ? <Navbar /> : "Uh oh! Access Denied"}
+				{isAuthenticated == true ? (
+					<MyDrawer />
+				) : (
+					"Uh oh! Access Denied"
+				)}
 			</Text>
 		</SafeAreaView>
 	);
