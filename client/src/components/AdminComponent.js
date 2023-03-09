@@ -16,7 +16,7 @@ import {
 import { SwipeListView } from "react-native-swipe-list-view";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 
-function Example() {
+export default function AdminComponent() {
 	const [mode, setMode] = useState("Basic");
 	return (
 		<Center h="290px">
@@ -219,11 +219,4 @@ function Basic() {
 			/>
 		</Box>
 	);
-}
-
-
-const AdminComponent = () => {
-    <SafeAreaView>
-    </SafeAreaView>
-
 }
