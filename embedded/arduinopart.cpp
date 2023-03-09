@@ -26,8 +26,6 @@ int menu [5][5] =
   
 };
 
-
-
 int currentJoystickValue = 0;
 int previousJoystickValue = 0;
 
@@ -128,6 +126,7 @@ int read_joystick()
   } else if (xValue > 500) {
     output = down;
   }
+  delay(200);
   return output;
 }
 
@@ -136,7 +135,7 @@ int read_joystick()
 
 void setup(void) 
 {
- Serial.begin(115200);
+ Serial.begin(9600);
  Serial.println("System initialized");
  nfc.begin();
 }
@@ -178,6 +177,6 @@ void loop()
       default: break;
     }
     
-    delay(100);   
+    //add delay
  
 }
