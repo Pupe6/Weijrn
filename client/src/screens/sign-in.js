@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
 	FormControl,
 	Input,
@@ -9,12 +8,16 @@ import {
 	Link,
 	Button,
 	HStack,
+	Text,
 } from "native-base";
+
 import { useForm } from "../hooks/useForm";
 
 export default function SignInScreen() {
-	const [formState, formErrors, handleChange, handleSubmit] = useForm({});
-
+	const [formState, formErrors, handleChange, handleSubmit] = useForm({
+		email: "",
+		password: "",
+	});
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" py="8" w="90%" maxW="290">
