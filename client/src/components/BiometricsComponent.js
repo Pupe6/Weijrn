@@ -16,7 +16,7 @@ export default function BiometricsComponent() {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Text>{isAuthenticated == true ? "Here's somesensitive info!" : "Uh oh! Access Denied"}</Text>
+      <Text>{isAuthenticated == true ? <SignInScreen /> : "Uh oh! Access Denied"}</Text>
     </SafeAreaView>
   );
 }
