@@ -170,8 +170,8 @@ function MyDrawer() {
 
 export default function Navbar() {
   return (
-
-        <MyDrawer />
-
+    <SafeAreaView>
+      <Text>Navbar</Text>
+    </SafeAreaView>
   );
 }
