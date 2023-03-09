@@ -52,9 +52,9 @@ router.post("/register", async (req, res) => {
 
 		await user.save();
 
-		delete user.password;
-
-		res.status(201).json({ user: user.toJSON() });
+		res.status(201).json({
+			user: { ...user.toJSON(), password: undefined },
+		});
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -73,13 +73,16 @@ router.post("/login", async (req, res) => {
 		if (user && (await bcrypt.compare(password, user.password))) {
 			const token = jwt.sign(user.toJSON(), process.env.TOKEN_KEY);
 
-			// Ban Old Token
-			await BannedToken.create({ token: user._token });
+			if (user._token)
+				// Ban Old Token
+				await BannedToken.create({ token: user._token });
 
 			user._token = token;
 			await user.save();
 
-			res.status(200).json({ user: user.toJSON() });
+			res.status(200).json({
+				user: { ...user.toJSON(), password: undefined },
+			});
 		} else {
 			res.status(400).json({ message: "Invalid Credentials." });
 		}

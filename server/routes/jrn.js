@@ -3,6 +3,7 @@ const Tag = require("../models/Tag");
 const verifyMAC = require("../middleware/verifyMAC");
 
 const router = require("express").Router();
+const bcrypt = require("bcryptjs");
 
 router.post("/tag", verifyMAC, async (req, res) => {
 	try {
@@ -44,7 +45,27 @@ router.post("/tag", verifyMAC, async (req, res) => {
 		user._tags.push(tag._id);
 		await user.save();
 
-		res.status(201).json({ tag });
+		res.status(201).json({ tag: { ...tag.toJSON(), data: undefined } });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+router.get("/tags/:nickname", verifyMAC, async (req, res) => {
+	try {
+		const { nickname } = req.params;
+		const user = req.user;
+
+		const tag = user._tags.find(tag => tag.nickname === nickname);
+
+		if (!tag)
+			return res
+				.status(404)
+				.json({ message: `Tag "${nickname}" not found.` });
+
+		tag.data = bcrypt.hashSync(tag.data, 10);
+
+		res.status(200).json({ tag: { ...tag.toJSON() } });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}

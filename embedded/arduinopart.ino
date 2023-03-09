@@ -151,8 +151,8 @@ void loop()
 
   yValue = analogRead(joyY);
   xValue = analogRead(joyX);
-  Serial.println(xValue);
-  Serial.println(yValue);
+  //Serial.println(xValue);
+  //Serial.println(yValue);
 
 
     
@@ -160,19 +160,23 @@ void loop()
     {
       case up:
         move_up(&i, &j);        
-        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        Serial.println(String(i));
+        Serial.println(String(j));
         break;
       case down:
         move_down(&i, &j);
-        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        Serial.println(String(i));
+        Serial.println(String(j));
         break;
       case right:
         move_right(&i, &j);
-        Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        Serial.println(String(i));
+        Serial.println(String(j));
         break;
       case left:
         move_left(&i, &j);
-       Serial.print("I am at arr[" + String(i) + "][" + String(j) + "] " + String(menu[i][j]) + "\n");
+        Serial.println(String(i));
+        Serial.println(String(j));
         break;
       default: break;
     }
