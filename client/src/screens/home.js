@@ -1,19 +1,22 @@
-import * as react from "react";
-import { Text, Box, Center, VStack } from "native-base";
-import ThemeToggle from "../components/common/theme-toggle";
+import * as React from "react";
+import {
+	Box,
+	Center,
+	Heading,
+	VStack,
+	FormControl,
+	Input,
+	Button,
+	HStack,
+	Text,
+	Link,
+} from "native-base";
 
-export default function MainScreen() {
+export default function HomeScreen() {
+	// home screen code
 	return (
-		<Center
-			flex={1}
-			_dark={{ bg: "blueGray.900" }}
-			_light={{ bg: "blueGray.50" }}
-			px="3">
-			<VStack space={2} alignItems="center">
-				<Text fontSize="4xl">Welcome to Weijrn!</Text>
-				<Text fontSize="lg">This is the main screen.</Text>
-				<ThemeToggle />
-			</VStack>
+		<Center flex={1}>
+			<Text> Home screen</Text>
 		</Center>
 	);
 }

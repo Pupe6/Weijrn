@@ -49,6 +49,8 @@ export const validateSignUpForm = formState => {
 	} else if (!validateMacAddress(formState.macAddress)) {
 		errors.macAddress = "Invalid Mac Address";
 	}
+
+	return errors;
 };
 export function validateEmail(email) {
 	const re = /\S+@\S+\.\S+/;
