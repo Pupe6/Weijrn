@@ -190,6 +190,6 @@ void loop()
         break;
     }
     
-    //add delay
+    delay(300);
  
 }
