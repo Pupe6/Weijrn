@@ -16,7 +16,7 @@ export default function HomeScreen() {
 	// home screen code
 	return (
 		<Center flex={1}>
-			<Text> Home screen</Text>
+			<Text> kolqbn</Text>
 		</Center>
 	);
 }

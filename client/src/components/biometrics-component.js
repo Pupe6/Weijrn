@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, Text } from "react-native";
 import * as LocalAuthentication from "expo-local-authentication";
 import Navbar from "./navbar";
-import AdminComponent from "./control-panel";
 
 export default function BiometricsComponent() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);

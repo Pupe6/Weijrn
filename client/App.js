@@ -8,10 +8,10 @@ import SignUpScreen from "./src/screens/sign-up";
 import Navbar from "./src/components/navbar";
 import AdminScreen from "./src/screens/control-panel";
 import MyDrawer from "./src/components/navbar";
+
 export default function App() {
 	return (
-		<AppContainer>
-			<MyDrawer />
+		<AppContainer children={<MyDrawer />}>
 			<StatusBar style="auto" />
 		</AppContainer>
 	);
