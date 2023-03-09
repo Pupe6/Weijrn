@@ -1,25 +1,25 @@
 import React, { useState } from "react";
-import { validateForm } from "../utils/validation";
 
-export function useForm(initialState = {}) {
-	const [formState, setFormState] = useState(initialState);
-	const [formErrors, setFormErrors] = useState({});
+export const useFormValidation = (initialState, validate) => {
+	const [values, setValues] = useState(initialState);
+	const [errors, setErrors] = useState({});
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const handleChange = ({ field, value }) => {
-		setFormState(prevState => ({
-			...prevState,
-			[field]: value,
-		}));
+	const handleChange = (name, value) => {
+		setValues({ ...values, [name]: value });
 	};
 
 	const handleSubmit = () => {
-		const errors = validateForm(formState);
-
-		if (Object.keys(errors).length > 0) {
-			setFormErrors(errors);
-		}
-
-		return Object.keys(errors).length === 0;
+		const validationErrors = validate(values);
+		setErrors(validationErrors);
+		setIsSubmitting(true);
 	};
-	return [formState, formErrors, handleChange, handleSubmit];
-}
+
+	return {
+		values,
+		errors,
+		isSubmitting,
+		handleChange,
+		handleSubmit,
+	};
+};
