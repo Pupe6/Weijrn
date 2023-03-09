@@ -15,7 +15,7 @@ import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignInForm } from "../utils/validation";
 import { AuthContext } from "../contexts/authContext";
 
-export default function SignInScreen() {
+export default function SignInScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
 		useFormValidation({ email: "", password: "" }, validateSignInForm);
 
@@ -87,6 +87,7 @@ export default function SignInScreen() {
 						colorScheme="indigo"
 						onPress={async () => {
 							await signIn(values).catch(alert);
+							navigation.navigate("Home");
 						}}
 						_disabled={isSubmitting}>
 						Sign in

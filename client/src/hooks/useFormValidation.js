@@ -18,7 +18,6 @@ export const useFormValidation = (initialState, validate) => {
 
 	const handleChange = (name, value) => {
 		setValues({ ...values, [name]: value });
-		console.log(values);
 	};
 
 	const handleSubmit = () => {

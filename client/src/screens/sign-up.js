@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
 	FormControl,
 	Input,
@@ -10,6 +10,7 @@ import {
 } from "native-base";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignUpForm } from "../utils/validation";
+import { authContext } from "../contexts/authContext";
 
 export default function SignUpScreen() {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
@@ -23,6 +24,7 @@ export default function SignUpScreen() {
 			},
 			validateSignUpForm
 		);
+	const { signUp } = useContext(authContext);
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" w="90%" maxW="290" py="8">
@@ -117,7 +119,9 @@ export default function SignUpScreen() {
 					<Button
 						mt="2"
 						colorScheme="indigo"
-						onPress={handleSubmit}
+						onPress={() => {
+							signUp(values);
+						}}
 						isDisabled={isSubmitting}>
 						Sign up
 					</Button>

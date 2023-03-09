@@ -67,8 +67,7 @@ export const AuthProvider = ({ children }) => {
 		() => ({
 			signIn: async data => {
 				const res = await loginUser(data).catch(console.log);
-
-				dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+				dispatch({ type: "SIGN_IN", token: res.user._token });
 			},
 			signOut: async () => {
 				await SecureStore.deleteItemAsync("userToken").catch(
