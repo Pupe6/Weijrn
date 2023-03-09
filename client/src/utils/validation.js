@@ -1,64 +1,55 @@
-export function validateField({ field, value, ...args }) {
-	let error = null;
+export const validateSignInForm = formState => {
+	let errors = {};
 
-	switch (field) {
-		case "email":
-			if (!validateEmail(value)) {
-				error = "Please enter a valid email address.";
-			}
-			break;
-		case "username":
-			if (!validateUsername(value)) {
-				error = "Please enter a valid username.";
-			}
-			break;
-		case "password":
-			if (!validatePassword(value)) {
-				error = "Please enter a valid password.";
-			}
-			break;
-		case "confirmPassword":
-			if (!validateConfirmPassword(args.password, value)) {
-				error = "Passwords do not match.";
-			}
-			break;
-		case "macAddress":
-			if (!validateMacAddress(value)) {
-				error = "Please enter a valid MAC address.";
-			}
-			break;
-		default:
-			break;
+	if (!formState.email) {
+		errors.email = "Email is required";
+	} else if (!validateEmail(formState.email)) {
+		errors.email = "Email is invalid";
 	}
-	return error;
-}
 
-export function validateForm(formState) {
-	const errors = {};
-
-	for (let key in formState) {
-		if (key === "confirmPassword") {
-			const error = validateField({
-				field: key,
-				value: formState[key],
-				password: formState.password,
-			});
-			if (error) {
-				errors[key] = error;
-			}
-			continue;
-		}
-		const error = validateField({
-			field: key,
-			value: formState[key],
-		});
-		if (error) {
-			errors[key] = error;
-		}
+	if (!formState.password) {
+		errors.password = "Password is required";
+	} else if (!validatePassword(formState.password)) {
+		errors.password = "Invalid password";
 	}
 	return errors;
-}
+};
 
+export const validateSignUpForm = formState => {
+	let errors = {};
+
+	if (!formState.email) {
+		errors.email = "Email is required";
+	} else if (!validateEmail(formState.email)) {
+		errors.email = "Invalid email";
+	}
+
+	if (!formState.username) {
+		errors.username = "Username is required";
+	} else if (!validatePassword(formState.username)) {
+		errors.username = "Invalid username";
+	}
+
+	if (!formState.password) {
+		errors.password = "Password is required";
+	} else if (!validatePassword(formState.password)) {
+		errors.password = "Invalid Password";
+	}
+
+	if (!formState.confirmPassword) {
+		errors.confirmPassword = "Confirm Password is required";
+	} else if (
+		!validateConfirmPassword(formState.password, formState.confirmPassword)
+	) {
+		errors.confirmPassword = "Passwords do not match";
+	}
+
+	if (!formState.macAddress) {
+		errors.macAddress = "Mac Address is required";
+	} else if (!validateMacAddress(formState.macAddress)) {
+		errors.macAddress = "Invalid Mac Address";
+	}
+};
 export function validateEmail(email) {
 	const re = /\S+@\S+\.\S+/;
 	return re.test(email);
