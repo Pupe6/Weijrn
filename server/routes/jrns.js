@@ -5,8 +5,7 @@ const verifyMAC = require("../middleware/verifyMAC");
 const verifyJWT = require("../middleware/verifyJWT");
 
 const router = require("express").Router();
-const { encrypt } = require("../utils/encryption");
-const { verify } = require("jsonwebtoken");
+const { encryptTag } = require("../utils/encryption");
 
 router.get("/tags", verifyMAC, async (req, res) => {
 	try {
@@ -32,10 +31,10 @@ router.get("/tags/:nickname", verifyMAC, async (req, res) => {
 				.status(404)
 				.json({ message: `Tag "${nickname}" not found.` });
 
-		let encryptedData = encrypt(tag.data, process.env.ENCRYPTION_KEY);
+		const encryptedTag = encryptTag(tag);
 
 		res.status(200).json({
-			tag: { ...tag.toJSON(), data: encryptedData },
+			tag: encryptedTag,
 		});
 	} catch (err) {
 		res.status(500).json({ message: err.message });
