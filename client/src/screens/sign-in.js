@@ -10,14 +10,12 @@ import {
 	HStack,
 	Text,
 } from "native-base";
-
-import { useForm } from "../hooks/useForm";
+import { useFormValidation } from "../hooks/useFormValidation";
+import { validateSignInForm } from "../utils/validation";
 
 export default function SignInScreen() {
-	const [formState, formErrors, handleChange, handleSubmit] = useForm({
-		email: "",
-		password: "",
-	});
+	const { values, errors, isSubmitting, handleChange, handleSubmit } =
+		useFormValidation({ email: "", password: "" }, validateSignInForm);
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -45,16 +43,14 @@ export default function SignInScreen() {
 					<FormControl>
 						<FormControl.Label>Email</FormControl.Label>
 						<Input
-							onChangeText={text =>
-								handleChange({ field: "email", value: text })
-							}
+							onChangeText={text => handleChange("email", text)}
 						/>
 						<FormControl.HelperText>
 							We'll never share your email.
 						</FormControl.HelperText>
-						{formErrors.email && (
+						{errors.email && (
 							<FormControl.ErrorMessage>
-								{formErrors.email}
+								{errors.email}
 							</FormControl.ErrorMessage>
 						)}
 					</FormControl>
@@ -63,15 +59,12 @@ export default function SignInScreen() {
 						<Input
 							type="password"
 							onChangeText={text =>
-								handleChange({
-									field: "password",
-									value: text,
-								})
+								handleChange("password", text)
 							}
 						/>
-						{formErrors.password && (
+						{errors.password && (
 							<FormControl.ErrorMessage>
-								{formErrors.password}
+								{errors.password}
 							</FormControl.ErrorMessage>
 						)}
 						<Link
@@ -88,7 +81,8 @@ export default function SignInScreen() {
 					<Button
 						mt="2"
 						colorScheme="indigo"
-						onPress={handleSubmit(formState)}>
+						onPress={handleSubmit}
+						_disabled={isSubmitting}>
 						Sign in
 					</Button>
 					<HStack mt="6" justifyContent="center">

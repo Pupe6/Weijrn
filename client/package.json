@@ -12,6 +12,7 @@
     "@expo/webpack-config": "^18.0.1",
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
+    "bcryptjs": "^2.4.3",
     "expo": "~48.0.6",
     "expo-linking": "^4.0.1",
     "expo-local-authentication": "^13.2.1",
