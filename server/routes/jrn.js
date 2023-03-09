@@ -1,11 +1,48 @@
 const Tag = require("../models/Tag");
+const User = require("../models/User");
 
 const verifyMAC = require("../middleware/verifyMAC");
+const verifyJWT = require("../middleware/verifyJWT");
 
 const router = require("express").Router();
-const bcrypt = require("bcryptjs");
+const { encrypt } = require("../utils/encryption");
+const { verify } = require("jsonwebtoken");
 
-router.post("/tag", verifyMAC, async (req, res) => {
+router.get("/tags", verifyMAC, async (req, res) => {
+	try {
+		const user = req.user;
+
+		const tags = await Tag.find({ _id: { $in: user._tags } });
+
+		res.status(200).json({ tags });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+router.get("/tags/:nickname", verifyMAC, async (req, res) => {
+	try {
+		const { nickname } = req.params;
+		const user = req.user;
+
+		const tag = user._tags.find(tag => tag.nickname === nickname);
+
+		if (!tag)
+			return res
+				.status(404)
+				.json({ message: `Tag "${nickname}" not found.` });
+
+		let encryptedData = encrypt(tag.data, process.env.ENCRYPTION_KEY);
+
+		res.status(200).json({
+			tag: { ...tag.toJSON(), data: encryptedData },
+		});
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+router.post("/tags", verifyMAC, async (req, res) => {
 	try {
 		const { nickname, data, type } = req.body;
 		const user = req.user;
@@ -51,21 +88,47 @@ router.post("/tag", verifyMAC, async (req, res) => {
 	}
 });
 
-router.get("/tags/:nickname", verifyMAC, async (req, res) => {
+router.put("/tags/:nickname", verifyJWT, async (req, res) => {
 	try {
 		const { nickname } = req.params;
-		const user = req.user;
+		const { nickname: newNickname, data, type } = req.body;
 
-		const tag = user._tags.find(tag => tag.nickname === nickname);
+		const tagToUpdate = await Tag.findOne({ nickname });
 
-		if (!tag)
+		if (!tagToUpdate)
 			return res
 				.status(404)
 				.json({ message: `Tag "${nickname}" not found.` });
 
-		tag.data = bcrypt.hashSync(tag.data, 10);
+		const updatedTag = await Tag.findOneAndUpdate(
+			{ nickname },
+			{ nickname: newNickname, data, type },
+			{ new: true }
+		);
 
-		res.status(200).json({ tag: { ...tag.toJSON() } });
+		res.status(200).json({ tag: updatedTag });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+router.delete("/tags/:nickname", verifyJWT, async (req, res) => {
+	try {
+		const { nickname } = req.params;
+		const user = req.user;
+
+		console.log(user._id);
+
+		const tagToDelete = await Tag.findOneAndDelete({ nickname });
+
+		await User.findOneAndUpdate(
+			{ _id: user._id },
+			{
+				$pull: { _tags: tagToDelete._id },
+			}
+		);
+
+		res.status(200).json({ message: `Tag "${nickname}" deleted.` });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}

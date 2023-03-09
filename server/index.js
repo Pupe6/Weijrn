@@ -17,7 +17,7 @@ let whitelistedDomains = process.env.WHITELISTED_DOMAINS.split(", ");
 let allowedOrigins =
 	process.env.NODE_ENV === "production"
 		? whitelistedDomains
-		: ["http://localhost:3000", "http://127.0.0.1:3000"];
+		: ["http://localhost:19006", "http://127.0.0.1:19006"];
 
 app.use(
 	cors({
@@ -33,10 +33,7 @@ app.use((req, res, next) => {
 		res.setHeader("Access-Control-Allow-Origin", origin);
 
 	res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-	res.set(
-		"Access-Control-Allow-Headers",
-		"Content-Type, X-Access-Token, Origin"
-	);
+	res.set("Access-Control-Allow-Headers", "Content-Type, X-Token, Origin");
 
 	next();
 });
@@ -50,17 +47,17 @@ try {
 
 	app.all("*", (_, res) =>
 		res.status(404).json({
-			message: "Not found"
+			message: "Not found",
 		})
 	);
 } catch (err) {
 	console.log(err);
 
-    app.all("*", (_, res) =>
-        res.status(500).json({
-            message: "Internal server error"
-        })
-    );
+	app.all("*", (_, res) =>
+		res.status(500).json({
+			message: "Internal server error",
+		})
+	);
 }
 
 const port = process.env.PORT || 8393;
