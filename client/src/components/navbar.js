@@ -1,11 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import All from './screens/all';
-import ChatPage from './screens/chat-page';
-import HealthScreen from './screens/Health';
-import SportsScreen from './screens/Sports';
-import TechScreen from './screens/Tech';
+import All from '../screens/all';
+import ChatPage from '../screens/chat-page';
 import { Icon } from 'react-native-elements'
 import SocialPage from '../screens/social-page';
 const Tab = createBottomTabNavigator();
