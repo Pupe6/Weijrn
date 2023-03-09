@@ -46,7 +46,11 @@ router.post("/register", async (req, res) => {
 		}
 
 		user._token = jwt.sign(
-			{ ...user, password: undefined },
+			{
+				_id: user._id,
+				username: user.username,
+				macAddress: user.macAddress,
+			},
 			process.env.TOKEN_KEY
 		);
 
@@ -71,7 +75,14 @@ router.post("/login", async (req, res) => {
 		let user = (await getUsers({ email })).users[0];
 
 		if (user && (await bcrypt.compare(password, user.password))) {
-			const token = jwt.sign(user.toJSON(), process.env.TOKEN_KEY);
+			const token = jwt.sign(
+				{
+					_id: user._id,
+					username: user.username,
+					macAddress: user.macAddress,
+				},
+				process.env.TOKEN_KEY
+			);
 
 			if (user._token)
 				// Ban Old Token
