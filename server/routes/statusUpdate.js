@@ -1,30 +1,64 @@
 const Tag = require("../models/Tag");
+const Status = require("../models/Status");
+
+const verifyMAC = require("../middleware/verifyMAC");
+
 const { encryptTag } = require("../utils/encryption");
 
 const router = require("express").Router();
 
-// this endpoint is pinged every 5 seconds by both client and hardware
-// we use it to tell the client or hardware if an action is required
-router.get("/", (req, res) => {
-	res.status(200).json({ ...global.statusUpdate });
-});
-
-router.post("/send", (req, res) => {
-	const { nickname } = req.body;
-
-	if (!nickname)
-		return res.status(400).json({ message: "Please fullfil all fields." });
-
-	global.statusUpdate.raspiSend = {
-		status: true,
-		nickname,
-	};
-
-	res.status(200).json({ message: "Success" });
-});
-
-router.post("/receive", async (req, res) => {
+router.get("/", verifyMAC, async (req, res) => {
 	try {
+		const { macAddress } = req.user;
+
+		const statusUpdate = await Status.findOne({ macAddress });
+
+		if (!statusUpdate) {
+			const newStatusUpdate = new Status({ macAddress });
+
+			await newStatusUpdate.save();
+
+			return res.status(200).json({ ...newStatusUpdate.toJSON() });
+		}
+
+		res.status(200).json({ ...statusUpdate.toJSON() });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+router.post("/send", verifyMAC, async (req, res) => {
+	try {
+		const { macAddress } = req.user;
+
+		const statusUpdate = await Status.findOne({ macAddress });
+
+		const { nickname } = req.body;
+
+		if (!nickname)
+			return res
+				.status(400)
+				.json({ message: "Please fullfil all fields." });
+
+		statusUpdate.raspiSend = {
+			status: true,
+			nickname,
+		};
+
+		await statusUpdate.save();
+
+		res.status(200).json({ message: "Success" });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+router.post("/receive", verifyMAC, async (req, res) => {
+	try {
+		const { macAddress } = req.user;
+
+		const statusUpdate = await Status.findOne({ macAddress });
+
 		const { _id } = req.body;
 
 		if (!_id)
@@ -39,10 +73,12 @@ router.post("/receive", async (req, res) => {
 
 		const encryptedTag = encryptTag(tag);
 
-		global.statusUpdate.raspiReceive = {
+		statusUpdate.raspiReceive = {
 			status: true,
 			tag: encryptedTag,
 		};
+
+		await statusUpdate.save();
 
 		res.status(200).json({ message: "Success" });
 	} catch (err) {
@@ -50,18 +86,28 @@ router.post("/receive", async (req, res) => {
 	}
 });
 
-router.get("/resolve", (_, res) => {
-	global.statusUpdate.raspiSend = {
-		status: false,
-		nickname: null,
-	};
+router.get("/resolve", verifyMAC, async (req, res) => {
+	try {
+		const { macAddress } = req.user;
 
-	global.statusUpdate.raspiReceive = {
-		status: false,
-		tag: null,
-	};
+		await Status.findOneAndUpdate(
+			{ macAddress },
+			{
+				raspiReceive: {
+					status: false,
+					tag: null,
+				},
+				raspiSend: {
+					status: false,
+					nickname: null,
+				},
+			}
+		);
 
-	res.status(200).json({ message: "Success" });
+		res.status(200).json({ message: "Success" });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
 });
 
 module.exports = {

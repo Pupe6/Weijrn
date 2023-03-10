@@ -38,17 +38,6 @@ app.use((req, res, next) => {
 	next();
 });
 
-global.statusUpdate = {
-	raspiReceive: {
-		status: false,
-		tag: null,
-	},
-	raspiSend: {
-		status: false,
-		nickname: null,
-	},
-};
-
 // Register Routes
 try {
 	fs.readdirSync(routesPath).forEach(file => {

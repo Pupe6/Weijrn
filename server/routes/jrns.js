@@ -16,6 +16,9 @@ router.get("/tags", verifyMAC, async (req, res) => {
 
 		const tags = await Tag.find({ _id: { $in: user._tags } });
 
+		// remove data from tags
+		tags.forEach(tag => (tag.data = undefined));
+
 		res.status(200).json({ tags });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
