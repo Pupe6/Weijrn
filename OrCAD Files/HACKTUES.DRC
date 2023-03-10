@@ -1,0 +1,50 @@
+
+Checking Pins and Pin Connections
+
+--------------------------------------------------
+Checking Schematic: SCHEMATIC1
+--------------------------------------------------
+Checking Electrical Rules 
+
+Checking for Unconnected Nets
+
+Checking Off-Page Connections
+
+Checking Pin to Port Connections
+
+Checking for Invalid References
+
+Checking for Duplicate References
+
+Checking for Compatibility with SDT
+
+Reporting Off-Grid Objects
+
+Reporting Ports
+
+Reporting Off-Page Connections
+
+Reporting Globals
+
+Reporting Net Names
+    N00994
+    N04018
+    N03922
+    N03818
+    N03722
+    N03634
+    N00669
+    N00900
+    N04178
+    N00964
+    N00914
+    N00874
+    N00812
+    N03529
+    N01058
+
+Checking Visible Unconnected Power Pins
+
+Checking Misleading Tap connection
+
+Check Bus width mismatch
