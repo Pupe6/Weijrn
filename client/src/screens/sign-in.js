@@ -15,7 +15,7 @@ import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignInForm } from "../utils/validation";
 import { AuthContext } from "../contexts/authContext";
 
-export default function SignInScreen() {
+export default function SignInScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
 		useFormValidation({ email: "", password: "" }, validateSignInForm);
 
@@ -71,16 +71,6 @@ export default function SignInScreen() {
 								{errors.password}
 							</FormControl.ErrorMessage>
 						)}
-						<Link
-							_text={{
-								fontSize: "xs",
-								fontWeight: "500",
-								color: "indigo.500",
-							}}
-							alignSelf="flex-end"
-							mt="1">
-							Forget Password?
-						</Link>
 					</FormControl>
 					<Button
 						mt="2"
@@ -91,7 +81,7 @@ export default function SignInScreen() {
 						_disabled={isSubmitting}>
 						Sign in
 					</Button>
-					<HStack mt="6" justifyContent="center">
+					<HStack mt="6" alignItems="center" justifyContent="center">
 						<Text
 							fontSize="sm"
 							color="coolGray.600"
@@ -100,15 +90,21 @@ export default function SignInScreen() {
 							}}>
 							I'm a new user.{" "}
 						</Text>
-						<Link
-							_text={{
-								color: "indigo.500",
-								fontWeight: "medium",
-								fontSize: "sm",
-							}}
-							href="/SignUp">
-							Sign Up
-						</Link>
+						<Button
+							variant="link"
+							onPress={() => {
+								navigation.navigate("Sign Up");
+							}}>
+							<Text
+								fontWeight="bold"
+								color="indigo.500"
+								underline
+								_dark={{
+									color: "indigo.300",
+								}}>
+								Sign Up
+							</Text>
+						</Button>
 					</HStack>
 				</VStack>
 			</Box>

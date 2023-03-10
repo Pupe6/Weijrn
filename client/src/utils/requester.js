@@ -1,4 +1,5 @@
-const baseUrl = "https://weijrnserver.onrender.com";
+const baseUrl = "https://2d22-194-141-252-114.eu.ngrok.io";
+// const baseUrl = "https://weijrnserver.onrender.com";
 
 const requester = async (method, path, body = undefined, token = null) => {
 	const res = await fetch(`${baseUrl}${path}`, {

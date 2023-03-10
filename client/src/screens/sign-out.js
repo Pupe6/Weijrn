@@ -33,7 +33,6 @@ export default function SignOutScreen(props) {
 							onClose();
 						}}
 					/>
-					{/* <Modal.Header>Sign</Modal.Header> */}
 					<Modal.Body>
 						<Text>Are you sure you want to sign out?</Text>
 					</Modal.Body>

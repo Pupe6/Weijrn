@@ -7,12 +7,14 @@ import {
 	Box,
 	Heading,
 	Button,
+	HStack,
+	Text,
 } from "native-base";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignUpForm } from "../utils/validation";
 import { AuthContext } from "../contexts/authContext";
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
 		useFormValidation(
 			{
@@ -20,7 +22,7 @@ export default function SignUpScreen() {
 				email: "",
 				password: "",
 				confirmPassword: "",
-				macAdress: "",
+				macAddress: "",
 			},
 			validateSignUpForm
 		);
@@ -107,7 +109,7 @@ export default function SignUpScreen() {
 								const strippedMac = text
 									.replace(/^a-zA-Z0-9]/g, ":")
 									.trim();
-								handleChange("macAdress", strippedMac);
+								handleChange("macAddress", strippedMac);
 							}}
 						/>
 						{errors?.macAdress && (
@@ -125,6 +127,32 @@ export default function SignUpScreen() {
 						isDisabled={isSubmitting}>
 						Sign up
 					</Button>
+					<HStack mt="6" alignItems="center" justifyContent="center">
+						<Text
+							fontSize="sm"
+							color="coolGray.800"
+							_dark={{
+								color: "warmGray.50",
+							}}
+							fontWeight={400}>
+							Already have an account?{" "}
+						</Text>
+						<Button
+							variant="link"
+							onPress={() => {
+								navigation.goBack();
+							}}>
+							<Text
+								fontWeight="bold"
+								color="indigo.500"
+								underline
+								_dark={{
+									color: "indigo.300",
+								}}>
+								Sign In
+							</Text>
+						</Button>
+					</HStack>
 				</VStack>
 			</Box>
 		</Center>
