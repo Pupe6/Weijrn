@@ -35,6 +35,7 @@ ser.reset_input_buffer()
 
 
 # ser.close()
+# ^ ma nikoi ne go e implementiral 💀
 
 
 def expand2square(pil_img, background_color):
@@ -69,23 +70,14 @@ while True:
     if ser.in_waiting > 0:
         message = ser.readline().decode('utf-8').rstrip()
         
-        if len(message) == 1:
-            buttonValue == int(message[0])
-            op = 0
-            subop = 0
-        
-        elif len(message) == 2:
-            subop = int(message[0])
-            buttonValue = int(message[1])
-            op = 0
-        elif len(message) == 3:
-            op = int(message[0])
-            subop = int(message[1])
-            buttonValue = int(message[2])
-        #when op = 0, subop becomes op -> kys
-        
+        message = message.zfill(3)
+
+        op = message[0]
+        subop = message[1]
+        buttonValue = message[2]
         
         #FIX OP != 0
+        # ^^^ nz kvo trqbva da e tva
         
         print(f"op -> ..{op}")
         print(f"subop -> {subop}")
