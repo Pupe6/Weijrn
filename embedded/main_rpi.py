@@ -100,7 +100,7 @@ fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 30)
 
 
 def rpi_to_arduino_send(text):
-    ser.write(text + "\n".encode('utf-8'))
+    ser.write((text + "\n").encode('utf-8'))
 
 # {'status': True, 'nickname': 'Test', 'pending': True}
 # Ako status == True iziskva action osven ako pendinga ne e true
@@ -111,7 +111,6 @@ def get_status_checker():
         headers = {'X-MAC-Address' : '00:00:00:00:00:00'}
         response = requests.get(url, headers = headers)
         data = response.json()
-        print(data["raspiSend"])
         raspiSend = data["raspiSend"]
         raspiReceive = data["raspiReceive"]
         time.sleep(5)
@@ -123,14 +122,23 @@ def get_status_checker():
             requests.post(f"{url}/pending", headers=headers)
             
             # nie prastame na servera VIKAM READ ARDUINO!!! nfc
+            if ser.in_waiting > 0:
+                message = ser.readline().rstrip().decode('utf-8')
+                print(message)
             
         elif raspiReceive["status"]:
             requests.post(f"{url}/pending", headers=headers)
             
-            data = decrypt("802e21e08b6f4b82a73a8b6ed5a9e865:8d4126f3039107597058db00ed90a23e")
+            print(raspiReceive["tag"])
+            
+            data = decrypt(raspiReceive["tag"]["data"])
+            print(data)
+            rpi_to_arduino_send("02")
+            time.sleep(0.1)
+            rpi_to_arduino_send(data)
             
             # NA ARDUINOTO WRITE NA TAGA NFC
-
+            # rpi_to_arduino_send(data)
 def create_tag(nickname, type, data):
     SECONDS_TO_WAIT = 5
     current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
