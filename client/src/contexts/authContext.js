@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loginUser, registerUser, logoutUser } from "../services/userService";
 
 export const AuthContext = React.createContext({
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 		// Fetch the token from storage then navigate to our appropriate place
 		const bootstrapAsync = async () => {
 			try {
-				let user = (await SecureStore.getItemAsync("user")) || null;
+				let user = (await AsyncStorage.getItem("@user")) || null;
 				dispatch({ type: "RESTORE_TOKEN", user: JSON.parse(user) });
 
 				// After restoring token, we may need to validate it in production apps
@@ -75,10 +75,10 @@ export const AuthProvider = ({ children }) => {
 			},
 			signOut: async () => {
 				const res = await logoutUser(
-					JSON.parse(await SecureStore.getItemAsync("user"))
-						?._token || null
+					JSON.parse(await AsyncStorage.getItem("@user"))?._token ||
+						null
 				).catch(console.log);
-				await SecureStore.deleteItemAsync("user").catch(console.log);
+				await AsyncStorage.removeItem("@user").catch(console.log);
 				dispatch({ type: "SIGN_OUT" });
 			},
 			signUp: async data => {
