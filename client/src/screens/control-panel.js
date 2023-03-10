@@ -1,8 +1,27 @@
-import React from "react";
-import { Box, Heading, ScrollView, Center, HStack } from "native-base";
+import React, { useState, useEffect, useContext } from "react";
+import { Center, Box, Heading } from "native-base";
 import { getTags } from "../services/tagService";
+import { ScrollView } from "react-native";
+import SwipeList from "../components/swipe-list";
+import { AuthContext } from "../contexts/authContext";
 
 export default function AdminScreen() {
+	const [listData, setListData] = useState({
+		count: 0,
+		tags: [],
+	});
+	const { user } = useContext(AuthContext);
+
+	useEffect(() => {
+		getTags(user.macAddress)
+			.then(res => {
+				setListData({
+					count: res.count,
+					tags: res.tags,
+				});
+			})
+			.catch(alert);
+	}, []);
 	return (
 		<Center h="290px">
 			<Box
@@ -17,25 +36,11 @@ export default function AdminScreen() {
 				maxW="400px"
 				w="100%">
 				<Heading p="4" pb="3" size="lg">
-					Rfids
+					Inbox
 				</Heading>
-				{/* <ScrollView showsVerticalScrollIndicator={false}>
-					{getTags().map(tag => (
-						<Box
-							key={tag._id}
-							_dark={{
-								bg: "coolGray.800",
-							}}
-							_light={{
-								bg: "white",
-							}}
-							rounded="lg"
-							shadow={1}
-							m="4"
-							p="4">
-							
-
-				</ScrollView> */}
+				<ScrollView showsVerticalScrollIndicator={false}>
+					<SwipeList tags={listData.tags} />
+				</ScrollView>
 			</Box>
 		</Center>
 	);

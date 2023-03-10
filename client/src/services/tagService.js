@@ -2,10 +2,12 @@ import * as requester from "../utils/requester";
 
 // GET /jrn/tags
 
-export const getTags = async () => {
-	const response = await requester.get("/jrn/tags").catch(err => {
-		throw err;
-	});
+export const getTags = async macAddress => {
+	const response = await requester
+		.get("/jrn/tags", undefined, null, macAddress)
+		.catch(err => {
+			throw err;
+		});
 
 	return response;
 };
@@ -24,9 +26,9 @@ export const getTag = async (nickname, macAddress) => {
 
 // POST /jrn/tags/:nickname
 
-export const createTag = async nickname => {
+export const createTag = async (nickname, macAddress) => {
 	const response = await requester
-		.post(`/statusupdate/send`, { nickname })
+		.post(`/statusupdate/send`, { nickname }, null, macAddress)
 		.catch(err => {
 			throw err;
 		});
@@ -59,10 +61,12 @@ export const deleteTag = async (nickname, token) => {
 
 // GET /statusupdate
 
-export const statusUpdate = async () => {
-	const response = await requester.get("/statusupdate").catch(err => {
-		throw err;
-	});
+export const statusUpdate = async macAddress => {
+	const response = await requester
+		.get("/statusupdate", undefined, null, macAddress)
+		.catch(err => {
+			throw err;
+		});
 
 	return response;
 };

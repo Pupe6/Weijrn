@@ -64,14 +64,14 @@ export default function CreateTagScreen(props) {
 							color: "white",
 						}}
 						onPress={() => {
-							createTag(tag.nickname)
+							createTag(tag.nickname, user.macAddress)
 								.then(() => {
 									toast.show({
 										title: "Syncing tag",
-										status: "warning",
+										status: "info",
 									});
 									const repeatInterval = setInterval(() => {
-										statusUpdate()
+										statusUpdate(user.macAddress)
 											.then(res => {
 												if (!res.raspiSend.status) {
 													toast.show({
