@@ -1,7 +1,8 @@
 // create a drawer component
 import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { AuthProvider, AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../contexts/authContext";
 
 import HomeScreen from "../screens/home";
 import SignInScreen from "../screens/sign-in";
@@ -12,7 +13,7 @@ export default function DrawerNavigator() {
 
 	const { user } = React.useContext(AuthContext);
 	return (
-		<AuthProvider>
+		<NavigationContainer>
 			<Drawer.Navigator initialRouteName="SignIn">
 				{user?._token == null ? (
 					<>
@@ -22,13 +23,9 @@ export default function DrawerNavigator() {
 				) : (
 					<>
 						<Drawer.Screen name="Home" component={HomeScreen} />
-						<Drawer.Screen
-							name="SignOut"
-							component={SignInScreen}
-						/>
 					</>
 				)}
 			</Drawer.Navigator>
-		</AuthProvider>
+		</NavigationContainer>
 	);
 }

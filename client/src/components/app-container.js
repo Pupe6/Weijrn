@@ -1,14 +1,14 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { NativeBaseProvider } from "native-base";
+import { AuthProvider } from "../contexts/authContext";
 import theme from "../theme";
 import MyDrawer from "./navbar";
 export default function AppContainer() {
 	return (
-		<NavigationContainer>
+		<AuthProvider>
 			<NativeBaseProvider theme={theme}>
 				<MyDrawer />
 			</NativeBaseProvider>
-		</NavigationContainer>
+		</AuthProvider>
 	);
 }
