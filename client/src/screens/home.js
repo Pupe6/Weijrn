@@ -11,7 +11,7 @@ import {
 	Text,
 	Link,
 } from "native-base";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function HomeScreen() {
 	return (
 		<Center flex={1}>
