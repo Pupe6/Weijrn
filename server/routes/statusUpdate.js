@@ -27,6 +27,40 @@ router.get("/", verifyMAC, async (req, res) => {
 	}
 });
 
+router.post("/pending", verifyMAC, async (req, res) => {
+	try {
+		const { macAddress } = req.user;
+
+		const statusUpdate = await Status.findOne({ macAddress });
+
+		if (statusUpdate.raspiSend.status) {
+			if (!statusUpdate.raspiSend.pending) {
+				statusUpdate.raspiSend.pending = true;
+
+				await statusUpdate.save();
+
+				return res.status(200).json({ message: "Success" });
+			} else {
+				return res.status(400).json({ message: "Already pending." });
+			}
+		} else if (statusUpdate.raspiReceive.status) {
+			if (!statusUpdate.raspiReceive.pending) {
+				statusUpdate.raspiReceive.pending = true;
+
+				await statusUpdate.save();
+
+				return res.status(200).json({ message: "Success" });
+			} else {
+				return res.status(400).json({ message: "Already pending." });
+			}
+		} else {
+			return res.status(400).json({ message: "No action required." });
+		}
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
 router.post("/send", verifyMAC, async (req, res) => {
 	try {
 		const { macAddress } = req.user;
