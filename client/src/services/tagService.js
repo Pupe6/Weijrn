@@ -37,9 +37,9 @@ export const createTag = async (nickname, macAddress) => {
 };
 // PUT   /jrn/tags/:x-token
 
-export const updateTag = async (nickname, token) => {
+export const updateTag = async (nickname, token, newNickname) => {
 	const response = await requester
-		.put(`/jrn/tags/${nickname}`, undefined, token, macAddress)
+		.put(`/jrn/tags/${nickname}`, { nickname: newNickname }, token)
 		.catch(err => {
 			throw err;
 		});

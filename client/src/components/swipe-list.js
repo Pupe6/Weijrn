@@ -16,13 +16,11 @@ export default function SwipeList({ tags }) {
 					<SwipeListHiddenItem tag={tag.item} id={tag.item._id} />
 				)}
 				rightOpenValue={-130}
+				leftOpenValue={130}
 				previewRowKey={"0"}
 				previewOpenValue={-40}
 				previewOpenDelay={3000}
-				onRowDidOpen={(rowKey, rowMap) => {
-					console.log(rowKey, rowMap);
-					onRowDidOpen(rowKey);
-				}}
+				onRowDidOpen={rowKey => onRowDidOpen(rowKey)}
 			/>
 		</Box>
 	);

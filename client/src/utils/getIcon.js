@@ -12,6 +12,8 @@ export const getIcon = screenName => {
 			return "logout";
 		case "Create Tag":
 			return "tag-plus";
+		case "Edit Tag":
+			return "application-edit";
 		default:
 			return undefined;
 	}

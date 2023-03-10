@@ -5,7 +5,7 @@ import { ScrollView } from "react-native";
 import SwipeList from "../components/swipe-list";
 import { AuthContext } from "../contexts/authContext";
 
-export default function AdminScreen() {
+export default function AdminScreen(props) {
 	const [listData, setListData] = useState({
 		count: 0,
 		tags: [],
@@ -21,7 +21,7 @@ export default function AdminScreen() {
 				});
 			})
 			.catch(alert);
-	}, []);
+	}, [props?.route?.params?.refresh]);
 	return (
 		<Center h="290px">
 			<Box

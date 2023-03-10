@@ -8,13 +8,14 @@ import {
 	ScrollView,
 	useToast,
 	Heading,
+	HStack,
 } from "native-base";
 import { AuthContext } from "../contexts/authContext";
-import { createTag, statusUpdate } from "../services/tagService";
+import { updateTag } from "../services/tagService";
 
-export default function CreateTagScreen(props) {
+export default function EditTagScreen(props) {
 	const [tag, setTag] = useState({
-		nickname: "",
+		nickname: props?.route?.params?.tag?.nickname,
 	});
 	const toast = useToast();
 	const { user } = useContext(AuthContext);
@@ -33,8 +34,9 @@ export default function CreateTagScreen(props) {
 				maxW="400px"
 				w="100%">
 				<Heading p="4" pb="3" size="lg">
-					Create Tag
+					Edit Tag
 				</Heading>
+
 				<ScrollView showsVerticalScrollIndicator={false}>
 					<FormControl>
 						<FormControl.Label
@@ -60,36 +62,23 @@ export default function CreateTagScreen(props) {
 							color: "white",
 						}}
 						onPress={() => {
-							createTag(tag.nickname, user.macAddress)
+							updateTag(
+								props?.route?.params?.tag?.nickname,
+								user._token,
+								tag.nickname
+							)
 								.then(() => {
 									toast.show({
-										title: "Syncing tag",
-										status: "info",
+										title: "Tag updated",
+										status: "success",
 									});
-									const repeatInterval = setInterval(() => {
-										statusUpdate(user.macAddress)
-											.then(res => {
-												if (!res.raspiSend.status) {
-													toast.show({
-														title: "Tag synced",
-														status: "success",
-													});
-
-													props.navigation.navigate(
-														"Control Panel"
-													);
-
-													clearInterval(
-														repeatInterval
-													);
-												}
-											})
-											.catch(alert);
-									}, 2000);
+									props.navigation.navigate("Control Panel", {
+										refresh: true,
+									});
 								})
 								.catch(alert);
 						}}>
-						Create Tag
+						Edit Tag
 					</Button>
 				</ScrollView>
 			</Box>
