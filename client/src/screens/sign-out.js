@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/authContext";
-import { AlertDialog, Button, Center } from "native-base";
+import { AlertDialog, Button, Center, useToast } from "native-base";
 
 export default function SignOutScreen({ navigation }) {
 	useEffect(() => {
@@ -16,6 +16,7 @@ export default function SignOutScreen({ navigation }) {
 
 	const cancelRef = React.useRef(null);
 	const { logout, user } = useContext(AuthContext);
+	const toast = useToast();
 
 	return (
 		<Center>
@@ -48,6 +49,13 @@ export default function SignOutScreen({ navigation }) {
 								colorScheme="danger"
 								onPress={() => {
 									onClose();
+									toast.show({
+										title: "Signed out",
+										description: "You have been signed out",
+										status: "success",
+										duration: 3000,
+										isClosable: true,
+									});
 									logout(user._token);
 								}}>
 								Sign Out

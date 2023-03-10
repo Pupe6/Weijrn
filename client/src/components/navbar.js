@@ -9,6 +9,7 @@ import SignOutScreen from "../screens/sign-out";
 import AdminScreen from "../screens/control-panel";
 import CreateTagScreen from "../screens/create-tag";
 import EditTagScreen from "../screens/edit-tag";
+import ProfileScreen from "../screens/profile";
 
 import CustomDrawerContent from "../components/custom-drawer-content";
 
@@ -38,6 +39,7 @@ export default function DrawerNavigator() {
 						component={CreateTagScreen}
 					/>
 					<Drawer.Screen name="Edit Tag" component={EditTagScreen} />
+					<Drawer.Screen name="Profile" component={ProfileScreen} />
 					<Drawer.Screen name="Sign Out" component={SignOutScreen} />
 				</>
 			)}
