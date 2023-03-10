@@ -3,7 +3,7 @@ const Status = require("../models/Status");
 
 const verifyMAC = require("../middleware/verifyMAC");
 
-const { encryptTag } = require("../utils/encryption");
+const { encrypt } = require("../utils/encryption");
 
 const router = require("express").Router();
 
@@ -124,12 +124,15 @@ router.post("/receive", verifyMAC, async (req, res) => {
 
 		if (!tag) return res.status(404).json({ message: "Tag not found." });
 
-		const encryptedTag = encryptTag(tag);
+		const encryptedData = encrypt(tag.data, process.env.ENCRYPTION_KEY);
 
 		statusUpdate.raspiReceive = {
 			status: true,
 			pending: false,
-			tag: encryptedTag,
+			tag: {
+				...tag.toJSON(),
+				data: encryptedData,
+			},
 		};
 
 		await statusUpdate.save();
