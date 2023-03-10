@@ -12,19 +12,21 @@ export const getTags = async () => {
 
 // GET /jrn/tags/:nickname
 
-export const getTag = async nickname => {
-	const response = await requester.get(`/jrn/tags/${nickname}`).catch(err => {
-		throw err;
-	});
+export const getTag = async (nickname, macAddress) => {
+	const response = await requester
+		.get(`/jrn/tags/${nickname}`, undefined, null, macAddress)
+		.catch(err => {
+			throw err;
+		});
 
 	return response;
 };
 
 // POST /jrn/tags/:nickname
 
-export const createTag = async (nickname, token) => {
+export const createTag = async (nickname, token, macAddress) => {
 	const response = await requester
-		.post(`/jrn/tags/${nickname}`, undefined, token)
+		.post(`/jrn/tags/${nickname}`, undefined, token, macAddress)
 		.catch(err => {
 			throw err;
 		});
@@ -36,7 +38,7 @@ export const createTag = async (nickname, token) => {
 
 export const updateTag = async (nickname, token) => {
 	const response = await requester
-		.put(`/jrn/tags/${nickname}`, undefined, token)
+		.put(`/jrn/tags/${nickname}`, undefined, token, macAddress)
 		.catch(err => {
 			throw err;
 		});

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { AuthContext } from "../contexts/authContext";
+import { TagProvider } from "../contexts/tagContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import HomeScreen from "../screens/home";
@@ -27,7 +28,9 @@ export default function DrawerNavigator() {
 			) : (
 				<>
 					<Drawer.Screen name="Home" component={HomeScreen} />
-					<Drawer.Screen name="Admin" component={AdminScreen} />
+					<TagProvider>
+						<Drawer.Screen name="Admin" component={AdminScreen} />
+					</TagProvider>
 					<Drawer.Screen name="Sign Out" component={SignOutScreen} />
 				</>
 			)}
