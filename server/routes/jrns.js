@@ -187,11 +187,10 @@ router.get("/tags/share/:code", verifyMAC, async (req, res) => {
 				.status(400)
 				.json({ message: "You already have this tag." });
 
-		await User.findOneAndUpdate(
-			{ _id: user._id },
-			{ $push: { _tags: tag } },
-			{ new: true }
-		);
+		let userToUpdate = await User.findOne({ _id: user._id });
+
+		userToUpdate._tags.push(tag);
+		await userToUpdate.save();
 
 		// Remove Share Code
 		await ShareCode.findOneAndDelete({ shareCode: code });
