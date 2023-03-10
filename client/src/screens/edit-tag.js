@@ -15,6 +15,7 @@ import { updateTag } from "../services/tagService";
 
 export default function EditTagScreen(props) {
 	const [tag, setTag] = useState({
+		oldNickname: props?.route?.params?.tag?.nickname || "",
 		nickname: props?.route?.params?.tag?.nickname,
 	});
 	const toast = useToast();
@@ -38,6 +39,27 @@ export default function EditTagScreen(props) {
 				</Heading>
 
 				<ScrollView showsVerticalScrollIndicator={false}>
+					{!props?.route?.params?.tag?.nickname ? (
+						<FormControl>
+							<FormControl.Label
+								_text={{
+									color: "coolGray.800",
+									fontSize: "sm",
+									fontWeight: 600,
+								}}>
+								Nickname
+							</FormControl.Label>
+							<Input
+								onChangeText={text =>
+									setTag({ ...tag, oldNickname: text })
+								}
+								value={tag.oldNickname}
+								placeholder="Enter Old Nickname"
+							/>
+						</FormControl>
+					) : (
+						<></>
+					)}
 					<FormControl>
 						<FormControl.Label
 							_text={{
@@ -63,7 +85,7 @@ export default function EditTagScreen(props) {
 						}}
 						onPress={() => {
 							updateTag(
-								props?.route?.params?.tag?.nickname,
+								tag.oldNickname,
 								user._token,
 								tag.nickname
 							)

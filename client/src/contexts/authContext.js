@@ -13,6 +13,7 @@ export const AuthContext = React.createContext({
 	login: () => {},
 	register: () => {},
 	logout: () => {},
+	setUser: () => {},
 });
 
 export const AuthProvider = ({ children }) => {
@@ -45,6 +46,7 @@ export const AuthProvider = ({ children }) => {
 		<AuthContext.Provider
 			value={{
 				user,
+				setUser,
 				login,
 				register,
 				logout,
