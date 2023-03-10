@@ -3,6 +3,7 @@ import { AlertDialog, Button, Center, useToast, Icon, Text } from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { deleteTag } from "../services/tagService";
 import { useNavigation } from "@react-navigation/native";
+import { Entypo } from "@expo/vector-icons";
 
 export default function DeleteTagDialog({ nickname }) {
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -17,7 +18,7 @@ export default function DeleteTagDialog({ nickname }) {
 	return (
 		<Center>
 			<Button colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>
-				Delete Tag
+				<Icon as={<Entypo name="trash" />} size="sm" color="white" />
 			</Button>
 			<AlertDialog
 				leastDestructiveRef={cancelRef}

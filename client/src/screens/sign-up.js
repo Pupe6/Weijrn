@@ -26,7 +26,7 @@ export default function SignUpScreen({ navigation }) {
 			},
 			validateSignUpForm
 		);
-	const { signUp } = useContext(AuthContext);
+	const { register } = useContext(AuthContext);
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" w="90%" maxW="290" py="8">
@@ -122,7 +122,7 @@ export default function SignUpScreen({ navigation }) {
 						mt="2"
 						colorScheme="indigo"
 						onPress={async () => {
-							await signUp(values).catch(alert);
+							await register(values).catch(alert);
 						}}
 						isDisabled={isSubmitting}>
 						Sign up

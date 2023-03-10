@@ -21,7 +21,7 @@ export default function DrawerNavigator() {
 		<Drawer.Navigator
 			initialRouteName="Sign In"
 			drawerContent={props => <CustomDrawerContent {...props} />}>
-			{user?._token == null ? (
+			{!user?._token ? (
 				<>
 					<Drawer.Screen name="Sign In" component={SignInScreen} />
 					<Drawer.Screen name="Sign Up" component={SignUpScreen} />

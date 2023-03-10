@@ -2,8 +2,11 @@ import Adafruit_GPIO as GPIO
 import Adafruit_GPIO.SPI as SPI
 
 import ST7789 as TFT
+
 import datetime
+
 import os
+
 import time
 from gif import AnimatedGif
 import time
@@ -14,10 +17,18 @@ import serial
 import time
 
 import asyncio
-import datetime
 import requests
 
 from multiprocessing import Process
+
+from dotenv import load_dotenv
+import os
+
+import os
+from Crypto.Cipher import AES
+
+
+load_dotenv()
 
 
 
@@ -44,6 +55,26 @@ ser.reset_input_buffer()
 
 # ser.close()
 
+#ENCRYPTION, DECRYPTION CODE
+ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY").encode("utf-8")
+IV_LENGTH = 16
+
+def encrypt(text):
+    iv = os.urandom(IV_LENGTH)
+    cipher = AES.new(bytes(ENCRYPTION_KEY, "utf-8"), AES.MODE_CBC, iv)
+    encrypted = cipher.encrypt(text.encode())
+    return iv.hex() + ":" + encrypted.hex()
+
+def decrypt(text):
+    text_parts = text.split(":")
+    iv = bytes.fromhex(text_parts[0])
+    encrypted_text = bytes.fromhex(text_parts[1])
+    cipher = AES.new(ENCRYPTION_KEY, AES.MODE_CBC, iv)
+    decrypted = cipher.decrypt(encrypted_text)
+    return decrypted.decode()
+
+print(decrypt("802e21e08b6f4b82a73a8b6ed5a9e865:8d4126f3039107597058db00ed90a23e"))
+
 
 def expand2square(pil_img, background_color):
     width, height = pil_img.size
@@ -67,27 +98,12 @@ def expand2square(pil_img, background_color):
 
 fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 30)
 
-"""
-async def status_update_checker():
-    async with aiohttp.ClientSession() as session:
-        async with session.get("https://5800-194-141-252-114.eu.ngrok.io/statusupdate", headers=headers) as response:
-            body = await response.json()
-            raspiSend = body["raspiSend"]
-            raspiReceive = body["raspiReceive"]
-            await asyncio.sleep(SECONDS_TO_WAIT)
-            
-            if raspiReceive.status == True:
-                tag = raspiReceive.tag
-            #receive tag here
-            elif raspiSend.status == True:
-                pass
-            # create tags here                                                                                                                                                                              
-"""
 
 def rpi_to_arduino_send(text):
     ser.write(text + "\n".encode('utf-8'))
 
-
+# {'status': True, 'nickname': 'Test', 'pending': True}
+# Ako status == True iziskva action osven ako pendinga ne e true
 
 def get_status_checker():
     url = "https://ffbc-95-42-52-106.eu.ngrok.io/statusupdate"
@@ -101,20 +117,26 @@ def get_status_checker():
         time.sleep(5)
         
         if raspiSend["pending"] or raspiReceive["pending"]:
-            # print("already pending")
             continue
         
         if raspiSend["status"]:
             requests.post(f"{url}/pending", headers=headers)
+            
+            # nie prastame na servera VIKAM READ ARDUINO!!! nfc
+            
         elif raspiReceive["status"]:
             requests.post(f"{url}/pending", headers=headers)
+            
+            data = decrypt("802e21e08b6f4b82a73a8b6ed5a9e865:8d4126f3039107597058db00ed90a23e")
+            
+            # NA ARDUINOTO WRITE NA TAGA NFC
 
-def create_tag():
+def create_tag(nickname, type, data):
     SECONDS_TO_WAIT = 5
     current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
 
     headers = {"X-Mac-Address": "00:00:00:00:00:00"}
-    data = {"nickname": "test", "type": "nfc", "data": "1234"}
+    data = {"nickname": nickname, "type": type, "data": data}
 
     url = "https://ffbc-95-42-52-106.eu.ngrok.io/jrn/tags/"
 
@@ -397,6 +419,7 @@ if __name__ == '__main__':
     
     p1 = Process(target = handle_main_code, args = (op, subop, buttonValue))
     p1.start()
+    
     
     
 
