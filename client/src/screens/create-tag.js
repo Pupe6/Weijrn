@@ -63,33 +63,33 @@ export default function CreateTagScreen(props) {
 						_text={{
 							color: "white",
 						}}
-						onPress={async () => {
-							await createTag(tag.nickname)
-								.then(async () => {
+						onPress={() => {
+							createTag(tag.nickname)
+								.then(() => {
 									toast.show({
 										title: "Syncing tag",
-										status: "info",
+										status: "warning",
 									});
-									const res = await statusUpdate().catch(
-										alert
-									);
-									if (!res.raspiSend.status) {
-										toast.show({
-											title: "Tag synced",
-											status: "success",
-										});
-										props.navigation.navigate(
-											"Control Panel"
-										);
-									} else {
-										toast.show({
-											title: "Tag syncing",
-											status: "info",
-										});
-										props.navigation.navigate(
-											"Control Panel"
-										);
-									}
+									const repeatInterval = setInterval(() => {
+										statusUpdate()
+											.then(res => {
+												if (!res.raspiSend.status) {
+													toast.show({
+														title: "Tag synced",
+														status: "success",
+													});
+
+													props.navigation.navigate(
+														"Control Panel"
+													);
+
+													clearInterval(
+														repeatInterval
+													);
+												}
+											})
+											.catch(alert);
+									}, 2000);
 								})
 								.catch(alert);
 						}}>
