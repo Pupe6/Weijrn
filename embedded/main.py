@@ -67,14 +67,50 @@ def expand2square(pil_img, background_color):
 
 fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 30)
 
+"""
+async def status_update_checker():
+    async with aiohttp.ClientSession() as session:
+        async with session.get("https://5800-194-141-252-114.eu.ngrok.io/statusupdate", headers=headers) as response:
+            body = await response.json()
+            raspiSend = body["raspiSend"]
+            raspiReceive = body["raspiReceive"]
+            await asyncio.sleep(SECONDS_TO_WAIT)
+            
+            if raspiReceive.status == True:
+                tag = raspiReceive.tag
+            #receive tag here
+            elif raspiSend.status == True:
+                pass
+            # create tags here                                                                                                                                                                              
+"""
+
 def get_status_checker():
     while True:
-        headers = {'X-MAC-Address' : '00:00:00:00:00:00:00'}
-        response = requests.get('https://5800-194-141-252-114.eu.ngrok/jrn/tags', headers=headers)
-        print(response.content)
+        headers = {'X-MAC-Address' : '00:00:00:00:00:00'}
+        response = reque
         time.sleep(5)
 
+def create_tag():
+    SECONDS_TO_WAIT = 5
+    current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
 
+    headers = {"X-Mac-Address": "00:00:00:00:00:00"}
+    data = {"nickname": "test", "type": "nfc", "data": "1234"}
+
+    url = "https://5800-194-141-252-114.eu.ngrok.io/statusupdate"
+
+    async def create_tag():
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, json=data) as response:
+                print("Sending request")
+                print(await response.text())
+                # print(await response.json())
+                await asyncio.sleep(SECONDS_TO_WAIT)
+                print("Request sent")
+                if response.ok:
+                    resolutionResponse = requests.get("https://5800-194-141-252-114.eu.ngrok.io/statusupdate/resolve", headers=headers)
+                    print(resolutionResponse.json())
+                    # current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
 
 def handle_main_code(op, subop, buttonValue):
     while True:
@@ -103,9 +139,9 @@ def handle_main_code(op, subop, buttonValue):
 
             #FIX OP != 0
             
-            print(f"op -> ..{op}")
-            print(f"subop -> {subop}")
-            print(f"buttonval -> {buttonValue}")
+          #  print(f"op -> ..{op}")
+          #  print(f"subop -> {subop}")
+          #  print(f"buttonval -> {buttonValue}")
             #0 nothing, 2 back, 1 ok
             ####
 
@@ -333,8 +369,6 @@ def handle_main_code(op, subop, buttonValue):
                 
        
 
-            
-
 if __name__ == '__main__':
     op = 0 # change later with joystick code
     subop = 0
@@ -344,6 +378,8 @@ if __name__ == '__main__':
     
     p1 = Process(target = handle_main_code, args = (op, subop, buttonValue))
     p1.start()
+    
+    
 
     
 
