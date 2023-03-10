@@ -29,3 +29,26 @@ export const logoutUser = async token => {
 
 	return response;
 };
+
+// PUT /users/:id
+export const updateUser = async (user, id, token) => {
+	const response = await requester
+		.put(`/users/${id}`, user, token)
+		.catch(err => {
+			throw err;
+		});
+
+	return response;
+};
+
+// DELETE /users/:id
+
+export const deleteUser = async (id, token, password) => {
+	const response = await requester
+		.del(`/users/${id}`, { password }, token)
+		.catch(err => {
+			throw err;
+		});
+
+	return response;
+};
