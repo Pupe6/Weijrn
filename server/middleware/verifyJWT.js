@@ -30,7 +30,6 @@ async function verifyJWT(req, res, next) {
 
 		req.user = user;
 	} catch (err) {
-		console.log(err);
 		return res.status(401).json({ message: "Invalid Token." });
 	}
 

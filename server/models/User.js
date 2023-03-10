@@ -5,7 +5,6 @@ const userSchema = new Schema(
 		macAddress: {
 			type: String,
 			required: [true, "MAC address is required."],
-			unique: [true, 'The MAC address "{VALUE}" is already taken.'],
 			match: [
 				/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/,
 				'"{VALUE}" is not a valid MAC address.',

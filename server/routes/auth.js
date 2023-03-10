@@ -24,6 +24,14 @@ router.post("/register", async (req, res) => {
 				.json({ message: "Please fullfil all fields." });
 		}
 
+		// Make Sure The MAC Address Is Unique
+		let userWithSameMacAddress = (await getUsers({ macAddress })).users[0];
+
+		if (userWithSameMacAddress)
+			return res.status(409).json({
+				message: "This MAC Address is already registered.",
+			});
+
 		let encryptedPassword = await bcrypt.hash(password, 10);
 
 		let user = await createUser({
@@ -68,9 +76,10 @@ router.post("/login", async (req, res) => {
 	try {
 		const { email, password } = req.body;
 
-		if (!(email && password)) {
-			return res.status(400).json({ message: "All input is required." });
-		}
+		if (!(email && password))
+			return res
+				.status(400)
+				.json({ message: "Please fullfil all fields." });
 
 		let user = (await getUsers({ email })).users[0];
 
