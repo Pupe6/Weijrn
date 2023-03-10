@@ -10,11 +10,11 @@ import SignUpScreen from "../screens/sign-up";
 export default function DrawerNavigator() {
 	const Drawer = createDrawerNavigator();
 
-	const { userToken } = React.useContext(AuthContext);
+	const { user } = React.useContext(AuthContext);
 	return (
 		<AuthProvider>
 			<Drawer.Navigator initialRouteName="SignIn">
-				{userToken == null ? (
+				{user?._token == null ? (
 					<>
 						<Drawer.Screen name="SignIn" component={SignInScreen} />
 						<Drawer.Screen name="SignUp" component={SignUpScreen} />

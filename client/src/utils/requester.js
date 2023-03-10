@@ -1,12 +1,12 @@
 const baseUrl = "https://weijrnserver.onrender.com";
 
-const requester = async (method, path, body = undefined) => {
+const requester = async (method, path, body = undefined, token = null) => {
 	const res = await fetch(`${baseUrl}${path}`, {
 		method,
 		mode: "cors",
 		headers: {
 			"Content-Type": "application/json",
-			"X-Token": JSON.parse(sessionStorage.getItem("user"))?._token || "",
+			"X-Token": token,
 		},
 		body: method !== "GET" ? JSON.stringify(body) : body,
 	}).catch(err => {

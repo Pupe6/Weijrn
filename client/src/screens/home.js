@@ -12,7 +12,7 @@ import {
 	Link,
 } from "native-base";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
 	return (
 		<Center flex={1}>
 			<Text> kolqbn</Text>

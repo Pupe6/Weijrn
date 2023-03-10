@@ -1,4 +1,5 @@
 import * as requester from "../utils/requester";
+import * as SecureStore from "expo-secure-store";
 
 // POST /auth/register
 export const registerUser = async data => {
@@ -19,10 +20,12 @@ export const loginUser = async data => {
 };
 
 // GET /auth/logout
-export const logoutUser = async () => {
-	const response = await requester.get("/auth/logout").catch(err => {
-		throw err;
-	});
+export const logoutUser = async token => {
+	const response = await requester
+		.get("/auth/logout", undefined, token)
+		.catch(err => {
+			throw err;
+		});
 
 	return response;
 };

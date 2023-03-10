@@ -14,12 +14,14 @@ import {
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignInForm } from "../utils/validation";
 import { AuthContext } from "../contexts/authContext";
+import { useNavigation } from "@react-navigation/native";
 
-export default function SignInScreen({ navigation }) {
+export default function SignInScreen() {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
 		useFormValidation({ email: "", password: "" }, validateSignInForm);
 
 	const { signIn } = useContext(AuthContext);
+	const navigation = useNavigation();
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" py="8" w="90%" maxW="290">
