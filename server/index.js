@@ -51,7 +51,7 @@ setInterval(async () => {
 		const diff = now.getTime() - createdAt.getTime();
 		const minutes = Math.floor(diff / 1000 / 60);
 
-		if (minutes >= 0) {
+		if (minutes >= 15) {
 			await ShareCode.findByIdAndDelete(shareCode._id);
 		}
 	});
@@ -70,8 +70,6 @@ try {
 		})
 	);
 } catch (err) {
-	console.log(err);
-
 	app.all("*", (_, res) =>
 		res.status(500).json({
 			message: "Internal server error",

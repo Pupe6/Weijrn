@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
 			password: encryptedPassword,
 		});
 
-		// check for validation errors
+		// Check For Validation Errors
 		if (user.err) {
 			let { err } = user;
 			let duplicateErrCodes = [11000, 11001];
