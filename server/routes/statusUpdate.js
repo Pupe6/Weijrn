@@ -31,7 +31,13 @@ router.post("/pending", verifyMAC, async (req, res) => {
 	try {
 		const { macAddress } = req.user;
 
-		const statusUpdate = await Status.findOne({ macAddress });
+		let statusUpdate = await Status.findOne({ macAddress });
+
+		if (!statusUpdate) {
+			statusUpdate = new Status({ macAddress });
+
+			await statusUpdate.save();
+		}
 
 		if (statusUpdate.raspiSend.status) {
 			if (!statusUpdate.raspiSend.pending) {
@@ -65,7 +71,13 @@ router.post("/send", verifyMAC, async (req, res) => {
 	try {
 		const { macAddress } = req.user;
 
-		const statusUpdate = await Status.findOne({ macAddress });
+		let statusUpdate = await Status.findOne({ macAddress });
+
+		if (!statusUpdate) {
+			statusUpdate = new Status({ macAddress });
+
+			await statusUpdate.save();
+		}
 
 		const { nickname } = req.body;
 
@@ -76,6 +88,7 @@ router.post("/send", verifyMAC, async (req, res) => {
 
 		statusUpdate.raspiSend = {
 			status: true,
+			pending: false,
 			nickname,
 		};
 
@@ -91,7 +104,13 @@ router.post("/receive", verifyMAC, async (req, res) => {
 	try {
 		const { macAddress } = req.user;
 
-		const statusUpdate = await Status.findOne({ macAddress });
+		let statusUpdate = await Status.findOne({ macAddress });
+
+		if (!statusUpdate) {
+			statusUpdate = new Status({ macAddress });
+
+			await statusUpdate.save();
+		}
 
 		const { _id } = req.body;
 
@@ -109,6 +128,7 @@ router.post("/receive", verifyMAC, async (req, res) => {
 
 		statusUpdate.raspiReceive = {
 			status: true,
+			pending: false,
 			tag: encryptedTag,
 		};
 
@@ -129,10 +149,12 @@ router.get("/resolve", verifyMAC, async (req, res) => {
 			{
 				raspiReceive: {
 					status: false,
+					pending: false,
 					tag: null,
 				},
 				raspiSend: {
 					status: false,
+					pending: false,
 					nickname: null,
 				},
 			}
