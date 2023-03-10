@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 const fs = require("fs");
 
+const ShareCode = require("./models/ShareCode");
+
 const app = express();
 
 const routesPath = path.join(__dirname, "routes");
@@ -37,6 +39,23 @@ app.use((req, res, next) => {
 
 	next();
 });
+
+// Check All Share Codes And Delete Them If They Are Expired (15 Minutes); This Runs Every 5 Minutes
+setInterval(async () => {
+	const shareCodes = await ShareCode.find();
+
+	shareCodes.forEach(async shareCode => {
+		const now = new Date();
+		const createdAt = shareCode.createdAt;
+
+		const diff = now.getTime() - createdAt.getTime();
+		const minutes = Math.floor(diff / 1000 / 60);
+
+		if (minutes >= 15) {
+			await ShareCode.findByIdAndDelete(shareCode._id);
+		}
+	});
+}, 1000 * 60 * 5);
 
 // Register Routes
 try {
