@@ -1,39 +1,30 @@
 const crypto = require("crypto");
+const IV_LENGTH = 16;
 
-const algorithm = "aes-256-ctr";
-
-const encrypt = (text, secretKey) => {
-	const iv = crypto.randomBytes(16);
-	const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
-	const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
-
-	return {
-		iv: iv.toString("hex"),
-		content: encrypted.toString("hex"),
-	};
-};
-
-const decrypt = (hash, secretKey) => {
-	const decipher = crypto.createDecipheriv(
-		algorithm,
-		secretKey,
-		Buffer.from(hash.iv, "hex")
+function encrypt(text, secretKey) {
+	let iv = crypto.randomBytes(IV_LENGTH);
+	let cipher = crypto.createCipheriv(
+		"aes-256-cbc",
+		Buffer.from(secretKey),
+		iv
 	);
+	let encrypted = cipher.update(text);
+	encrypted = Buffer.concat([encrypted, cipher.final()]);
+	return iv.toString("hex") + ":" + encrypted.toString("hex");
+}
 
-	const decrypted = Buffer.concat([
-		decipher.update(Buffer.from(hash.content, "hex")),
-		decipher.final(),
-	]);
-
+function decrypt(text, secretKey) {
+	let textParts = text.split(":");
+	let iv = Buffer.from(textParts.shift(), "hex");
+	let encryptedText = Buffer.from(textParts.join(":"), "hex");
+	let decipher = crypto.createDecipheriv(
+		"aes-256-cbc",
+		Buffer.from(secretKey),
+		iv
+	);
+	let decrypted = decipher.update(encryptedText);
+	decrypted = Buffer.concat([decrypted, decipher.final()]);
 	return decrypted.toString();
-};
+}
 
-const encryptTag = tag => {
-	const { data } = tag;
-
-	const encryptedData = encrypt(data, process.env.ENCRYPTION_KEY);
-
-	return { ...tag.toJSON(), data: encryptedData };
-};
-
-module.exports = { encrypt, decrypt, encryptTag };
+module.exports = { encrypt, decrypt };

@@ -122,8 +122,6 @@ router.delete("/tags/:nickname", verifyJWT, async (req, res) => {
 		const { nickname } = req.params;
 		const user = req.user;
 
-		console.log(user._id);
-
 		const tagToDelete = await Tag.findOneAndDelete({ nickname });
 
 		await User.findOneAndUpdate(
@@ -156,8 +154,6 @@ router.post("/tags/share/:nickname", verifyMAC, async (req, res) => {
 		// regenerate code if it already exists
 		while (await ShareCode.findOne({ shareCode: randomCode }))
 			randomCode = randomCodeGenerator(6);
-
-		console.log(randomCode);
 
 		const shareCode = await ShareCode.create({
 			_tag: tagId,
