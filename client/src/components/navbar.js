@@ -7,6 +7,7 @@ import HomeScreen from "../screens/home";
 import SignInScreen from "../screens/sign-in";
 import SignUpScreen from "../screens/sign-up";
 import AdminScreen from "../screens/control-panel";
+import SignOutScreen from "../screens/sign-out";
 
 import CustomDrawerContent from "../components/custom-drawer-content";
 
@@ -35,6 +36,10 @@ export default function DrawerNavigator() {
 					<>
 						<Drawer.Screen name="Home" component={HomeScreen} />
 						<Drawer.Screen name="Admin" component={AdminScreen} />
+						<Drawer.Screen
+							name="Sign Out"
+							component={SignOutScreen}
+						/>
 					</>
 				)}
 			</Drawer.Navigator>

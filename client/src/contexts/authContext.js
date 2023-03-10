@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as SecureStore from "expo-secure-store";
-import { loginUser, registerUser } from "../services/userService";
+import { loginUser, registerUser, logoutUser } from "../services/userService";
 
 export const AuthContext = React.createContext({
 	user: {

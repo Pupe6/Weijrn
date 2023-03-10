@@ -15,7 +15,7 @@ import {
 export default function HomeScreen() {
 	return (
 		<Center flex={1}>
-			<Text> kolqbn</Text>
+			<Text>Home Page</Text>
 		</Center>
 	);
 }
