@@ -119,7 +119,6 @@ router.post("/receive", verifyMAC, async (req, res) => {
 				.status(400)
 				.json({ message: "Please fullfil all fields." });
 
-		// Get the tag from the database
 		const tag = await Tag.findById(_id);
 
 		if (!tag) return res.status(404).json({ message: "Tag not found." });

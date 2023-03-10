@@ -23,7 +23,7 @@ router.get("/", async (_, res) => {
 	}
 });
 
-// get user by id
+// Get User By Id
 router.get("/:id", async (req, res) => {
 	try {
 		const { err, users } = await getUsers({
@@ -46,7 +46,7 @@ router.get("/:id", async (req, res) => {
 	}
 });
 
-// update user
+// Update User
 router.put("/:id", verifyJWT, async (req, res) => {
 	try {
 		const user = await updateUser(req.params.id, req.body);
@@ -61,7 +61,7 @@ router.put("/:id", verifyJWT, async (req, res) => {
 	}
 });
 
-// delete user
+// Delete User
 router.delete("/:id", verifyJWT, async (req, res) => {
 	try {
 		if (!req.body.password)

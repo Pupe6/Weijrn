@@ -16,7 +16,7 @@ router.get("/tags", verifyMAC, async (req, res) => {
 
 		const tags = await Tag.find({ _id: { $in: user._tags } });
 
-		// remove data from tags
+		// Remove Data From Tags
 		tags.forEach(tag => (tag.data = undefined));
 
 		res.status(200).json({ tags });
@@ -75,7 +75,7 @@ router.post("/tags", verifyMAC, async (req, res) => {
 
 		const tag = await Tag.create({ nickname, data, type });
 
-		// check for validation errors
+		// Check For Validation Errors
 		if (tag.err) {
 			let { err } = tag;
 			let duplicateErrCodes = [11000, 11001];
@@ -154,7 +154,7 @@ router.post("/tags/share/:nickname", verifyMAC, async (req, res) => {
 
 		let randomCode = randomCodeGenerator(6);
 
-		// regenerate code if it already exists
+		// Regenerate Code If It Already Exists
 		while (await ShareCode.findOne({ shareCode: randomCode }))
 			randomCode = randomCodeGenerator(6);
 
@@ -181,7 +181,7 @@ router.get("/tags/share/:code", verifyMAC, async (req, res) => {
 				.status(404)
 				.json({ message: `Share code "${code}" not found.` });
 
-		// make sure user doesn't already have the tag
+		// Make Sure User Doesn't Already Have Tag
 		if (user._tags.some(userTag => userTag._id.equals(tag)))
 			return res
 				.status(400)
@@ -193,8 +193,8 @@ router.get("/tags/share/:code", verifyMAC, async (req, res) => {
 			{ new: true }
 		);
 
-		// remove share code
-		// await ShareCode.findOneAndDelete({ shareCode: code });
+		// Remove Share Code
+		await ShareCode.findOneAndDelete({ shareCode: code });
 
 		res.status(200).json({ message: "Tag shared." });
 	} catch (err) {
