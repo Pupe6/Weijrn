@@ -15,6 +15,10 @@ const statusSchema = new Schema(
 				type: Boolean,
 				default: false,
 			},
+			pending: {
+				type: Boolean,
+				default: false,
+			},
 			tag: {
 				type: Object,
 				default: null,
@@ -22,6 +26,10 @@ const statusSchema = new Schema(
 		},
 		raspiSend: {
 			status: {
+				type: Boolean,
+				default: false,
+			},
+			pending: {
 				type: Boolean,
 				default: false,
 			},
