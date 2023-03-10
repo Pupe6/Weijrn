@@ -1,5 +1,5 @@
 import { HStack, VStack, Icon, Button } from "native-base";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { closeRow } from "../utils/swipe-list";
 import { useNavigation } from "@react-navigation/native";
 import DeleteModal from "./delete-tag-dialog";
@@ -21,9 +21,7 @@ export default function renderHiddenItem({ tag, id }) {
 					/>
 				</Button>
 			</VStack>
-			<DeleteModal nickname={tag.nickname}>
-				<Icon as={<Entypo name="trash" />} size="sm" color="white" />
-			</DeleteModal>
+			<DeleteModal nickname={tag.nickname}></DeleteModal>
 		</HStack>
 	);
 }

@@ -19,7 +19,7 @@ export default function SignInScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
 		useFormValidation({ email: "", password: "" }, validateSignInForm);
 
-	const { signIn } = useContext(AuthContext);
+	const { login } = useContext(AuthContext);
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -76,7 +76,7 @@ export default function SignInScreen({ navigation }) {
 						mt="2"
 						colorScheme="indigo"
 						onPress={async () => {
-							await signIn(values).catch(alert);
+							await login(values).catch(alert);
 						}}
 						_disabled={isSubmitting}>
 						Sign in
