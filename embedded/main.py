@@ -13,6 +13,13 @@ import numpy as np
 import serial
 import time
 
+import asyncio
+import datetime
+import requests
+
+
+url = 'http://2d22-194-141-252-141.eu.ngrok.io/jrn/tags/' 
+
 RST = 22            # Set GPIO pin# 15 (BCM 22) as reset control
 DC  = 17            # Set GPIO pin# 11 (BCM 17) as DATA/command (NOT MOSI!)
 LED = 27            # Set GPIO pin# 13 (BCM 27) as backlight control
@@ -60,32 +67,80 @@ subop = 0
 
 fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 30)
 
-currenntop = op
-lastop = None
+buttonValue = None
 
-SubopCheck = False
+
+
 
 while True: 
-    time.sleep(0.5)
+    #############
+    
+    
+    
+    
+    SECONDS_TO_WAIT = 5
+    current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+
+    headers = {"X-Mac-Address": "00:00:00:00:00:00"}
+
+    url = "https://2d22-194-141-252-114.eu.ngrok.io/jrn/tags"
+
+    async def spammer():
+        while True:
+            # "X-Mac-Address": ""
+            response = requests.get(url, headers=headers)
+            print("Sending request")
+            await asyncio.sleep(SECONDS_TO_WAIT)
+            print("Request sent")
+            current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")   
+
+    # create an event loop
+    loop = asyncio.get_event_loop()
+
+    # start the asynchronous while loop
+    loop.create_task(spammer())
+
+    # run the event loop
+    loop.run_forever()
+    
+    
+
+    
+    
+    ################
     time.sleep(0.01)
+    ####
     if ser.in_waiting > 0:
         message = ser.readline().decode('utf-8').rstrip()
-        op = int(message)
-        currentop = op
-        subop = op % 10
-        #very imp for subop to be over op
-        op = op // 10
+        
+        if len(message) == 1:
+            buttonValue == int(message[0])
+            op = 0
+            subop = 0
+        
+        elif len(message) == 2:
+            subop = int(message[0])
+            buttonValue = int(message[1])
+            op = 0
+        elif len(message) == 3:
+            op = int(message[0])
+            subop = int(message[1])
+            buttonValue = int(message[2])
+        #when op = 0, subop becomes op -> kys
+        
+
+
+
+        #FIX OP != 0
+        
         print(f"op -> ..{op}")
         print(f"subop -> {subop}")
-        
-        SubopCheck = not SubopCheck
-
-
-
-        
+        print(f"buttonval -> {buttonValue}")
+        #0 nothing, 2 back, 1 ok
+        ####
 
     if op == 0:
-        if(SubopCheck == False):
+        if subop == 0:
             with Image.open("black.png").convert("RGBA") as base:
                 txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
                 d = ImageDraw.Draw(txt)
@@ -95,50 +150,47 @@ while True:
                 d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
                 d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
                 d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-
+        
                 out = Image.alpha_composite(base, txt)
                 disp.display(out)
+                
         
 
         if subop == 1:
             
-            SubopCheck = True
-            with Image.open("black.png").convert("RGBA") as base:
-                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
-                d = ImageDraw.Draw(txt)
+            if buttonValue == 1:
+                disp.clear()                #backend function
+                with Image.open("black.png").convert("RGBA") as base:
+                    txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                    d = ImageDraw.Draw(txt)
 
-                d.text((5, 5), ">Read", font=fnt, fill=(0, 255, 0, 255))
-                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-                d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-                d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                    d.text((5, 85), "   SUCCESS", font=fnt, fill=(0, 255, 0, 255))
+                    d.text((5, 135), "   SENT", font=fnt, fill=(0, 255, 0, 255))
+                    out = Image.alpha_composite(base, txt)
+                    disp.display(out)
+                    time.sleep(0.5)
+            else:
+            
+                with Image.open("black.png").convert("RGBA") as base:
+                    txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                    d = ImageDraw.Draw(txt)
 
-                out = Image.alpha_composite(base, txt)
-                disp.display(out)
-                    
-                time.sleep(0.01)
+                    d.text((5, 5), ">Read", font=fnt, fill=(0, 255, 0, 255))
+                    d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                    d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                    d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                    d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+              
+                    out = Image.alpha_composite(base, txt)
+                    disp.display(out)
+                        
+                    time.sleep(0.3)
+            
             
                 
                 
         if subop == 2:
             
-            SubopCheck = True
-            with Image.open("black.png").convert("RGBA") as base:
-                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
-                d = ImageDraw.Draw(txt)
-
-                d.text((5, 5), ">Write", font=fnt, fill=(0, 255, 0, 255))
-                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-                d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-                d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-
-                out = Image.alpha_composite(base, txt)
-                disp.display(out)
-        if subop == 3:
-            
-            
-            SubopCheck = True
             with Image.open("black.png").convert("RGBA") as base:
                 txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
                 d = ImageDraw.Draw(txt)
@@ -148,37 +200,168 @@ while True:
                 d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
                 d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
                 d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-
+          
                 out = Image.alpha_composite(base, txt)
                 disp.display(out)
-        if subop == 4:
-            
-            
-            SubopCheck = True
-
+                #time.sleep(0.3)
+                
+                
+    if op == 1:
+        if subop == 0:
             with Image.open("black.png").convert("RGBA") as base:
                 txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
                 d = ImageDraw.Draw(txt)
 
-                d.text((5, 5), ">---", font=fnt, fill=(0, 255, 0, 255))
-                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), ">125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
                 d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
                 d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
                 d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
-
+             
                 out = Image.alpha_composite(base, txt)
                 disp.display(out)
-                
+        
 
-                
-                
-
-    
-
+        if subop == 1:
             
+            with Image.open("black.png").convert("RGBA") as base:
+                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                d = ImageDraw.Draw(txt)
+
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), ">Read", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+          
+                out = Image.alpha_composite(base, txt)
+                disp.display(out)
+                    
+                time.sleep(0.3)
+            
+                
+                
+                
+        if subop == 2:
+            
+            with Image.open("black.png").convert("RGBA") as base:
+                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                d = ImageDraw.Draw(txt)
+
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), ">Format", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+ 
+                out = Image.alpha_composite(base, txt)
+                disp.display(out)
+                #time.sleep(0.3)
+                
+
+    if op == 2:
+        if subop == 0:
+            with Image.open("black.png").convert("RGBA") as base:
+                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                d = ImageDraw.Draw(txt)
+
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 105), ">Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+           
+                out = Image.alpha_composite(base, txt)
+                disp.display(out)
+        
+
+        if subop == 1:
+            
+            with Image.open("black.png").convert("RGBA") as base:
+                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                d = ImageDraw.Draw(txt)
+
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 105), ">Read", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+              
+                out = Image.alpha_composite(base, txt)
+                disp.display(out)
+                    
+            
+                
+                
+                
+        if subop == 2:
+            
+            with Image.open("black.png").convert("RGBA") as base:
+                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                d = ImageDraw.Draw(txt)
+
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 105), ">Format", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 155), " IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+              
+                out = Image.alpha_composite(base, txt)
+                disp.display(out)
+                #time.sleep(0.3)
+                
+    if op == 3:
+        if subop == 0:
+            with Image.open("black.png").convert("RGBA") as base:
+                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                d = ImageDraw.Draw(txt)
+
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 155), ">IR", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                
+                out = Image.alpha_composite(base, txt)
+                disp.display(out)
     
 
-    #itn shte dobavqme posleee
+        if subop == 1:
+            
+            with Image.open("black.png").convert("RGBA") as base:
+                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                d = ImageDraw.Draw(txt)
+
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 155), ">Read", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+      
+       
+                out = Image.alpha_composite(base, txt)
+                disp.display(out)
+                    
+            
+                
+                
+        if subop == 2:
+            
+            with Image.open("black.png").convert("RGBA") as base:
+                txt = Image.new("RGBA", (disp.width, disp.height) , (255, 255, 255, 1)) 
+                d = ImageDraw.Draw(txt)
+
+                d.text((5, 5), " NFC", font=fnt, fill=(0, 255, 0, 255))
+                d.text((5, 55), " 125 KHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 105), " Sub-1 GHz", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 155), ">Format", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                d.text((5, 205), " More", font=fnt, fill=(0, 255, 0, 255)) # hacker green
+                
+                out = Image.alpha_composite(base, txt)
+                disp.display(out)
+                #time.sleep(0.3)
+                
+       
 
             
 

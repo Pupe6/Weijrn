@@ -12,10 +12,10 @@ import {
 	Link,
 } from "native-base";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
 	return (
 		<Center flex={1}>
-			<Text> Home screen</Text>
+			<Text>Home Page</Text>
 		</Center>
 	);
 }

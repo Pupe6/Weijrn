@@ -16,13 +16,13 @@ bool exitbutton = false;
 int xValue;
 int yValue;
 
-int menu [5][5] = 
+int menu [5][3] = 
 {
-  {1,2,3,4,5},
-  {6,7,8,9,10},
-  {11,12,13,14,15},
-  {16,17,18,19,20},
-  {21,22,23,24,25}  
+  {1,2,3},
+  {6,7,8},
+  {11,12,13},
+  {16,17,18},
+  {21,22,23}  
   
 };
 
@@ -40,7 +40,6 @@ int previousJoystickValue = 0;
 
 
 
-
 void move_up(int* i, int* j) {
   if (*i > 0) {
     (*i)--;
@@ -54,7 +53,7 @@ void move_down(int* i, int* j) {
 }
 
 void move_left(int* i, int* j) {
-  if (*j < 4) {
+  if (*j < 2) {
     (*j)++;
   }
 }
@@ -111,7 +110,20 @@ void readNFC()
  delay(5000);
 }
 
-
+int read_button(){
+  int okbutton;
+  int backbutton;
+  okbutton = digitalRead(2);
+  backbutton = digitalRead(3);
+  if (!okbutton == 1){
+    if (!backbutton == 1){
+      return 0;
+    }else{return 1;}
+  }
+  else if (!backbutton == 1){
+    return 2;
+  }else {return 0;}
+}
 int read_joystick() 
 {
   int output;
@@ -122,24 +134,23 @@ int read_joystick()
     output = left;
   } else if (yValue > 500) {
     output = right;
-  } else if (xValue < 300) {
+  } else if (xValue < 250) {
     output = up;
   } else if (xValue > 500) {
     output = down;
   } else {output = none;}
-  delay(200);
   return output;
 }
 
 int message;
 
-
-
 void setup(void) 
 {
- Serial.begin(9600);
- Serial.println("System initialized");
- nfc.begin();
+  Serial.begin(9600);
+  Serial.println("System initialized");
+  nfc.begin();
+  pinMode(3, INPUT_PULLUP);
+  pinMode(2, INPUT_PULLUP);
 }
  
 
@@ -148,48 +159,55 @@ int j = 0;
 
 void loop() 
 {
-  
+  delay(200);
   int currentJoystickValue = read_joystick();
+  int buttonvalue = read_button();
+  //Serial.println(buttonvalue);
 
-  yValue = analogRead(joyY);
-  xValue = analogRead(joyX);
+  //yValue = analogRead(joyY);
+  //xValue = analogRead(joyX);
   //Serial.println(xValue);
   //Serial.println(yValue);
 
-
-    
     switch (currentJoystickValue) 
     {
       
       case up:
         move_up(&i, &j);
         message = 0;
-        message += i*10 + j;
+        message += buttonvalue + i*100 + j*10;
         Serial.println(String(message));
         break;
       case down:
         move_down(&i, &j);
         message = 0;
-        message += i*10 + j;
+        message += buttonvalue + i*100 + j*10;;
         Serial.println(String(message));
         break;
       case right:
         move_right(&i, &j);
         message = 0;
-        message += i*10 + j;
+        message += buttonvalue + i*100 + j*10;
         Serial.println(String(message));
         break;
       case left:
         move_left(&i, &j);
         message = 0;
-        message += i*10 + j;
+        message += buttonvalue + i*100 + j*10;
         Serial.println(String(message));
         break;
       default: break;
+      
       case none:
+        message += buttonvalue;
+        Serial.println(String(message));
+        message -= buttonvalue;
         break;
     }
+    //add delay
+
+   
     
-    delay(300);
  
+}
 }

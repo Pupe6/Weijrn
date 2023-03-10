@@ -1,3 +1,4 @@
+import React, { useContext } from "react";
 import {
 	FormControl,
 	Input,
@@ -12,10 +13,13 @@ import {
 } from "native-base";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignInForm } from "../utils/validation";
+import { AuthContext } from "../contexts/authContext";
 
-export default function SignInScreen() {
+export default function SignInScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
 		useFormValidation({ email: "", password: "" }, validateSignInForm);
+
+	const { signIn } = useContext(AuthContext);
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -67,25 +71,17 @@ export default function SignInScreen() {
 								{errors.password}
 							</FormControl.ErrorMessage>
 						)}
-						<Link
-							_text={{
-								fontSize: "xs",
-								fontWeight: "500",
-								color: "indigo.500",
-							}}
-							alignSelf="flex-end"
-							mt="1">
-							Forget Password?
-						</Link>
 					</FormControl>
 					<Button
 						mt="2"
 						colorScheme="indigo"
-						onPress={handleSubmit}
+						onPress={async () => {
+							await signIn(values).catch(alert);
+						}}
 						_disabled={isSubmitting}>
 						Sign in
 					</Button>
-					<HStack mt="6" justifyContent="center">
+					<HStack mt="6" alignItems="center" justifyContent="center">
 						<Text
 							fontSize="sm"
 							color="coolGray.600"
@@ -94,15 +90,21 @@ export default function SignInScreen() {
 							}}>
 							I'm a new user.{" "}
 						</Text>
-						<Link
-							_text={{
-								color: "indigo.500",
-								fontWeight: "medium",
-								fontSize: "sm",
-							}}
-							href="#">
-							Sign Up
-						</Link>
+						<Button
+							variant="link"
+							onPress={() => {
+								navigation.navigate("Sign Up");
+							}}>
+							<Text
+								fontWeight="bold"
+								color="indigo.500"
+								underline
+								_dark={{
+									color: "indigo.300",
+								}}>
+								Sign Up
+							</Text>
+						</Button>
 					</HStack>
 				</VStack>
 			</Box>

@@ -1,12 +1,20 @@
-const baseUrl = "https://7d7b-194-141-252-114.eu.ngrok.io";
+const baseUrl = "https://2d22-194-141-252-114.eu.ngrok.io";
+// const baseUrl = "https://weijrnserver.onrender.com";
 
-const requester = async (method, path, body = undefined) => {
+const requester = async (
+	method,
+	path,
+	body = undefined,
+	token = null,
+	macAddress = null
+) => {
 	const res = await fetch(`${baseUrl}${path}`, {
 		method,
 		mode: "cors",
 		headers: {
 			"Content-Type": "application/json",
-			"X-Token": JSON.parse(sessionStorage.getItem("user"))?._token || "",
+			"X-Token": token,
+			"X-Mac-Address": macAddress,
 		},
 		body: method !== "GET" ? JSON.stringify(body) : body,
 	}).catch(err => {

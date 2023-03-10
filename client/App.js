@@ -11,8 +11,7 @@ import MyDrawer from "./src/components/navbar";
 
 export default function App() {
 	return (
-		<AppContainer>
-			<BiometricsComponent />
+		<AppContainer children={<MyDrawer />}>
 			<StatusBar style="auto" />
 		</AppContainer>
 	);
