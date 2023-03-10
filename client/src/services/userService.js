@@ -1,8 +1,8 @@
 import * as requester from "../utils/requester";
-import * as SecureStore from "expo-secure-store";
 
 // POST /auth/register
 export const registerUser = async data => {
+	console.log("registerUser", data);
 	const response = await requester.post("/auth/register", data).catch(err => {
 		throw err;
 	});
