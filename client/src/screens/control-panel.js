@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Heading, ScrollView, Center } from "native-base";
+import { Box, Heading, ScrollView, Center, HStack } from "native-base";
+import { getTags } from "../services/tagService";
 
 export default function AdminScreen() {
 	return (
@@ -18,9 +19,23 @@ export default function AdminScreen() {
 				<Heading p="4" pb="3" size="lg">
 					Rfids
 				</Heading>
-				<ScrollView showsVerticalScrollIndicator={false}>
-					<Basic />
-				</ScrollView>
+				{/* <ScrollView showsVerticalScrollIndicator={false}>
+					{getTags().map(tag => (
+						<Box
+							key={tag._id}
+							_dark={{
+								bg: "coolGray.800",
+							}}
+							_light={{
+								bg: "white",
+							}}
+							rounded="lg"
+							shadow={1}
+							m="4"
+							p="4">
+							
+
+				</ScrollView> */}
 			</Box>
 		</Center>
 	);

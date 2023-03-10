@@ -24,16 +24,15 @@ export const getTag = async (nickname, macAddress) => {
 
 // POST /jrn/tags/:nickname
 
-export const createTag = async (nickname, token, macAddress) => {
+export const createTag = async nickname => {
 	const response = await requester
-		.post(`/jrn/tags/${nickname}`, undefined, token, macAddress)
+		.post(`/statusupdate/send`, { nickname })
 		.catch(err => {
 			throw err;
 		});
 
 	return response;
 };
-
 // PUT   /jrn/tags/:x-token
 
 export const updateTag = async (nickname, token) => {
@@ -54,6 +53,16 @@ export const deleteTag = async (nickname, token) => {
 		.catch(err => {
 			throw err;
 		});
+
+	return response;
+};
+
+// GET /statusupdate
+
+export const statusUpdate = async () => {
+	const response = await requester.get("/statusupdate").catch(err => {
+		throw err;
+	});
 
 	return response;
 };
