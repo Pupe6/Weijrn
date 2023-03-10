@@ -1,16 +1,13 @@
-import { HStack, Text, VStack, Icon, Button } from "native-base";
+import { HStack, VStack, Icon, Button } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
-import { closeRow, deleteRow } from "../utils/swipe-list";
+import { closeRow } from "../utils/swipe-list";
 import { useNavigation } from "@react-navigation/native";
+import DeleteModal from "./delete-tag-dialog";
 
 export default function renderHiddenItem({ tag, id }) {
 	const navigation = useNavigation();
 	return (
-		<HStack
-			alignItems="center"
-			justifyContent="flex-end"
-			px="4"
-			display="flex">
+		<HStack px="4">
 			<VStack flex="1" alignItems="flex-start">
 				<Button
 					onPress={() => {
@@ -24,15 +21,9 @@ export default function renderHiddenItem({ tag, id }) {
 					/>
 				</Button>
 			</VStack>
-			<VStack flex="1" alignItems="flex-end">
-				<Button onPress={() => deleteRow(id)}>
-					<Icon
-						as={<Entypo name="trash" />}
-						size="sm"
-						color="white"
-					/>
-				</Button>
-			</VStack>
+			<DeleteModal nickname={tag.nickname}>
+				<Icon as={<Entypo name="trash" />} size="sm" color="white" />
+			</DeleteModal>
 		</HStack>
 	);
 }
