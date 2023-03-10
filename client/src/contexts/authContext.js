@@ -75,8 +75,8 @@ export const AuthProvider = ({ children }) => {
 			},
 			signOut: async () => {
 				const res = await logoutUser(
-					JSON.parse(await SecureStore.getItemAsync("user"))._token ||
-						null
+					JSON.parse(await SecureStore.getItemAsync("user"))
+						?._token || null
 				).catch(console.log);
 				await SecureStore.deleteItemAsync("user").catch(console.log);
 				dispatch({ type: "SIGN_OUT" });

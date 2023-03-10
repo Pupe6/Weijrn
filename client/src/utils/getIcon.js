@@ -8,6 +8,8 @@ export const getIcon = screenName => {
 			return "login";
 		case "SignUp":
 			return "account-plus";
+		case "Sign Out":
+			return "logout";
 		default:
 			return undefined;
 	}
