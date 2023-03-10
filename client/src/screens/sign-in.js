@@ -76,6 +76,7 @@ export default function SignInScreen({ navigation }) {
 						mt="2"
 						colorScheme="indigo"
 						onPress={async () => {
+							console.log(values);
 							await login(values).catch(alert);
 						}}
 						_disabled={isSubmitting}>

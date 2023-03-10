@@ -8,7 +8,6 @@ import {
 	ScrollView,
 	useToast,
 	Heading,
-	HStack,
 } from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { updateTag } from "../services/tagService";

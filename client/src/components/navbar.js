@@ -2,13 +2,13 @@ import * as React from "react";
 import { AuthContext } from "../contexts/authContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import HomeScreen from "../screens/home";
+// import HomeScreen from "../screens/home";
 import SignInScreen from "../screens/sign-in";
 import SignUpScreen from "../screens/sign-up";
 import SignOutScreen from "../screens/sign-out";
 import AdminScreen from "../screens/control-panel";
-import CreateTagScreen from "../screens/create-tag";
-import EditTagScreen from "../screens/edit-tag";
+// import CreateTagScreen from "../screens/create-tag";
+// import EditTagScreen from "../screens/edit-tag";
 import ProfileScreen from "../screens/profile";
 
 import CustomDrawerContent from "../components/custom-drawer-content";
@@ -29,16 +29,15 @@ export default function DrawerNavigator() {
 				</>
 			) : (
 				<>
-					<Drawer.Screen name="Home" component={HomeScreen} />
 					<Drawer.Screen
 						name="Control Panel"
 						component={AdminScreen}
 					/>
-					<Drawer.Screen
+					{/* <Drawer.Screen
 						name="Create Tag"
 						component={CreateTagScreen}
-					/>
-					<Drawer.Screen name="Edit Tag" component={EditTagScreen} />
+					/> */}
+					{/* <Drawer.Screen name="Edit Tag" component={EditTagScreen} /> */}
 					<Drawer.Screen name="Profile" component={ProfileScreen} />
 					<Drawer.Screen name="Sign Out" component={SignOutScreen} />
 				</>

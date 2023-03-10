@@ -12,11 +12,12 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
-import { createTag, statusUpdate } from "../services/tagService";
 
-export default function CreateTagDialog() {
+import { updateTag } from "../services/tagService";
+
+export default function EditTagDialog(props) {
 	const [isOpen, setIsOpen] = React.useState(false);
-	const [tagNickname, setTagNickname] = React.useState("");
+	const [nickname, setNickname] = React.useState(props.tag.nickname);
 	const onClose = () => setIsOpen(false);
 
 	const cancelRef = React.useRef(null);
@@ -28,8 +29,8 @@ export default function CreateTagDialog() {
 		<Center>
 			<Button colorScheme="info" onPress={() => setIsOpen(!isOpen)}>
 				<Icon
-					as={<AntDesign name="pluscircleo" size={24} />}
-					size="lg"
+					as={<AntDesign name="edit" size={24} color="black" />}
+					size="sm"
 					color="white"
 				/>
 			</Button>
@@ -41,20 +42,20 @@ export default function CreateTagDialog() {
 				<AlertDialog.Content>
 					<AlertDialog.CloseButton />
 					<AlertDialog.Header>
-						<Text>Create Tag</Text>
+						<Text>Edit Tag</Text>
 					</AlertDialog.Header>
 					<AlertDialog.Body>
 						<FormControl>
-							<FormControl.Label>Tag</FormControl.Label>
+							<FormControl.Label>New Nickname</FormControl.Label>
 							<Input
-								placeholder="Enter code"
+								placeholder="Enter nickname"
 								_light={{
 									placeholderTextColor: "blueGray.400",
 								}}
 								_dark={{
 									placeholderTextColor: "blueGray.50",
 								}}
-								onChangeText={text => setTagNickname(text)}
+								onChangeText={text => setNickname(text)}
 							/>
 						</FormControl>
 					</AlertDialog.Body>
@@ -69,38 +70,20 @@ export default function CreateTagDialog() {
 						<Button
 							colorScheme="info"
 							onPress={async () => {
-								createTag(tagNickname, user.macAddress)
+								updateTag(
+									props.tag.nickname,
+									user._token,
+									nickname
+								)
 									.then(() => {
 										toast.show({
-											title: "Syncing tag",
-											status: "info",
+											title: "Tag updated",
+											status: "success",
 										});
-										const repeatInterval = setInterval(
-											() => {
-												statusUpdate(user.macAddress)
-													.then(res => {
-														if (
-															!res.raspiSend
-																.status
-														) {
-															toast.show({
-																title: "Tag synced",
-																status: "success",
-															});
-
-															navigation.navigate(
-																"Control Panel"
-															);
-
-															clearInterval(
-																repeatInterval
-															);
-														}
-													})
-													.catch(alert);
-											},
-											2000
-										);
+										onClose();
+										navigation.navigate("Control Panel", {
+											refresh: true,
+										});
 									})
 									.catch(alert);
 							}}>
