@@ -7,13 +7,14 @@
 
 
 
-Bill Of Materials          March 10,2023      5:49:10	Page1
+Bill Of Materials          March 10,2023      16:44:36	Page1
 
 Item	Quantity	Reference	Part				PCB Footprint
 ______________________________________________
 
-1		1			U2			Joystick			JOYSTICK
-2		1			U3			PN532			PN532
-3		1			U4			ST7789			ST7789
-4		1			U5			Raspberry Pi			RASPBERRYPI
+1		2			BUTTON1,BUTTON2			SW KEY-YM061			SWITCH1
+2		1			U2			Joystick			JOYSTICK
+3		1			U3			PN532			PN532
+4		1			U4			ST7789			ST7789
 5		1			U6			Arduino Nano			ARDUINONANO
+6		1			U7			Raspberry Pi			

@@ -75,7 +75,8 @@
     (BOM_Include_File_Combine_7.0 "{Item}\t{Quantity}\t{Reference}\t{Value}")
     (BOM_One_Part_Per_Line "FALSE")
     (Open_BOM_in_Excel "FALSE")
-    (BOM_View_Output "FALSE"))
+    (BOM_View_Output "FALSE")
+    ( "TRUE"))
   (Folder "Outputs"
     (File ".\hacktues.drc"
       (Type "Report"))
@@ -97,6 +98,10 @@
         (Type "PSpice Profile"))))
   (DefaultLibraryBrowseDirectory "library\PSpice")
   (PartMRUSelector
+    ("SW KEY-YM061"
+      (FullPartName "SW KEY-YM061.Normal")
+      (LibraryName "C:\ORCAD\ORCAD_10.5\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB")
+      (DeviceIndex "0"))
     ("Raspberry Pi"
       (FullPartName "Raspberry Pi.Normal")
       (LibraryName "C:\USERS\IEUSER\DESKTOP\LIBRARY1.OLB")
@@ -134,13 +139,16 @@
   (GlobalState
     (FileView
       (Path "Design Resources")
+      (Path "Design Resources" "c:\users\ieuser\desktop\hacktues.dsn")
+      (Path "Design Resources" "c:\users\ieuser\desktop\hacktues.dsn"
+         "SCHEMATIC1")
       (Path "Design Resources" "Library")
       (Path "Outputs")
-      (Select "Design Resources" "Library"
-         "c:\users\ieuser\desktop\library1.olb"))
+      (Select "Design Resources" "c:\users\ieuser\desktop\hacktues.dsn"
+         "SCHEMATIC1" "PAGE1"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 2 3 -1 -1 -4 -23 0 200 0 444"))
+        (Placement "44 0 1 -1 -1 -4 -23 0 200 0 444"))
       (Tab 0))))
