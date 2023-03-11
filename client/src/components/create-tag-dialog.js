@@ -47,7 +47,7 @@ export default function CreateTagDialog() {
 						<FormControl>
 							<FormControl.Label>Tag</FormControl.Label>
 							<Input
-								placeholder="Enter code"
+								placeholder="Enter nickname"
 								_light={{
 									placeholderTextColor: "blueGray.400",
 								}}

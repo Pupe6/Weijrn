@@ -6,11 +6,9 @@ import { ScrollView } from "react-native";
 import ControlPanelRow from "../components/control-panel-row";
 import GetSharedTagDialog from "../components/get-shared-tag-dialog";
 import CreateTagDialog from "../components/create-tag-dialog";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../contexts/authContext";
 
 export default function AdminScreen(props) {
-	AsyncStorage.clear();
 	const [listData, setListData] = useState({
 		count: 0,
 		tags: [],
