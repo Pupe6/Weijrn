@@ -30,8 +30,8 @@ Weijrn е приложение, което позволява да се запа
 
 ## Отбор:
 
-- Александър - Server
-- Борислав - Frontend
-- Калоян - Hardware
-- Станислав - Hardware
-- Ясен - Hardware
+- [Александър](https://github.com/ProGamer2711) - Server
+- [Борислав](https://github.com/bobikenobi12) - Frontend
+- [Калоян](https://github.com/Flychuban) - Hardware
+- [Станислав](https://github.com/StanislavxIvanov) - Hardware
+- [Ясен](https://github.com/yasenOfficial) - Hardware
