@@ -68,7 +68,7 @@ export default function DeleteTagDialog({ nickname }) {
 											navigation.navigate(
 												"Control Panel",
 												{
-													refresh: true,
+													refresh: ++global.refresh,
 												}
 											);
 										})

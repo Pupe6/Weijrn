@@ -13,7 +13,6 @@ import {
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { shareTag, receiveStatusUpdate } from "../services/tagService";
 import { AuthContext } from "../contexts/authContext";
-
 import DeleteTagDialog from "./delete-tag-dialog";
 import EditTagDialog from "./edit-tag-dialog";
 
@@ -93,7 +92,7 @@ export default function ControlPanelRow({ tag }) {
 				</Button>
 
 				<Button
-					variant="ghost"
+					colorScheme="info"
 					size="sm"
 					onPress={async () => {
 						try {
@@ -121,7 +120,7 @@ export default function ControlPanelRow({ tag }) {
 					<Icon
 						as={<Entypo name="share" />}
 						size="sm"
-						color="coolGray.800"
+						color="white"
 					/>
 				</Button>
 				<EditTagDialog tag={tag} />

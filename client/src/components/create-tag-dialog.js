@@ -26,7 +26,7 @@ export default function CreateTagDialog() {
 
 	return (
 		<Center>
-			<Button colorScheme="info" onPress={() => setIsOpen(!isOpen)}>
+			<Button colorScheme="success" onPress={() => setIsOpen(!isOpen)}>
 				<Icon
 					as={<AntDesign name="pluscircleo" size={24} />}
 					size="lg"
@@ -67,7 +67,7 @@ export default function CreateTagDialog() {
 							Cancel
 						</Button>
 						<Button
-							colorScheme="info"
+							colorScheme="success"
 							onPress={async () => {
 								createTag(tagNickname, user.macAddress)
 									.then(() => {

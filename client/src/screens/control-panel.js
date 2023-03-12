@@ -7,7 +7,6 @@ import ControlPanelRow from "../components/control-panel-row";
 import GetSharedTagDialog from "../components/get-shared-tag-dialog";
 import CreateTagDialog from "../components/create-tag-dialog";
 import { AuthContext } from "../contexts/authContext";
-
 export default function AdminScreen(props) {
 	const [listData, setListData] = useState({
 		count: 0,
