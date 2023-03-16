@@ -100,13 +100,13 @@ fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 30)
 
 
 def rpi_to_arduino_send(text):
-    ser.write((text + "\n").encode('utf-8'))
+    ser.write((text + "\n").encode('utf-8')) #tuk mozhe i da e decode
 
 # {'status': True, 'nickname': 'Test', 'pending': True}
 # Ako status == True iziskva action osven ako pendinga ne e true
 
 def get_status_checker():
-    url = "https://ffbc-95-42-52-106.eu.ngrok.io/statusupdate"
+    url = "https://ffbc-95-42-52-106.eu.ngrok.io/statusupdate" #da se proveri dali e vqrno
     while True:
         headers = {'X-MAC-Address' : '00:00:00:00:00:00'}
         response = requests.get(url, headers = headers)
@@ -123,43 +123,46 @@ def get_status_checker():
             
             # nie prastame na servera VIKAM READ ARDUINO!!! nfc
             if ser.in_waiting > 0:
-                message = ser.readline().rstrip().decode('utf-8')
+                #tuk mozhe da ima problem trqbva da izpatim na arduino
+                message = ser.readline().rstrip().decode('utf-8')#tuk mozhe i da e endcode
                 print(message)
             
         elif raspiReceive["status"]:
-            requests.post(f"{url}/pending", headers=headers)
+            requests.post(f"{url}/pending", headers=headers) #mai trabva da se izpolzva get
             
             print(raspiReceive["tag"])
             
             data = decrypt(raspiReceive["tag"]["data"])
             print(data)
-            rpi_to_arduino_send("02")
-            time.sleep(0.1)
+            rpi_to_arduino_send("02") #tova zashto se polzva
+            time.sleep(0.1) #mai trqbva sleepa da e se promeni
             rpi_to_arduino_send(data)
             
             # NA ARDUINOTO WRITE NA TAGA NFC
             # rpi_to_arduino_send(data)
-def create_tag(nickname, type, data):
-    SECONDS_TO_WAIT = 5
-    current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+            
+            
+# def create_tag(nickname, type, data):
+#     SECONDS_TO_WAIT = 5
+#     current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
 
-    headers = {"X-Mac-Address": "00:00:00:00:00:00"}
-    data = {"nickname": nickname, "type": type, "data": data}
+#     headers = {"X-Mac-Address": "00:00:00:00:00:00"}
+#     data = {"nickname": nickname, "type": type, "data": data}
 
-    url = "https://ffbc-95-42-52-106.eu.ngrok.io/jrn/tags/"
+#     url = "https://ffbc-95-42-52-106.eu.ngrok.io/jrn/tags/"
 
-    async def create_tag():
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, headers=headers, json=data) as response:
-                print("Sending request")
-                print(await response.text())
-                # print(await response.json())
-                await asyncio.sleep(SECONDS_TO_WAIT)
-                print("Request sent")
-                if response.ok:
-                    resolutionResponse = requests.get("https://5800-194-141-252-114.eu.ngrok.io/statusupdate/resolve", headers=headers)
-                    print(resolutionResponse.json())
-                    # current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+#     async def create_tag():
+#         async with aiohttp.ClientSession() as session:
+#             async with session.post(url, headers=headers, json=data) as response:
+#                 print("Sending request")
+#                 print(await response.text())
+#                 # print(await response.json())
+#                 await asyncio.sleep(SECONDS_TO_WAIT)
+#                 print("Request sent")
+#                 if response.ok:
+#                     resolutionResponse = requests.get("https://5800-194-141-252-114.eu.ngrok.io/statusupdate/resolve", headers=headers)
+#                     print(resolutionResponse.json())
+#                     # current_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
 
 def handle_main_code(op, subop, buttonValue):
     while True:
