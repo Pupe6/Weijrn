@@ -27,7 +27,7 @@ export default function EditTagDialog(props) {
 
 	return (
 		<Center>
-			<Button colorScheme="info" onPress={() => setIsOpen(!isOpen)}>
+			<Button colorScheme="amber" onPress={() => setIsOpen(!isOpen)}>
 				<Icon
 					as={<AntDesign name="edit" size={24} color="black" />}
 					size="sm"
@@ -68,7 +68,7 @@ export default function EditTagDialog(props) {
 							Cancel
 						</Button>
 						<Button
-							colorScheme="info"
+							colorScheme="amber"
 							onPress={async () => {
 								updateTag(
 									props.tag.nickname,
@@ -82,12 +82,12 @@ export default function EditTagDialog(props) {
 										});
 										onClose();
 										navigation.navigate("Control Panel", {
-											refresh: true,
+											refresh: ++global.refresh,
 										});
 									})
 									.catch(alert);
 							}}>
-							Create
+							Edit
 						</Button>
 					</AlertDialog.Footer>
 				</AlertDialog.Content>

@@ -94,7 +94,7 @@ export default function EditTagScreen(props) {
 										status: "success",
 									});
 									props.navigation.navigate("Control Panel", {
-										refresh: true,
+										refresh: ++global.refresh,
 									});
 								})
 								.catch(alert);

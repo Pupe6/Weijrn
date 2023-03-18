@@ -41,7 +41,7 @@ export default function ShareTagDialog() {
 				<AlertDialog.Content>
 					<AlertDialog.CloseButton />
 					<AlertDialog.Header>
-						<Text>Shared Code</Text>
+						<Text>Import Tag</Text>
 					</AlertDialog.Header>
 					<AlertDialog.Body>
 						<FormControl>
@@ -75,17 +75,17 @@ export default function ShareTagDialog() {
 										user.macAddress
 									);
 									toast.show({
-										title: "Tag added",
+										title: "Tag added successfully",
 									});
 									onClose();
 									navigation.navigate("Control Panel", {
-										refresh: true,
+										refresh: ++global.refresh,
 									});
 								} catch (error) {
 									console.log(error);
 								}
 							}}>
-							Add
+							Import
 						</Button>
 					</AlertDialog.Footer>
 				</AlertDialog.Content>

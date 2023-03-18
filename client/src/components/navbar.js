@@ -32,6 +32,7 @@ export default function DrawerNavigator() {
 					<Drawer.Screen
 						name="Control Panel"
 						component={AdminScreen}
+						initialParams={{ refresh: ++global.refresh }}
 					/>
 					{/* <Drawer.Screen
 						name="Create Tag"

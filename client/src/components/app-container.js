@@ -7,6 +7,8 @@ import { ThemeToggle } from "./common/theme-toggle";
 import MyDrawer from "./navbar";
 
 export default function AppContainer() {
+	global.refresh = 0;
+
 	return (
 		<AuthProvider>
 			<NavigationContainer>

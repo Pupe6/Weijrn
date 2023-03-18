@@ -9,7 +9,7 @@
 
 Design Name:  C:\USERS\IEUSER\DESKTOP\HACKTUES.DSN
 
-Cross Reference            March 10,2023      5:47:39	Page1
+Cross Reference            March 10,2023      16:45:20	Page1
 
 Item	Part	Reference	SchematicName	Sheet	Library	X	Y
 ____________________________________________________________________________
@@ -17,8 +17,10 @@ ____________________________________________________________________________
 1	Arduino Nano	U6	SCHEMATIC1/PAGE1	1	C:\USERS\IEUSER\DESKTOP\LIBRARY1.OLB	 2.70	 4.60
 2	Joystick	U2	SCHEMATIC1/PAGE1	1	C:\USERS\IEUSER\DESKTOP\LIBRARY1.OLB	 1.00	 4.70
 3	PN532	U3	SCHEMATIC1/PAGE1	1	C:\USERS\IEUSER\DESKTOP\LIBRARY1.OLB	 0.80	 5.60
-4	Raspberry Pi	U5	SCHEMATIC1/PAGE1	1	C:\USERS\IEUSER\DESKTOP\LIBRARY1.OLB	 2.90	 2.70
+4	Raspberry Pi	U7	SCHEMATIC1/PAGE1	1	C:\USERS\IEUSER\DESKTOP\LIBRARY1.OLB	 2.90	 2.70
 5	ST7789	U4	SCHEMATIC1/PAGE1	1	C:\USERS\IEUSER\DESKTOP\LIBRARY1.OLB	 2.80	 0.30
+6	SW KEY-YM061	BUTTON1	SCHEMATIC1/PAGE1	1	C:\ORCAD\ORCAD_10.5\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB	 4.50	 5.30
+7	SW KEY-YM061	BUTTON2	SCHEMATIC1/PAGE1	1	C:\ORCAD\ORCAD_10.5\TOOLS\CAPTURE\LIBRARY\DISCRETE.OLB	 4.50	 5.70
 
 
   Revised: 
@@ -30,7 +32,7 @@ ____________________________________________________________________________
 
 
 
-Cross Reference: Unused Parts          March 10,2023      5:47:39	Page2
+Cross Reference: Unused Parts          March 10,2023      16:45:20	Page2
 
 Part	Quantity	Reference
 ____________________________________________________________________________
