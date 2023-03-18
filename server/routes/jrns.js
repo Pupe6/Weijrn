@@ -37,13 +37,9 @@ router.get("/tags/:nickname", verifyMAC, async (req, res) => {
 				.status(404)
 				.json({ message: `Tag "${nickname}" not found.` });
 
-		const encryptedTag = encrypt(tag.data, process.env.ENCRYPTION_KEY);
-
 		res.status(200).json({
-			tag: {
-				...tag.toJSON(),
-				data: encryptedTag,
-			},
+			tag: tag.toJSON(),
+			data: undefined,
 		});
 	} catch (err) {
 		res.status(500).json({ message: err.message });
@@ -73,7 +69,9 @@ router.post("/tags", verifyMAC, async (req, res) => {
 		if (errorMessage)
 			return res.status(400).json({ message: errorMessage });
 
-		const tag = await Tag.create({ nickname, data, type });
+		const encryptedData = encrypt(data, process.env.ENCRYPTION_KEY);
+
+		const tag = await Tag.create({ nickname, data: encryptedData, type });
 
 		// Check For Validation Errors
 		if (tag.err) {
@@ -114,7 +112,7 @@ router.put("/tags/:nickname", verifyJWT, async (req, res) => {
 			{ new: true }
 		);
 
-		res.status(200).json({ tag: updatedTag });
+		res.status(200).json({ tag: updatedTag, data: undefined });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
