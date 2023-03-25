@@ -13,25 +13,30 @@ import {
 	HStack,
 	Divider,
 	Icon,
+	useColorModeValue,
 } from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { getIcon } from "../utils/getIcon";
 
 export default function CustomDrawerContent(props) {
+	console.log(props);
 	const { user } = useContext(AuthContext);
+	const iconColor = useColorModeValue("coolGray.600", "white");
+	// const bgColor = useColorModeValue("white", "coolGray.800");
 
 	return (
+		// <Box height={"100%"} bg={bgColor} safeArea>
 		<DrawerContentScrollView {...props} safeArea>
 			<VStack space="6" my="2" mx="1">
 				<Box px="4">
-					<Text bold color="gray.700">
+					<Text bold color={iconColor}>
 						Account
 					</Text>
 					<Text
 						fontSize="14"
 						mt="1"
-						color="gray.500"
-						fontWeight="500">
+						fontWeight="500"
+						color={iconColor}>
 						{user?.email ? user.email : "Not signed in"}
 					</Text>
 				</Box>
@@ -56,7 +61,7 @@ export default function CustomDrawerContent(props) {
 										color={
 											index === props.state.index
 												? "primary.500"
-												: "gray.500"
+												: iconColor
 										}
 										size="5"
 										as={
@@ -70,7 +75,7 @@ export default function CustomDrawerContent(props) {
 										color={
 											index === props.state.index
 												? "primary.500"
-												: "gray.700"
+												: iconColor
 										}>
 										{name}
 									</Text>
@@ -81,5 +86,6 @@ export default function CustomDrawerContent(props) {
 				</VStack>
 			</VStack>
 		</DrawerContentScrollView>
+		// </Box>
 	);
 }

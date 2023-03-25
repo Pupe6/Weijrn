@@ -11,7 +11,6 @@ export default function ThemeToggle() {
 			position="absolute"
 			top={5}
 			right={5}
-			rounded="full"
 			shadow={2}
 			onPress={toggleColorMode}
 			variant="unstyled"

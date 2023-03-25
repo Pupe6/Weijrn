@@ -9,6 +9,7 @@ import {
 	Button,
 	HStack,
 	Text,
+	useColorModeValue,
 } from "native-base";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignUpForm } from "../utils/validation";
@@ -26,6 +27,8 @@ export default function SignUpScreen({ navigation }) {
 			},
 			validateSignUpForm
 		);
+	const bg = useColorModeValue("white", "coolGray.800");
+	const textColor = useColorModeValue("coolGray.800", "warmGray.50");
 	const { register } = useContext(AuthContext);
 
 	useEffect(() => {
