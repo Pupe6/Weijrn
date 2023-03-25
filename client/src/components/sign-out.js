@@ -1,17 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../contexts/authContext";
 import { AlertDialog, Button, Center, useToast } from "native-base";
 
-export default function SignOutScreen({ navigation }) {
-	useEffect(() => {
-		setIsOpen(prev => !prev);
-	}, []);
-
+export default function SignOut() {
 	const [isOpen, setIsOpen] = React.useState(false);
 
 	const onClose = () => {
 		setIsOpen(false);
-		navigation.goBack();
 	};
 
 	const cancelRef = React.useRef(null);
@@ -23,7 +18,9 @@ export default function SignOutScreen({ navigation }) {
 			<AlertDialog
 				leastDestructiveRef={cancelRef}
 				isOpen={isOpen}
-				onClose={onClose}>
+				onClose={onClose}
+				motionPreset="slideInBottom"
+				onOverlayClick={onClose}>
 				<AlertDialog.Content>
 					<AlertDialog.CloseButton
 						onPress={() => {
@@ -64,6 +61,13 @@ export default function SignOutScreen({ navigation }) {
 					</AlertDialog.Footer>
 				</AlertDialog.Content>
 			</AlertDialog>
+			<Button
+				colorScheme="danger"
+				onPress={() => {
+					setIsOpen(!isOpen);
+				}}>
+				Sign Out
+			</Button>
 		</Center>
 	);
 }

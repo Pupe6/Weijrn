@@ -26,19 +26,17 @@ export const AuthProvider = ({ children }) => {
 	});
 
 	const login = async (username, password) => {
-		const res = await loginUser(username, password).catch(console);
-		console.log("user after request", res.user);
+		const res = await loginUser(username, password).catch(console.error);
 		setUser(res.user);
 	};
 
 	const register = async data => {
-		const res = await registerUser(data).catch(console);
-		console.log("user after request", res.user);
+		const res = await registerUser(data).catch(console.error);
 		setUser(res.user);
 	};
 
 	const logout = async () => {
-		await logoutUser(user._token).catch(console);
+		await logoutUser(user._token).catch(console.error);
 		setUser(null);
 	};
 

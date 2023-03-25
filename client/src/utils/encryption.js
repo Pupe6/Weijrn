@@ -27,7 +27,3 @@ const decrypt = (hash, secretKey) => {
 
 	return decrypted.toString();
 };
-
-let obj = encrypt("Hello, World!");
-console.log(obj);
-console.log(decrypt(obj, secretKey));

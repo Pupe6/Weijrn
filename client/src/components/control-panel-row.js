@@ -16,7 +16,6 @@ import { shareTag, receiveStatusUpdate } from "../services/tagService";
 import { AuthContext } from "../contexts/authContext";
 import DeleteTagDialog from "./delete-tag-dialog";
 import EditTagDialog from "./edit-tag-dialog";
-
 // import ShareTagDialog from "./share-tag-dialog";
 
 export default function ControlPanelRow({ tag }) {

@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Center, Box, Heading, HStack } from "native-base";
+import { Center, Box, Heading, HStack, use } from "native-base";
 import { getTags } from "../services/tagService";
 import { ScrollView } from "react-native";
 // import SwipeList from "../components/swipe-list";
 import ControlPanelRow from "../components/control-panel-row";
 import GetSharedTagDialog from "../components/get-shared-tag-dialog";
 import CreateTagDialog from "../components/create-tag-dialog";
+import SearchBar from "../components/search-bar";
 import { AuthContext } from "../contexts/authContext";
+
 export default function AdminScreen(props) {
 	const [listData, setListData] = useState({
 		count: 0,
@@ -25,42 +27,54 @@ export default function AdminScreen(props) {
 			.catch(alert);
 	}, [props?.route?.params?.refresh]);
 	return (
-		<Center>
-			<Box
-				_dark={{
-					bg: "coolGray.800",
-				}}
-				_light={{
-					bg: "white",
-				}}
-				flex="1"
-				safeAreaTop
-				maxW="500px"
-				w="100%">
-				<HStack
+		<Box
+			_dark={{
+				bg: "coolGray.800",
+			}}
+			_light={{
+				bg: "white",
+			}}
+			flex="1"
+			safeAreaTop
+			w={["100%", "100%", "100%", "100%"]}>
+			<Center>
+				<Box
 					_dark={{
 						bg: "coolGray.800",
 					}}
 					_light={{
 						bg: "white",
 					}}
-					justifyContent="space-between"
-					alignItems="center">
-					<Heading p="4" pb="3" size="lg">
-						Tags
-					</Heading>
-					<HStack space={2} p="4" pb="3" justifyContent="center">
-						<CreateTagDialog />
-						<GetSharedTagDialog />
+					flex="1"
+					safeAreaTop
+					maxW="500px"
+					w="100%">
+					<HStack
+						_dark={{
+							bg: "coolGray.800",
+						}}
+						_light={{
+							bg: "white",
+						}}
+						justifyContent="space-between"
+						alignItems="center">
+						<Heading p="4" pb="3" size="lg">
+							Tags
+						</Heading>
+						<SearchBar />
+						<HStack space={2} p="4" pb="3" justifyContent="center">
+							<CreateTagDialog />
+							<GetSharedTagDialog />
+						</HStack>
 					</HStack>
-				</HStack>
 
-				<ScrollView showsVerticalScrollIndicator={false}>
-					{listData.tags.map((tag, index) => (
-						<ControlPanelRow key={index} tag={tag} />
-					))}
-				</ScrollView>
-			</Box>
-		</Center>
+					<ScrollView showsVerticalScrollIndicator={false}>
+						{listData.tags.map((tag, index) => (
+							<ControlPanelRow key={index} tag={tag} />
+						))}
+					</ScrollView>
+				</Box>
+			</Center>
+		</Box>
 	);
 }

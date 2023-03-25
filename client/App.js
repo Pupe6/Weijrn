@@ -1,16 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useContext } from "react";
 import AppContainer from "./src/components/app-container";
 import SignInScreen from "./src/screens/sign-in";
 import SignUpScreen from "./src/screens/sign-up";
 import Navbar from "./src/components/navbar";
 import AdminScreen from "./src/screens/control-panel";
 import MyDrawer from "./src/components/navbar";
+import ThemeToggle from "./src/components/common/theme-toggle";
 
+// pass MyDrawer and ThemeToggle as children to AppContainer
 export default function App() {
 	return (
-		<AppContainer children={<MyDrawer />}>
+		<AppContainer>
+			<MyDrawer />
+			{/* <ThemeToggle /> */}
 			<StatusBar style="auto" />
 		</AppContainer>
 	);
