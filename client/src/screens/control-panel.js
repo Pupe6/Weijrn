@@ -6,7 +6,9 @@ import { ScrollView } from "react-native";
 import ControlPanelRow from "../components/control-panel-row";
 import GetSharedTagDialog from "../components/get-shared-tag-dialog";
 import CreateTagDialog from "../components/create-tag-dialog";
+import SearchBar from "../components/search-bar";
 import { AuthContext } from "../contexts/authContext";
+
 export default function AdminScreen(props) {
 	const [listData, setListData] = useState({
 		count: 0,
@@ -59,6 +61,7 @@ export default function AdminScreen(props) {
 						<Heading p="4" pb="3" size="lg">
 							Tags
 						</Heading>
+						<SearchBar />
 						<HStack space={2} p="4" pb="3" justifyContent="center">
 							<CreateTagDialog />
 							<GetSharedTagDialog />

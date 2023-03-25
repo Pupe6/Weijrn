@@ -14,7 +14,7 @@ export default function SignOut() {
 	const toast = useToast();
 
 	return (
-		<>
+		<Center>
 			<AlertDialog
 				leastDestructiveRef={cancelRef}
 				isOpen={isOpen}
@@ -68,6 +68,6 @@ export default function SignOut() {
 				}}>
 				Sign Out
 			</Button>
-		</>
+		</Center>
 	);
 }
