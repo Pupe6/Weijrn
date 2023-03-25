@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
 	FormControl,
 	Input,
@@ -27,6 +27,13 @@ export default function SignUpScreen({ navigation }) {
 			validateSignUpForm
 		);
 	const { register } = useContext(AuthContext);
+
+	useEffect(() => {
+		if (isSubmitting && Object.values(errors).some(error => !error)) {
+			register(values).catch(console.error);
+		}
+	}, [isSubmitting]);
+
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" w="90%" maxW="290" py="8">
@@ -50,7 +57,7 @@ export default function SignUpScreen({ navigation }) {
 					Sign up to continue!
 				</Heading>
 				<VStack space={3} mt="5">
-					<FormControl>
+					<FormControl isInvalid={errors?.username}>
 						<FormControl.Label>Username</FormControl.Label>
 						<Input
 							onChangeText={text =>
@@ -63,7 +70,7 @@ export default function SignUpScreen({ navigation }) {
 							</FormControl.ErrorMessage>
 						)}
 					</FormControl>
-					<FormControl>
+					<FormControl isInvalid={errors?.email}>
 						<FormControl.Label>Email</FormControl.Label>
 						<Input
 							onChangeText={text => handleChange("email", text)}
@@ -74,7 +81,7 @@ export default function SignUpScreen({ navigation }) {
 							</FormControl.ErrorMessage>
 						)}
 					</FormControl>
-					<FormControl>
+					<FormControl isInvalid={errors?.password}>
 						<FormControl.Label>Password</FormControl.Label>
 						<Input
 							type="password"
@@ -88,7 +95,7 @@ export default function SignUpScreen({ navigation }) {
 							</FormControl.ErrorMessage>
 						)}
 					</FormControl>
-					<FormControl>
+					<FormControl isInvalid={errors?.confirmPassword}>
 						<FormControl.Label>Confirm Password</FormControl.Label>
 						<Input
 							type="password"
@@ -102,7 +109,7 @@ export default function SignUpScreen({ navigation }) {
 							</FormControl.ErrorMessage>
 						)}
 					</FormControl>
-					<FormControl>
+					<FormControl isInvalid={errors?.macAddress}>
 						<FormControl.Label>Mac Address</FormControl.Label>
 						<Input
 							onChangeText={text => {
@@ -112,19 +119,17 @@ export default function SignUpScreen({ navigation }) {
 								handleChange("macAddress", strippedMac);
 							}}
 						/>
-						{errors?.macAdress && (
+						{errors?.macAddress && (
 							<FormControl.ErrorMessage>
-								{errors?.macAdress}
+								{errors?.macAddress}
 							</FormControl.ErrorMessage>
 						)}
 					</FormControl>
 					<Button
 						mt="2"
 						colorScheme="indigo"
-						onPress={async () => {
-							await register(values).catch(alert);
-						}}
-						isDisabled={isSubmitting}>
+						onPress={handleSubmit}
+						_disabled={isSubmitting}>
 						Sign up
 					</Button>
 					<HStack mt="6" alignItems="center" justifyContent="center">

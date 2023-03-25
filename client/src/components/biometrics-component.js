@@ -12,7 +12,6 @@ export default function BiometricsComponent() {
 			const result = await LocalAuthentication.authenticateAsync();
 		}
 		authenticate();
-		console.log("result");
 		setIsAuthenticated(true);
 	}, []);
 	return (

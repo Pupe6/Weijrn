@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
 	FormControl,
 	Input,
@@ -20,6 +20,13 @@ export default function SignInScreen({ navigation }) {
 		useFormValidation({ email: "", password: "" }, validateSignInForm);
 
 	const { login } = useContext(AuthContext);
+
+	useEffect(() => {
+		if (isSubmitting && Object.values(errors).some(error => !error)) {
+			login(values).catch(console.error);
+		}
+	}, [isSubmitting]);
+
 	return (
 		<Center w="100%">
 			<Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -44,21 +51,18 @@ export default function SignInScreen({ navigation }) {
 				</Heading>
 
 				<VStack space={3} mt="5">
-					<FormControl>
+					<FormControl isInvalid={errors?.email}>
 						<FormControl.Label>Email</FormControl.Label>
 						<Input
 							onChangeText={text => handleChange("email", text)}
 						/>
-						<FormControl.HelperText>
-							We'll never share your email.
-						</FormControl.HelperText>
-						{errors.email && (
+						{errors?.email && (
 							<FormControl.ErrorMessage>
-								{errors.email}
+								{errors?.email}
 							</FormControl.ErrorMessage>
 						)}
 					</FormControl>
-					<FormControl>
+					<FormControl isInvalid={errors?.password}>
 						<FormControl.Label>Password</FormControl.Label>
 						<Input
 							type="password"
@@ -66,19 +70,16 @@ export default function SignInScreen({ navigation }) {
 								handleChange("password", text)
 							}
 						/>
-						{errors.password && (
+						{errors?.password && (
 							<FormControl.ErrorMessage>
-								{errors.password}
+								{errors?.password}
 							</FormControl.ErrorMessage>
 						)}
 					</FormControl>
 					<Button
 						mt="2"
 						colorScheme="indigo"
-						onPress={async () => {
-							console.log(values);
-							await login(values).catch(alert);
-						}}
+						onPress={async () => handleSubmit()}
 						_disabled={isSubmitting}>
 						Sign in
 					</Button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export const useFormValidation = (initialState, validate) => {
 	const [values, setValues] = useState(initialState);
@@ -8,7 +8,6 @@ export const useFormValidation = (initialState, validate) => {
 		if (isSubmitting) {
 			const noErrors = Object.keys(errors).length === 0;
 			if (noErrors) {
-				console.log("authenticated", values);
 				setIsSubmitting(false);
 			} else {
 				setIsSubmitting(false);
@@ -22,7 +21,6 @@ export const useFormValidation = (initialState, validate) => {
 
 	const handleSubmit = () => {
 		const validation = validate(values);
-		console.log(validation);
 		for (let key in validation) {
 			setErrors(prevState => ({
 				...prevState,
@@ -30,9 +28,6 @@ export const useFormValidation = (initialState, validate) => {
 			}));
 		}
 		setIsSubmitting(true);
-		// setErrors("log");
-		console.log(errors);
-		// setIsSubmitting(true);
 	};
 
 	return {
