@@ -26,9 +26,9 @@ export const getTag = async (nickname, macAddress) => {
 
 // POST /jrn/tags/:nickname
 
-export const createTag = async (nickname, macAddress) => {
+export const createTag = async (nickname, _owner, macAddress) => {
 	const response = await requester
-		.post(`/statusupdate/send`, { nickname }, null, macAddress)
+		.post(`/statusupdate/send`, { nickname, _owner }, null, macAddress)
 		.catch(err => {
 			throw err;
 		});

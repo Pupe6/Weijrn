@@ -77,7 +77,11 @@ export default function CreateTagDialog() {
 						<Button
 							colorScheme="success"
 							onPress={async () => {
-								createTag(tagNickname, user.macAddress)
+								createTag(
+									tagNickname,
+									user._id,
+									user.macAddress
+								)
 									.then(() => {
 										toast.show({
 											title: "Syncing tag",
