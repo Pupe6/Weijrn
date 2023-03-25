@@ -1,16 +1,31 @@
 import React from "react";
-import { HStack, Text, Switch, useColorMode } from "native-base";
+import {
+	HStack,
+	Text,
+	Switch,
+	useColorMode,
+	Icon,
+	useColorModeValue,
+	Button,
+} from "native-base";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function ThemeToggle() {
-	const { colorMode, toggleColorMode } = useColorMode();
+	const { toggleColorMode } = useColorMode();
+	const color = useColorModeValue("gray.800", "white");
+	const icon = useColorModeValue("moon", "sunny");
 	return (
-		<HStack alignItems="center">
-			<Text>Dark</Text>
-			<Switch
-				isChecked={colorMode === "light"}
-				onToggle={toggleColorMode}
-			/>
-			<Text>Light</Text>
-		</HStack>
+		<Button
+			rounded="full"
+			px="3"
+			_active={{
+				bg: "gray.300",
+			}}
+			position="absolute"
+			top={5}
+			right={5}
+			onPress={toggleColorMode}>
+			<Icon as={<Ionicons name={icon} />} size="sm" color={color} />
+		</Button>
 	);
 }

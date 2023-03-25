@@ -1,5 +1,4 @@
 const baseUrl = "https://13ab-95-42-52-106.eu.ngrok.io";
-// const baseUrl = "https://weijrnserver.onrender.com";
 
 const requester = async (
 	method,
