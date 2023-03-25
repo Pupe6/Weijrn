@@ -31,7 +31,7 @@ export default function DrawerNavigator() {
 				headerRight: () => (
 					<HStack space={5} mr={2} alignItems="center">
 						<ThemeToggle />
-						<MiniProfile />
+						{user?._id && <MiniProfile />}
 					</HStack>
 				),
 				headerTintColor: useColorModeValue("coolGray.800", "white"),
