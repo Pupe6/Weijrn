@@ -12,7 +12,7 @@ export default function App() {
 	return (
 		<AppContainer>
 			<MyDrawer />
-			<ThemeToggle />
+			{/* <ThemeToggle /> */}
 			<StatusBar style="auto" />
 		</AppContainer>
 	);

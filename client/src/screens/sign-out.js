@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/authContext";
 import { AlertDialog, Button, Center, useToast, Box } from "native-base";
 
-export default function SignOutScreen({ navigation }) {
+export default function SignOutScreen({ navigation, refresh }) {
+	const [isOpen, setIsOpen] = React.useState(false);
+
 	useEffect(() => {
 		setIsOpen(prev => !prev);
-	}, []);
-
-	const [isOpen, setIsOpen] = React.useState(false);
+	}, [refresh]);
 
 	const onClose = () => {
 		setIsOpen(false);
