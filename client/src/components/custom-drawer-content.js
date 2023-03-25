@@ -19,13 +19,11 @@ import { AuthContext } from "../contexts/authContext";
 import { getIcon } from "../utils/getIcon";
 
 export default function CustomDrawerContent(props) {
-	console.log(props);
 	const { user } = useContext(AuthContext);
 	const iconColor = useColorModeValue("coolGray.600", "white");
 	// const bgColor = useColorModeValue("white", "coolGray.800");
 
 	return (
-		// <Box height={"100%"} bg={bgColor} safeArea>
 		<DrawerContentScrollView {...props} safeArea>
 			<VStack space="6" my="2" mx="1">
 				<Box px="4">
@@ -86,6 +84,5 @@ export default function CustomDrawerContent(props) {
 				</VStack>
 			</VStack>
 		</DrawerContentScrollView>
-		// </Box>
 	);
 }

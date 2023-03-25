@@ -1,19 +1,19 @@
 import * as React from "react";
 import { AuthContext } from "../contexts/authContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { useColorModeValue } from "native-base";
+import { HStack, useColorModeValue } from "native-base";
 // import HomeScreen from "../screens/home";
 import SignInScreen from "../screens/sign-in";
 import SignUpScreen from "../screens/sign-up";
-import SignOutScreen from "../screens/sign-out";
+import SignOutScreen from "./sign-out";
 import AdminScreen from "../screens/control-panel";
 // import CreateTagScreen from "../screens/create-tag";
 // import EditTagScreen from "../screens/edit-tag";
 import ProfileScreen from "../screens/profile";
 import ThemeToggle from "./common/theme-toggle";
-
+import MiniProfile from "./mini-profile";
 import CustomDrawerContent from "../components/custom-drawer-content";
-
+import SignOut from "./sign-out";
 const Drawer = createDrawerNavigator();
 
 // customize the drawer navigator to react to dark theme and light theme changes and and set header style accordingly and add ThemeToggle component to the right of the header
@@ -29,7 +29,12 @@ export default function DrawerNavigator() {
 					backgroundColor: bg,
 				},
 
-				headerRight: () => <ThemeToggle />,
+				headerRight: () => (
+					<HStack space={5} mr={2} alignItems="center">
+						<ThemeToggle />
+						<MiniProfile />
+					</HStack>
+				),
 				headerTintColor: useColorModeValue("coolGray.800", "white"),
 				// customize the drawer navigator
 				drawerStyle: {
@@ -75,11 +80,6 @@ export default function DrawerNavigator() {
 					/> */}
 					{/* <Drawer.Screen name="Edit Tag" component={EditTagScreen} /> */}
 					<Drawer.Screen name="Profile" component={ProfileScreen} />
-					<Drawer.Screen
-						name="Sign Out"
-						component={SignOutScreen}
-						refresh={++global.refresh}
-					/>
 				</>
 			)}
 		</Drawer.Navigator>
