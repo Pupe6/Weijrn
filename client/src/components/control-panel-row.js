@@ -118,7 +118,7 @@ export default function ControlPanelRow({ tag }) {
 									const { shareCode } = res.shareCode;
 									onCopy(shareCode);
 									toast.show({
-										title: "Tag coppied to clipboard",
+										title: "Tag copied to clipboard",
 										status: "success",
 										duration: 3000,
 										isClosable: true,

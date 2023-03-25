@@ -8,6 +8,8 @@ export const useAsyncStorage = (item, initialValue) => {
 		AsyncStorage.getItem(item).then(value => {
 			if (value) {
 				setValue(JSON.parse(value));
+			} else {
+				setValue(initialValue);
 			}
 		});
 	}, [item]);
