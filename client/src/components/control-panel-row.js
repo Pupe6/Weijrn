@@ -5,7 +5,6 @@ import {
 	VStack,
 	Icon,
 	Button,
-	Spacer,
 	Text,
 	useToast,
 	useClipboard,
@@ -92,48 +91,55 @@ export default function ControlPanelRow({ tag }) {
 								/>
 							}
 							size="sm"
-							color="coolGray.800"
+							_dark={{
+								color: "white",
+							}}
+							_light={{
+								color: "coolGray.800",
+							}}
 						/>
 					</Button>
 				</Tooltip>
-				<Tooltip
-					label="Share tag"
-					placement="top"
-					arrowSize={10}
-					arrowShadowColor="coolGray.800">
-					<Button
-						colorScheme="info"
-						size="sm"
-						onPress={async () => {
-							try {
-								const res = await shareTag(
-									tag.nickname,
-									user.macAddress
-								);
-								const { shareCode } = res.shareCode;
-								onCopy(shareCode);
-								toast.show({
-									title: "Tag coppied to clipboard",
-									status: "success",
-									duration: 3000,
-									isClosable: true,
-								});
-							} catch {
-								toast.show({
-									title: "Error sharing tag",
-									status: "error",
-									duration: 3000,
-									isClosable: true,
-								});
-							}
-						}}>
-						<Icon
-							as={<Entypo name="share" />}
+				{user._id === tag._owner && (
+					<Tooltip
+						label="Share tag"
+						placement="top"
+						arrowSize={10}
+						arrowShadowColor="coolGray.800">
+						<Button
+							colorScheme="info"
 							size="sm"
-							color="white"
-						/>
-					</Button>
-				</Tooltip>
+							onPress={async () => {
+								try {
+									const res = await shareTag(
+										tag.nickname,
+										user.macAddress
+									);
+									const { shareCode } = res.shareCode;
+									onCopy(shareCode);
+									toast.show({
+										title: "Tag coppied to clipboard",
+										status: "success",
+										duration: 3000,
+										isClosable: true,
+									});
+								} catch {
+									toast.show({
+										title: "Error sharing tag",
+										status: "error",
+										duration: 3000,
+										isClosable: true,
+									});
+								}
+							}}>
+							<Icon
+								as={<Entypo name="share" />}
+								size="sm"
+								color="white"
+							/>
+						</Button>
+					</Tooltip>
+				)}
 				<EditTagDialog tag={tag} />
 				<DeleteTagDialog tag={tag} />
 			</HStack>

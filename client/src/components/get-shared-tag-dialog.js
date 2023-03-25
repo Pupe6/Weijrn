@@ -15,7 +15,7 @@ import { AuthContext } from "../contexts/authContext";
 import { getSharedTag } from "../services/tagService";
 import { useNavigation } from "@react-navigation/native";
 
-export default function ShareTagDialog() {
+export default function GetSharedTagDialog() {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [shareCode, setShareCode] = React.useState("");
 	const onClose = () => setIsOpen(false);
