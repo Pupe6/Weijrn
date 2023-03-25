@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
 
+import {
+	validateUsername,
+	validateEmail,
+	validatePassword,
+	validateConfirmPassword,
+	validateMacAddress,
+} from "../utils/validation";
+
 export const useFormValidation = (initialState, validate) => {
 	const [values, setValues] = useState(initialState);
 	const [errors, setErrors] = useState({});
@@ -17,6 +25,30 @@ export const useFormValidation = (initialState, validate) => {
 
 	const handleChange = (name, value) => {
 		setValues({ ...values, [name]: value });
+
+		switch (name) {
+			case "username":
+				setErrors({ ...errors, username: validateUsername(value) });
+				break;
+			case "email":
+				setErrors({ ...errors, email: validateEmail(value) });
+				break;
+			case "password":
+				setErrors({ ...errors, password: validatePassword(value) });
+				break;
+			case "confirmPassword":
+				setErrors({
+					...errors,
+					confirmPassword: validateConfirmPassword(
+						value,
+						values.password
+					),
+				});
+				break;
+			case "macAddress":
+				setErrors({ ...errors, macAddress: validateMacAddress(value) });
+				break;
+		}
 	};
 
 	const handleSubmit = () => {

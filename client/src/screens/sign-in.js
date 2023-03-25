@@ -62,11 +62,10 @@ export default function SignInScreen({ navigation }) {
 									handleChange("email", text)
 								}
 							/>
-							{errors?.email && (
-								<FormControl.ErrorMessage>
-									{errors?.email}
-								</FormControl.ErrorMessage>
-							)}
+
+							<FormControl.ErrorMessage>
+								{errors?.email}
+							</FormControl.ErrorMessage>
 						</FormControl>
 						<FormControl isInvalid={errors?.password}>
 							<FormControl.Label>Password</FormControl.Label>
@@ -76,11 +75,10 @@ export default function SignInScreen({ navigation }) {
 									handleChange("password", text)
 								}
 							/>
-							{errors?.password && (
-								<FormControl.ErrorMessage>
-									{errors?.password}
-								</FormControl.ErrorMessage>
-							)}
+
+							<FormControl.ErrorMessage>
+								{errors?.password}
+							</FormControl.ErrorMessage>
 						</FormControl>
 						<Button
 							mt="2"

@@ -67,22 +67,20 @@ export default function SignUpScreen({ navigation }) {
 								handleChange("username", text)
 							}
 						/>
-						{errors?.username && (
-							<FormControl.ErrorMessage>
-								{errors?.username}
-							</FormControl.ErrorMessage>
-						)}
+
+						<FormControl.ErrorMessage>
+							{errors?.username}
+						</FormControl.ErrorMessage>
 					</FormControl>
 					<FormControl isInvalid={errors?.email}>
 						<FormControl.Label>Email</FormControl.Label>
 						<Input
 							onChangeText={text => handleChange("email", text)}
 						/>
-						{errors?.email && (
-							<FormControl.ErrorMessage>
-								{errors?.email}
-							</FormControl.ErrorMessage>
-						)}
+
+						<FormControl.ErrorMessage>
+							{errors?.email}
+						</FormControl.ErrorMessage>
 					</FormControl>
 					<FormControl isInvalid={errors?.password}>
 						<FormControl.Label>Password</FormControl.Label>
@@ -92,11 +90,10 @@ export default function SignUpScreen({ navigation }) {
 								handleChange("password", text)
 							}
 						/>
-						{errors?.password && (
-							<FormControl.ErrorMessage>
-								{errors?.password}
-							</FormControl.ErrorMessage>
-						)}
+
+						<FormControl.ErrorMessage>
+							{errors?.password}
+						</FormControl.ErrorMessage>
 					</FormControl>
 					<FormControl isInvalid={errors?.confirmPassword}>
 						<FormControl.Label>Confirm Password</FormControl.Label>
@@ -106,11 +103,10 @@ export default function SignUpScreen({ navigation }) {
 								handleChange("confirmPassword", text)
 							}
 						/>
-						{errors?.confirmPassword && (
-							<FormControl.ErrorMessage>
-								{errors?.confirmPassword}
-							</FormControl.ErrorMessage>
-						)}
+
+						<FormControl.ErrorMessage>
+							{errors?.confirmPassword}
+						</FormControl.ErrorMessage>
 					</FormControl>
 					<FormControl isInvalid={errors?.macAddress}>
 						<FormControl.Label>Mac Address</FormControl.Label>
@@ -122,11 +118,10 @@ export default function SignUpScreen({ navigation }) {
 								handleChange("macAddress", strippedMac);
 							}}
 						/>
-						{errors?.macAddress && (
-							<FormControl.ErrorMessage>
-								{errors?.macAddress}
-							</FormControl.ErrorMessage>
-						)}
+
+						<FormControl.ErrorMessage>
+							{errors?.macAddress}
+						</FormControl.ErrorMessage>
 					</FormControl>
 					<Button
 						mt="2"
