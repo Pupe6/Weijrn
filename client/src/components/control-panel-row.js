@@ -136,7 +136,7 @@ export default function ControlPanelRow({ tag }) {
 					</Button>
 				</Tooltip>
 				<EditTagDialog tag={tag} />
-				<DeleteTagDialog nickname={tag.nickname} />
+				<DeleteTagDialog tag={tag} />
 			</HStack>
 		</HStack>
 	);

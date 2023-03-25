@@ -77,9 +77,9 @@ router.post("/send", verifyMAC, async (req, res) => {
 			await statusUpdate.save();
 		}
 
-		const { nickname } = req.body;
+		const { nickname, _owner } = req.body;
 
-		if (!nickname)
+		if (!(nickname && _owner))
 			return res
 				.status(400)
 				.json({ message: "Please fullfil all fields." });
@@ -88,6 +88,7 @@ router.post("/send", verifyMAC, async (req, res) => {
 			status: true,
 			pending: false,
 			nickname,
+			_owner,
 		};
 
 		await statusUpdate.save();

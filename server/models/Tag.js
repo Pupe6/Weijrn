@@ -2,6 +2,11 @@ const { Schema, model, models } = require("mongoose");
 
 const tagSchema = new Schema(
 	{
+		_owner: {
+			type: Schema.Types.ObjectId,
+			ref: "User",
+			required: [true, "Tag owner is required."],
+		},
 		nickname: {
 			type: String,
 			required: [true, "Tag nickname is required."],
