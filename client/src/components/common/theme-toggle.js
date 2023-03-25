@@ -1,13 +1,5 @@
 import React from "react";
-import {
-	HStack,
-	Text,
-	Switch,
-	useColorMode,
-	Icon,
-	useColorModeValue,
-	Button,
-} from "native-base";
+import { useColorMode, Icon, useColorModeValue, Button } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function ThemeToggle() {
@@ -16,15 +8,14 @@ export default function ThemeToggle() {
 	const icon = useColorModeValue("moon", "sunny");
 	return (
 		<Button
-			rounded="full"
-			px="3"
-			_active={{
-				bg: "gray.300",
-			}}
 			position="absolute"
 			top={5}
 			right={5}
-			onPress={toggleColorMode}>
+			rounded="full"
+			shadow={2}
+			onPress={toggleColorMode}
+			variant="unstyled"
+			bg="transparent">
 			<Icon as={<Ionicons name={icon} />} size="sm" color={color} />
 		</Button>
 	);
