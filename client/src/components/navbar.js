@@ -13,7 +13,7 @@ import ProfileScreen from "../screens/profile";
 import ThemeToggle from "./common/theme-toggle";
 import MiniProfile from "./mini-profile";
 import CustomDrawerContent from "../components/custom-drawer-content";
-import SignOut from "./sign-out";
+
 const Drawer = createDrawerNavigator();
 
 // customize the drawer navigator to react to dark theme and light theme changes and and set header style accordingly and add ThemeToggle component to the right of the header
@@ -32,7 +32,7 @@ export default function DrawerNavigator() {
 				headerRight: () => (
 					<HStack space={5} mr={2} alignItems="center">
 						<ThemeToggle />
-						<MiniProfile />
+						{user?._id && <MiniProfile />}
 					</HStack>
 				),
 				headerTintColor: useColorModeValue("coolGray.800", "white"),
