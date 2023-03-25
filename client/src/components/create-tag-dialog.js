@@ -8,6 +8,7 @@ import {
 	Text,
 	FormControl,
 	Input,
+	Tooltip,
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
@@ -26,13 +27,20 @@ export default function CreateTagDialog() {
 
 	return (
 		<Center>
-			<Button colorScheme="success" onPress={() => setIsOpen(!isOpen)}>
-				<Icon
-					as={<AntDesign name="pluscircleo" size={24} />}
-					size="lg"
-					color="white"
-				/>
-			</Button>
+			<Tooltip
+				label="Create tag"
+				placement="top"
+				accessibilityLabel="Create tag">
+				<Button
+					colorScheme="success"
+					onPress={() => setIsOpen(!isOpen)}>
+					<Icon
+						as={<AntDesign name="pluscircleo" size={24} />}
+						size="lg"
+						color="white"
+					/>
+				</Button>
+			</Tooltip>
 			<AlertDialog
 				leastDestructiveRef={cancelRef}
 				isOpen={isOpen}

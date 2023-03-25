@@ -9,6 +9,7 @@ import {
 	Text,
 	useToast,
 	useClipboard,
+	Tooltip,
 } from "native-base";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { shareTag, receiveStatusUpdate } from "../services/tagService";
@@ -54,75 +55,86 @@ export default function ControlPanelRow({ tag }) {
 				</Text>
 			</VStack>
 			<HStack space={2}>
-				<Button
-					variant="ghost"
-					size="sm"
-					onPress={async () => {
-						try {
-							const res = await receiveStatusUpdate(
-								user.macAddress,
-								tag._id
-							);
-							toast.show({
-								title: res.message,
-								status: "success",
-								duration: 3000,
-								isClosable: true,
-							});
-						} catch {
-							toast.show({
-								title: "Error receiving status update",
-								status: "error",
-								duration: 3000,
-								isClosable: true,
-							});
-						}
-					}}>
-					<Icon
-						as={
-							<MaterialIcons
-								name="call-received"
-								size={24}
-								color="white"
-							/>
-						}
+				<Tooltip
+					label="Write to tag"
+					placement="top"
+					arrowSize={10}
+					arrowShadowColor="coolGray.800">
+					<Button
+						variant="ghost"
 						size="sm"
-						color="coolGray.800"
-					/>
-				</Button>
-
-				<Button
-					colorScheme="info"
-					size="sm"
-					onPress={async () => {
-						try {
-							const res = await shareTag(
-								tag.nickname,
-								user.macAddress
-							);
-							const { shareCode } = res.shareCode;
-							onCopy(shareCode);
-							toast.show({
-								title: "Tag coppied to clipboard",
-								status: "success",
-								duration: 3000,
-								isClosable: true,
-							});
-						} catch {
-							toast.show({
-								title: "Error sharing tag",
-								status: "error",
-								duration: 3000,
-								isClosable: true,
-							});
-						}
-					}}>
-					<Icon
-						as={<Entypo name="share" />}
+						onPress={async () => {
+							try {
+								const res = await receiveStatusUpdate(
+									user.macAddress,
+									tag._id
+								);
+								toast.show({
+									title: res.message,
+									status: "success",
+									duration: 3000,
+									isClosable: true,
+								});
+							} catch {
+								toast.show({
+									title: "Error receiving status update",
+									status: "error",
+									duration: 3000,
+									isClosable: true,
+								});
+							}
+						}}>
+						<Icon
+							as={
+								<MaterialIcons
+									name="call-received"
+									size={24}
+									color="white"
+								/>
+							}
+							size="sm"
+							color="coolGray.800"
+						/>
+					</Button>
+				</Tooltip>
+				<Tooltip
+					label="Share tag"
+					placement="top"
+					arrowSize={10}
+					arrowShadowColor="coolGray.800">
+					<Button
+						colorScheme="info"
 						size="sm"
-						color="white"
-					/>
-				</Button>
+						onPress={async () => {
+							try {
+								const res = await shareTag(
+									tag.nickname,
+									user.macAddress
+								);
+								const { shareCode } = res.shareCode;
+								onCopy(shareCode);
+								toast.show({
+									title: "Tag coppied to clipboard",
+									status: "success",
+									duration: 3000,
+									isClosable: true,
+								});
+							} catch {
+								toast.show({
+									title: "Error sharing tag",
+									status: "error",
+									duration: 3000,
+									isClosable: true,
+								});
+							}
+						}}>
+						<Icon
+							as={<Entypo name="share" />}
+							size="sm"
+							color="white"
+						/>
+					</Button>
+				</Tooltip>
 				<EditTagDialog tag={tag} />
 				<DeleteTagDialog nickname={tag.nickname} />
 			</HStack>

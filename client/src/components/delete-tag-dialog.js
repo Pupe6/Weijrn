@@ -1,5 +1,13 @@
 import React from "react";
-import { AlertDialog, Button, Center, useToast, Icon, Text } from "native-base";
+import {
+	AlertDialog,
+	Button,
+	Center,
+	useToast,
+	Icon,
+	Text,
+	Tooltip,
+} from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { deleteTag } from "../services/tagService";
 import { useNavigation } from "@react-navigation/native";
@@ -17,9 +25,18 @@ export default function DeleteTagDialog({ nickname }) {
 
 	return (
 		<Center>
-			<Button colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>
-				<Icon as={<Entypo name="trash" />} size="sm" color="white" />
-			</Button>
+			<Tooltip
+				label="Delete tag"
+				placement="top"
+				accessibilityLabel="Delete tag">
+				<Button colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>
+					<Icon
+						as={<Entypo name="trash" />}
+						size="sm"
+						color="white"
+					/>
+				</Button>
+			</Tooltip>
 			<AlertDialog
 				leastDestructiveRef={cancelRef}
 				isOpen={isOpen}

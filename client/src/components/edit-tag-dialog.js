@@ -8,6 +8,7 @@ import {
 	Text,
 	FormControl,
 	Input,
+	Tooltip,
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
@@ -27,13 +28,18 @@ export default function EditTagDialog(props) {
 
 	return (
 		<Center>
-			<Button colorScheme="amber" onPress={() => setIsOpen(!isOpen)}>
-				<Icon
-					as={<AntDesign name="edit" size={24} color="black" />}
-					size="sm"
-					color="white"
-				/>
-			</Button>
+			<Tooltip
+				label="Edit tag"
+				placement="top"
+				accessibilityLabel="Edit tag">
+				<Button colorScheme="amber" onPress={() => setIsOpen(!isOpen)}>
+					<Icon
+						as={<AntDesign name="edit" size={24} color="black" />}
+						size="sm"
+						color="white"
+					/>
+				</Button>
+			</Tooltip>
 			<AlertDialog
 				leastDestructiveRef={cancelRef}
 				isOpen={isOpen}

@@ -8,6 +8,7 @@ import {
 	Text,
 	FormControl,
 	Input,
+	Tooltip,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
@@ -26,13 +27,18 @@ export default function ShareTagDialog() {
 
 	return (
 		<Center>
-			<Button colorScheme="info" onPress={() => setIsOpen(!isOpen)}>
-				<Icon
-					as={<MaterialIcons name="get-app" />}
-					size="lg"
-					color="white"
-				/>
-			</Button>
+			<Tooltip
+				label="Import tag"
+				placement="top"
+				accessibilityLabel="Import tag">
+				<Button colorScheme="info" onPress={() => setIsOpen(!isOpen)}>
+					<Icon
+						as={<MaterialIcons name="get-app" />}
+						size="lg"
+						color="white"
+					/>
+				</Button>
+			</Tooltip>
 			<AlertDialog
 				leastDestructiveRef={cancelRef}
 				isOpen={isOpen}
