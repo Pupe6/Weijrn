@@ -48,10 +48,10 @@ router.get("/tags/:nickname", verifyMAC, async (req, res) => {
 
 router.post("/tags", verifyMAC, async (req, res) => {
 	try {
-		const { nickname, data, type } = req.body;
+		const { _owner, nickname, data, type } = req.body;
 		const user = req.user;
 
-		if (!(nickname && data && type))
+		if (!(_owner && nickname && data && type))
 			return res
 				.status(400)
 				.json({ message: "Please fullfil all fields." });
@@ -71,7 +71,12 @@ router.post("/tags", verifyMAC, async (req, res) => {
 
 		const encryptedData = encrypt(data, process.env.ENCRYPTION_KEY);
 
-		const tag = await Tag.create({ nickname, data: encryptedData, type });
+		const tag = await Tag.create({
+			_owner,
+			nickname,
+			data: encryptedData,
+			type,
+		});
 
 		// Check For Validation Errors
 		if (tag.err) {
@@ -99,12 +104,15 @@ router.put("/tags/:nickname", verifyJWT, async (req, res) => {
 		const { nickname } = req.params;
 		const { nickname: newNickname, data, type } = req.body;
 
-		const tagToUpdate = await Tag.findOne({ nickname });
+		const tagToUpdate = await Tag.findOne({
+			nickname,
+			_owner: req.user._id,
+		});
 
 		if (!tagToUpdate)
-			return res
-				.status(404)
-				.json({ message: `Tag "${nickname}" not found.` });
+			return res.status(404).json({
+				message: `Tag "${nickname}" not found or you are not authorized to update it.`,
+			});
 
 		const updatedTag = await Tag.findOneAndUpdate(
 			{ nickname },
@@ -123,14 +131,23 @@ router.delete("/tags/:nickname", verifyJWT, async (req, res) => {
 		const { nickname } = req.params;
 		const user = req.user;
 
-		const tagToDelete = await Tag.findOneAndDelete({ nickname });
+		const tagToDelete = await Tag.findOne({ nickname, _owner: user._id });
 
-		await User.findOneAndUpdate(
-			{ _id: user._id },
-			{
-				$pull: { _tags: tagToDelete._id },
-			}
+		if (!tagToDelete)
+			return res.status(404).json({
+				message: `Tag "${nickname}" not found or you are not authorized to delete it.`,
+			});
+
+		await Tag.deleteOne({ nickname, _owner: user._id });
+
+		// Remove Tag From All Users
+		await User.updateMany(
+			{ _tags: tagToDelete._id },
+			{ $pull: { _tags: tagToDelete._id } }
 		);
+
+		// Delete All Share Codes For Tag
+		await ShareCode.deleteMany({ _tag: tagToDelete._id });
 
 		res.status(200).json({ message: `Tag "${nickname}" deleted.` });
 	} catch (err) {
