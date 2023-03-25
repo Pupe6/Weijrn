@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
 	FormControl,
 	Input,
@@ -23,6 +23,12 @@ export default function SignInScreen({ navigation }) {
 	const { login } = useContext(AuthContext);
 	const bg = useColorModeValue("white", "coolGray.800");
 	const textColor = useColorModeValue("coolGray.800", "warmGray.50");
+
+	useEffect(() => {
+		if (isSubmitting && Object.values(errors).some(error => !error)) {
+			login(values).catch(console.error);
+		}
+	}, [isSubmitting]);
 
 	return (
 		<Box flex="1" safeArea bg={bg} width="100%">
@@ -49,23 +55,19 @@ export default function SignInScreen({ navigation }) {
 					</Heading>
 
 					<VStack space={3} mt="5">
-						<FormControl>
+						<FormControl isInvalid={errors?.email}>
 							<FormControl.Label>Email</FormControl.Label>
 							<Input
 								onChangeText={text =>
 									handleChange("email", text)
 								}
 							/>
-							<FormControl.HelperText>
-								We'll never share your email.
-							</FormControl.HelperText>
-							{errors.email && (
-								<FormControl.ErrorMessage>
-									{errors.email}
-								</FormControl.ErrorMessage>
-							)}
+
+							<FormControl.ErrorMessage>
+								{errors?.email}
+							</FormControl.ErrorMessage>
 						</FormControl>
-						<FormControl>
+						<FormControl isInvalid={errors?.password}>
 							<FormControl.Label>Password</FormControl.Label>
 							<Input
 								type="password"
@@ -73,19 +75,15 @@ export default function SignInScreen({ navigation }) {
 									handleChange("password", text)
 								}
 							/>
-							{errors.password && (
-								<FormControl.ErrorMessage>
-									{errors.password}
-								</FormControl.ErrorMessage>
-							)}
+
+							<FormControl.ErrorMessage>
+								{errors?.password}
+							</FormControl.ErrorMessage>
 						</FormControl>
 						<Button
 							mt="2"
 							colorScheme="indigo"
-							onPress={async () => {
-								console.log(values);
-								await login(values).catch(alert);
-							}}
+							onPress={async () => handleSubmit()}
 							_disabled={isSubmitting}>
 							Sign in
 						</Button>
