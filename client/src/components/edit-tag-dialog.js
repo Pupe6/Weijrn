@@ -27,77 +27,92 @@ export default function EditTagDialog(props) {
 	const navigation = useNavigation();
 
 	return (
-		<Center>
-			<Tooltip
-				label="Edit tag"
-				placement="top"
-				accessibilityLabel="Edit tag">
-				<Button colorScheme="amber" onPress={() => setIsOpen(!isOpen)}>
-					<Icon
-						as={<AntDesign name="edit" size={24} color="black" />}
-						size="sm"
-						color="white"
-					/>
-				</Button>
-			</Tooltip>
-			<AlertDialog
-				leastDestructiveRef={cancelRef}
-				isOpen={isOpen}
-				onClose={onClose}
-				motionPreset="slideInBottom">
-				<AlertDialog.Content>
-					<AlertDialog.CloseButton />
-					<AlertDialog.Header>
-						<Text>Edit Tag</Text>
-					</AlertDialog.Header>
-					<AlertDialog.Body>
-						<FormControl>
-							<FormControl.Label>New Nickname</FormControl.Label>
-							<Input
-								placeholder="Enter nickname"
-								_light={{
-									placeholderTextColor: "blueGray.400",
-								}}
-								_dark={{
-									placeholderTextColor: "blueGray.50",
-								}}
-								onChangeText={text => setNickname(text)}
-							/>
-						</FormControl>
-					</AlertDialog.Body>
-					<AlertDialog.Footer>
-						<Button
-							variant="unstyled"
-							colorScheme="coolGray"
-							onPress={onClose}
-							ref={cancelRef}>
-							Cancel
-						</Button>
-						<Button
-							colorScheme="amber"
-							onPress={async () => {
-								updateTag(
-									props.tag.nickname,
-									user._token,
-									nickname
-								)
-									.then(() => {
-										toast.show({
-											title: "Tag updated",
-											status: "success",
-										});
-										onClose();
-										navigation.navigate("Control Panel", {
-											refresh: ++global.refresh,
-										});
-									})
-									.catch(alert);
-							}}>
-							Edit
-						</Button>
-					</AlertDialog.Footer>
-				</AlertDialog.Content>
-			</AlertDialog>
-		</Center>
+		user._id === props.tag._owner && (
+			<Center>
+				<Tooltip
+					label="Edit tag"
+					placement="top"
+					accessibilityLabel="Edit tag">
+					<Button
+						colorScheme="amber"
+						onPress={() => setIsOpen(!isOpen)}>
+						<Icon
+							as={
+								<AntDesign
+									name="edit"
+									size={24}
+									color="black"
+								/>
+							}
+							size="sm"
+							color="white"
+						/>
+					</Button>
+				</Tooltip>
+				<AlertDialog
+					leastDestructiveRef={cancelRef}
+					isOpen={isOpen}
+					onClose={onClose}
+					motionPreset="slideInBottom">
+					<AlertDialog.Content>
+						<AlertDialog.CloseButton />
+						<AlertDialog.Header>
+							<Text>Edit Tag</Text>
+						</AlertDialog.Header>
+						<AlertDialog.Body>
+							<FormControl>
+								<FormControl.Label>
+									New Nickname
+								</FormControl.Label>
+								<Input
+									placeholder="Enter nickname"
+									_light={{
+										placeholderTextColor: "blueGray.400",
+									}}
+									_dark={{
+										placeholderTextColor: "blueGray.50",
+									}}
+									onChangeText={text => setNickname(text)}
+								/>
+							</FormControl>
+						</AlertDialog.Body>
+						<AlertDialog.Footer>
+							<Button
+								variant="unstyled"
+								colorScheme="coolGray"
+								onPress={onClose}
+								ref={cancelRef}>
+								Cancel
+							</Button>
+							<Button
+								colorScheme="amber"
+								onPress={async () => {
+									updateTag(
+										props.tag.nickname,
+										user._token,
+										nickname
+									)
+										.then(() => {
+											toast.show({
+												title: "Tag updated",
+												status: "success",
+											});
+											onClose();
+											navigation.navigate(
+												"Control Panel",
+												{
+													refresh: ++global.refresh,
+												}
+											);
+										})
+										.catch(alert);
+								}}>
+								Edit
+							</Button>
+						</AlertDialog.Footer>
+					</AlertDialog.Content>
+				</AlertDialog>
+			</Center>
+		)
 	);
 }
