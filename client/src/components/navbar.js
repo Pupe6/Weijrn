@@ -1,7 +1,7 @@
 import * as React from "react";
 import { AuthContext } from "../contexts/authContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
+import { useColorModeValue } from "native-base";
 // import HomeScreen from "../screens/home";
 import SignInScreen from "../screens/sign-in";
 import SignUpScreen from "../screens/sign-up";
@@ -13,7 +13,6 @@ import ProfileScreen from "../screens/profile";
 
 import CustomDrawerContent from "../components/custom-drawer-content";
 
-global.__reanimatedWorkletInit = () => {};
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
