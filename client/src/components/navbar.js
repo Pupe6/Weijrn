@@ -1,7 +1,7 @@
 import * as React from "react";
 import { AuthContext } from "../contexts/authContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { HStack, useColorModeValue } from "native-base";
+import { HStack, useColorModeValue, Avatar } from "native-base";
 // import HomeScreen from "../screens/home";
 import SignInScreen from "../screens/sign-in";
 import SignUpScreen from "../screens/sign-up";
@@ -33,6 +33,14 @@ export default function DrawerNavigator() {
 						<ThemeToggle />
 						{user?._id && <MiniProfile />}
 					</HStack>
+				),
+				headerTitle: () => (
+					<Avatar
+						source={{
+							uri: require("../assets/WEIJRN_LOGO.png"),
+						}}
+						size="md"
+					/>
 				),
 				headerTintColor: useColorModeValue("coolGray.800", "white"),
 				// customize the drawer navigator
