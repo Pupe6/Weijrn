@@ -24,84 +24,85 @@ export default function DeleteTagDialog({ tag }) {
 	const navigation = useNavigation();
 
 	return (
-		user._id === tag._owner && (
-			<Center>
-				<Tooltip
-					label="Delete tag"
-					placement="top"
-					accessibilityLabel="Delete tag">
-					<Button
-						colorScheme="danger"
-						onPress={() => setIsOpen(!isOpen)}>
-						<Icon
-							as={<Entypo name="trash" />}
-							size="sm"
-							color="white"
-						/>
-					</Button>
-				</Tooltip>
-				<AlertDialog
-					leastDestructiveRef={cancelRef}
-					isOpen={isOpen}
-					onClose={onClose}
-					motionPreset="slideInBottom">
-					<AlertDialog.Content>
-						<AlertDialog.CloseButton />
-						<AlertDialog.Header>
-							<Text>
-								Delete Tag{" "}
-								<Text bold italic>
-									{tag.nickname}
-								</Text>
+		<Center>
+			<Tooltip
+				label={user._id === tag._owner ? "Delete tag" : "Remove tag"}
+				placement="top"
+				accessibilityLabel={
+					user._id === tag._owner ? "Delete tag" : "Remove tag"
+				}>
+				<Button colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>
+					<Icon
+						as={<Entypo name="trash" />}
+						size="sm"
+						color="white"
+					/>
+				</Button>
+			</Tooltip>
+			<AlertDialog
+				leastDestructiveRef={cancelRef}
+				isOpen={isOpen}
+				onClose={onClose}
+				motionPreset="slideInBottom">
+				<AlertDialog.Content>
+					<AlertDialog.CloseButton />
+					<AlertDialog.Header>
+						<Text>
+							Delete Tag{" "}
+							<Text bold italic>
+								{tag.nickname}
 							</Text>
-						</AlertDialog.Header>
-						<AlertDialog.Body>
-							<Text>
-								This will remove the tag relating to relating to
-								the user{" "}
-								<Text bold italic>
-									{user.username}
-								</Text>
-								. This action cannot be reversed. Deleted data
-								can not be recovered.
+						</Text>
+					</AlertDialog.Header>
+					<AlertDialog.Body>
+						<Text>
+							Are you sure you want to{" "}
+							{user._id === tag._owner ? "delete" : "remove"}{" "}
+							<Text bold italic>
+								{tag.nickname}
 							</Text>
-						</AlertDialog.Body>
-						<AlertDialog.Footer>
-							<Button.Group space={2}>
-								<Button
-									variant="unstyled"
-									colorScheme="coolGray"
-									onPress={onClose}
-									ref={cancelRef}>
-									Cancel
-								</Button>
-								<Button
-									colorScheme="danger"
-									onPress={async () => {
-										await deleteTag(nickname, user._token)
-											.then(() => {
-												toast.show({
-													title: "Tag deleted",
-													status: "success",
-												});
-												onClose();
-												navigation.navigate(
-													"Control Panel",
-													{
-														refresh:
-															++global.refresh,
-													}
-												);
-											})
-											.catch(alert);
-									}}>
-									Delete
-								</Button>
-							</Button.Group>
-						</AlertDialog.Footer>
-					</AlertDialog.Content>
-				</AlertDialog>
-			</Center>
-		)
+							?
+							{user._id === tag._owner
+								? " This will also delete all the data associated with this tag."
+								: " This will remove the tag from your account."}
+							{"\n\n"}
+							<Text bold>This action cannot be undone.</Text>
+						</Text>
+					</AlertDialog.Body>
+					<AlertDialog.Footer>
+						<Button.Group space={2}>
+							<Button
+								variant="unstyled"
+								colorScheme="coolGray"
+								onPress={onClose}
+								ref={cancelRef}>
+								Cancel
+							</Button>
+							<Button
+								colorScheme="danger"
+								onPress={async () => {
+									await deleteTag(tag.nickname, user._token)
+										.then(() => {
+											toast.show({
+												title: "Tag deleted",
+												status: "success",
+											});
+											onClose();
+											navigation.navigate(
+												"Control Panel",
+												{
+													refresh: ++global.refresh,
+												}
+											);
+										})
+										.catch(alert);
+								}}>
+								Delete
+							</Button>
+						</Button.Group>
+					</AlertDialog.Footer>
+				</AlertDialog.Content>
+			</AlertDialog>
+		</Center>
 	);
 }

@@ -133,10 +133,23 @@ router.delete("/tags/:nickname", verifyJWT, async (req, res) => {
 
 		const tagToDelete = await Tag.findOne({ nickname, _owner: user._id });
 
-		if (!tagToDelete)
-			return res.status(404).json({
-				message: `Tag "${nickname}" not found or you are not authorized to delete it.`,
+		if (!tagToDelete) {
+			const tag = user._tags.find(tag => tag.nickname === nickname);
+
+			if (!tag)
+				return res.status(404).json({
+					message: `Tag "${nickname}" not found.`,
+				});
+
+			await User.updateOne(
+				{ _id: user._id },
+				{ $pull: { _tags: tag._id } }
+			);
+
+			return res.status(200).json({
+				message: `Tag "${nickname}" deleted.`,
 			});
+		}
 
 		await Tag.deleteOne({ nickname, _owner: user._id });
 
@@ -151,6 +164,7 @@ router.delete("/tags/:nickname", verifyJWT, async (req, res) => {
 
 		res.status(200).json({ message: `Tag "${nickname}" deleted.` });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -178,7 +192,7 @@ router.post("/tags/share/:nickname", verifyMAC, async (req, res) => {
 			shareCode: randomCode,
 		});
 
-		res.status(200).json({ shareCode });
+		res.status(200).json({ shareCode: shareCode.shareCode });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
