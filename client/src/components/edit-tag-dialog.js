@@ -66,6 +66,7 @@ export default function EditTagDialog(props) {
 								</FormControl.Label>
 								<Input
 									placeholder="Enter nickname"
+									value={nickname}
 									_light={{
 										placeholderTextColor: "blueGray.400",
 									}}

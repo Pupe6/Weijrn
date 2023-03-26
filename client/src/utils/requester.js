@@ -1,4 +1,4 @@
-const baseUrl = "https://13ab-95-42-52-106.eu.ngrok.io";
+const baseUrl = "https://9eed-78-154-14-184.eu.ngrok.io";
 
 const requester = async (
 	method,
