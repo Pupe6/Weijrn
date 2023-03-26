@@ -109,19 +109,6 @@ export default function ProfileScreen({ navigation }) {
 								fontWeight={600}>
 								{user.macAddress}
 							</Text>
-							<Button
-								onPress={() => {
-									onCopy(user.macAddress);
-									toast.show({
-										title: "Copied to clipboard",
-									});
-								}}
-								variant="unstyled"
-								_text={{
-									color: "blue.500",
-								}}>
-								<Icon as={<Feather name="copy" />} size="sm" />
-							</Button>
 						</HStack>
 						<HStack
 							space={4}

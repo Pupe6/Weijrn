@@ -10,16 +10,15 @@ import {
 	useClipboard,
 	Tooltip,
 } from "native-base";
-import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import { shareTag, receiveStatusUpdate } from "../services/tagService";
+import { MaterialIcons } from "@expo/vector-icons";
+import { receiveStatusUpdate } from "../services/tagService";
 import { AuthContext } from "../contexts/authContext";
 import DeleteTagDialog from "./delete-tag-dialog";
 import EditTagDialog from "./edit-tag-dialog";
-// import ShareTagDialog from "./share-tag-dialog";
+import ShareTagDialog from "./share-tag-dialog";
 
 export default function ControlPanelRow({ tag }) {
 	const toast = useToast();
-	const { onCopy } = useClipboard();
 	const { user } = React.useContext(AuthContext);
 
 	return (
@@ -100,46 +99,7 @@ export default function ControlPanelRow({ tag }) {
 						/>
 					</Button>
 				</Tooltip>
-				{user._id === tag._owner && (
-					<Tooltip
-						label="Share tag"
-						placement="top"
-						arrowSize={10}
-						arrowShadowColor="coolGray.800">
-						<Button
-							colorScheme="info"
-							size="sm"
-							onPress={async () => {
-								try {
-									const res = await shareTag(
-										tag.nickname,
-										user.macAddress
-									);
-									const { shareCode } = res.shareCode;
-									onCopy(shareCode);
-									toast.show({
-										title: "Tag copied to clipboard",
-										status: "success",
-										duration: 3000,
-										isClosable: true,
-									});
-								} catch {
-									toast.show({
-										title: "Error sharing tag",
-										status: "error",
-										duration: 3000,
-										isClosable: true,
-									});
-								}
-							}}>
-							<Icon
-								as={<Entypo name="share" />}
-								size="sm"
-								color="white"
-							/>
-						</Button>
-					</Tooltip>
-				)}
+				{user._id === tag._owner && <ShareTagDialog tag={tag} />}
 				<EditTagDialog tag={tag} />
 				<DeleteTagDialog tag={tag} />
 			</HStack>

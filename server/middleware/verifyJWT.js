@@ -23,7 +23,9 @@ async function verifyJWT(req, res, next) {
 	try {
 		const decodedJWT = jwt.verify(token, process.env.TOKEN_KEY);
 
-		const user = (await User.findOne({ _id: decodedJWT._id })).toJSON();
+		const user = await User.findOne({ _id: decodedJWT._id }).populate(
+			"_tags"
+		);
 
 		delete user.password;
 		delete user._token;
