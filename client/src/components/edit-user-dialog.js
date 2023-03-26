@@ -11,6 +11,7 @@ import {
 } from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { updateUser } from "../services/userService";
+import { AntDesign } from "@expo/vector-icons";
 
 function validatePassword(password, confirmPassword) {
 	return !!(password && confirmPassword);
@@ -34,7 +35,11 @@ export default function DeleteTagDialog() {
 	return (
 		<Center>
 			<Button colorScheme="amber" onPress={() => setIsOpen(!isOpen)}>
-				<Text>Edit</Text>
+				<Icon
+					as={<AntDesign name="edit" size={24} color="black" />}
+					size="sm"
+					color="white"
+				/>
 			</Button>
 			<AlertDialog
 				leastDestructiveRef={cancelRef}

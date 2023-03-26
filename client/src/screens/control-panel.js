@@ -13,6 +13,7 @@ export default function AdminScreen(props) {
 	const [listData, setListData] = useState({
 		count: 0,
 		tags: [],
+		filteredTags: [],
 	});
 	const { user } = useContext(AuthContext);
 
@@ -22,6 +23,7 @@ export default function AdminScreen(props) {
 				setListData({
 					count: res.count,
 					tags: res.tags,
+					filteredTags: res.tags,
 				});
 			})
 			.catch(alert);
@@ -61,7 +63,10 @@ export default function AdminScreen(props) {
 						<Heading p="4" pb="3" size="lg">
 							Tags
 						</Heading>
-						<SearchBar />
+						<SearchBar
+							listData={listData}
+							setListData={setListData}
+						/>
 						<HStack space={2} p="4" pb="3" justifyContent="center">
 							<CreateTagDialog />
 							<GetSharedTagDialog />
@@ -69,7 +74,7 @@ export default function AdminScreen(props) {
 					</HStack>
 
 					<ScrollView showsVerticalScrollIndicator={false}>
-						{listData.tags.map((tag, index) => (
+						{listData.filteredTags.map((tag, index) => (
 							<ControlPanelRow key={index} tag={tag} />
 						))}
 					</ScrollView>
