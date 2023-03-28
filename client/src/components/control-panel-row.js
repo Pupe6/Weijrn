@@ -54,7 +54,7 @@ export default function ControlPanelRow({ tag }) {
 			</VStack>
 			<HStack space={2}>
 				<Tooltip
-					label="Write to tag"
+					label="Use tag"
 					placement="top"
 					arrowSize={10}
 					arrowShadowColor="coolGray.800">

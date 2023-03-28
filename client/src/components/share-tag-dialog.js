@@ -8,6 +8,7 @@ import {
 	Text,
 	useClipboard,
 	HStack,
+	Tooltip,
 } from "native-base";
 import { Entypo, Feather } from "@expo/vector-icons";
 import { shareTag } from "../services/tagService";
@@ -27,16 +28,28 @@ export default function ShareTagDialog({ tag }) {
 
 	return (
 		<Center>
-			<Button
-				colorScheme="info"
-				onPress={async () => {
-					const res = await shareTag(tag.nickname, user.macAddress);
+			<Tooltip
+				label="Share tag"
+				placement="top"
+				accessibilityLabel="Share tag">
+				<Button
+					colorScheme="info"
+					onPress={async () => {
+						const res = await shareTag(
+							tag.nickname,
+							user.macAddress
+						);
 
-					setShareCode(res.shareCode);
-					setIsOpen(!isOpen);
-				}}>
-				<Icon as={<Entypo name="share" />} size="sm" color="white" />
-			</Button>
+						setShareCode(res.shareCode);
+						setIsOpen(!isOpen);
+					}}>
+					<Icon
+						as={<Entypo name="share" />}
+						size="sm"
+						color="white"
+					/>
+				</Button>
+			</Tooltip>
 			<AlertDialog
 				leastDestructiveRef={cancelRef}
 				isOpen={isOpen}
