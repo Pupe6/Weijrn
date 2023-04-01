@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NativeBaseProvider, Box } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import { AuthProvider } from "../contexts/authContext";
 import theme from "../theme";
