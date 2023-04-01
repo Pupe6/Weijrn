@@ -12,7 +12,6 @@ export default function App() {
 	return (
 		<AppContainer>
 			<MyDrawer />
-			{/* <ThemeToggle /> */}
 			<StatusBar style="auto" />
 		</AppContainer>
 	);

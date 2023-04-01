@@ -7,12 +7,10 @@ import {
 	Button,
 	Text,
 	useToast,
-	useClipboard,
 	Tooltip,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { receiveStatusUpdate } from "../services/tagService";
-import { AuthContext } from "../contexts/authContext";
 import DeleteTagDialog from "./delete-tag-dialog";
 import EditTagDialog from "./edit-tag-dialog";
 import ShareTagDialog from "./share-tag-dialog";
