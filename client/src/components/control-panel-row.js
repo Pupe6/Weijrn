@@ -7,19 +7,16 @@ import {
 	Button,
 	Text,
 	useToast,
-	useClipboard,
 	Tooltip,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { receiveStatusUpdate } from "../services/tagService";
-import { AuthContext } from "../contexts/authContext";
 import DeleteTagDialog from "./delete-tag-dialog";
 import EditTagDialog from "./edit-tag-dialog";
 import ShareTagDialog from "./share-tag-dialog";
 
 export default function ControlPanelRow({ tag }) {
 	const toast = useToast();
-	const { user } = React.useContext(AuthContext);
 
 	return (
 		<HStack
@@ -53,7 +50,7 @@ export default function ControlPanelRow({ tag }) {
 			</VStack>
 			<HStack space={2}>
 				<Tooltip
-					label="Write to tag"
+					label="Use tag"
 					placement="top"
 					arrowSize={10}
 					arrowShadowColor="coolGray.800">

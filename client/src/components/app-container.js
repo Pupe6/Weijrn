@@ -1,4 +1,3 @@
-import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { AuthProvider } from "../contexts/authContext";
 import { ThemeProvider } from "../contexts/themeContext";
