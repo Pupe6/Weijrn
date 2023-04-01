@@ -15,6 +15,7 @@ export const useAsyncStorage = (item, initialValue) => {
 	}, [item]);
 
 	const setItem = value => {
+		console.log(`Setting ${item} to ${value}`);
 		AsyncStorage.setItem(item, JSON.stringify(value));
 		setValue(value);
 	};
