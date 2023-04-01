@@ -1,47 +1,25 @@
-import { useEffect, useState, createContext } from "react";
+import { createContext } from "react";
 import { useAsyncStorage } from "../hooks/useAsyncStorage";
 import { extendTheme, NativeBaseProvider } from "native-base";
 
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-	const [theme, setTheme] = useAsyncStorage("theme", "dark");
+	const [theme, setTheme] = useAsyncStorage("theme", { colorMode: "light" });
 
-	const [customTheme, setCustomTheme] = useState(
-		extendTheme({
-			config: {
-				initialColorMode: theme,
-				useSystemColorMode: false,
-			},
-			breakpoints: {
-				base: 0,
-				sm: 480,
-				md: 768,
-				lg: 992,
-				xl: 1280,
-			},
-		})
-	);
-
-	useEffect(() => {
-		console.log(`Theme changed to ${theme}`);
-
-		setCustomTheme(
-			extendTheme({
-				config: {
-					initialColorMode: theme,
-					useSystemColorMode: false,
-				},
-				breakpoints: {
-					base: 0,
-					sm: 480,
-					md: 768,
-					lg: 992,
-					xl: 1280,
-				},
-			})
-		);
-	}, [theme]);
+	const customTheme = extendTheme({
+		config: {
+			initialColorMode: theme.colorMode,
+			useSystemColorMode: false,
+		},
+		breakpoints: {
+			base: 0,
+			sm: 480,
+			md: 768,
+			lg: 992,
+			xl: 1280,
+		},
+	});
 
 	return (
 		<ThemeContext.Provider value={{ theme, setTheme }}>

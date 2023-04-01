@@ -5,19 +5,24 @@ export const useAsyncStorage = (item, initialValue) => {
 	const [value, setValue] = useState(initialValue);
 
 	useEffect(() => {
-		AsyncStorage.getItem(item).then(value => {
-			if (value) {
-				setValue(JSON.parse(value));
-			} else {
-				setValue(initialValue);
-			}
-		});
+		AsyncStorage.getItem(item)
+			.then(value => {
+				if (value !== null) {
+					setValue(JSON.parse(value));
+				}
+			})
+			.catch(error =>
+				console.log("Error getting item from AsyncStorage:", error)
+			);
 	}, [item]);
 
-	const setItem = value => {
-		console.log(`Setting ${item} to ${value}`);
-		AsyncStorage.setItem(item, JSON.stringify(value));
-		setValue(value);
+	const setItem = async value => {
+		try {
+			await AsyncStorage.setItem(item, JSON.stringify(value));
+			setValue(value);
+		} catch (error) {
+			console.log("Error setting item to AsyncStorage:", error);
+		}
 	};
 
 	return [value, setItem];
