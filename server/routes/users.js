@@ -53,9 +53,11 @@ router.put("/:id", verifyJWT, async (req, res) => {
 
 		if (user.err) throw user.err;
 
-		delete user.password;
+		user._token = undefined;
+		user.password = undefined;
+		user.macAddress = undefined;
 
-		res.status(200).json(user);
+		res.status(200).json({ user });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}

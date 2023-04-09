@@ -12,14 +12,17 @@ import {
 import { AuthContext } from "../contexts/authContext";
 import { updateUser } from "../services/userService";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 function validatePassword(password, confirmPassword) {
+	if (!password && !confirmPassword) return true;
+
 	return !!(password && confirmPassword);
 }
 
 export default function DeleteTagDialog() {
 	const [isOpen, setIsOpen] = React.useState(false);
-	const { user } = React.useContext(AuthContext);
+	const { user, setUser } = React.useContext(AuthContext);
 	const [newUser, setNewUser] = React.useState({
 		username: user.username,
 		email: user.email,
@@ -27,6 +30,8 @@ export default function DeleteTagDialog() {
 		newPassword: "",
 		confirmNewPassword: "",
 	});
+
+	const navigation = useNavigation();
 
 	const onClose = () => setIsOpen(false);
 	const cancelRef = React.useRef(null);
@@ -153,13 +158,24 @@ export default function DeleteTagDialog() {
 										});
 										return;
 									}
+
 									try {
-										await updateUser(
-											newUser,
-											user._id,
-											user._token
-										);
-										navigation.navigate("Home");
+										setUser({
+											...(await updateUser(
+												newUser,
+												user._id,
+												user._token
+											)),
+										});
+
+										toast.show({
+											title: "Success",
+											status: "success",
+										});
+
+										onClose();
+
+										navigation.navigate("Profile");
 									} catch (error) {
 										toast.show({
 											title: "Error",

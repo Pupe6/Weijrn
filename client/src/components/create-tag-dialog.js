@@ -70,7 +70,9 @@ export default function CreateTagDialog() {
 						<Button
 							variant="unstyled"
 							colorScheme="coolGray"
-							onPress={onClose}
+							onPress={() => {
+								onClose();
+							}}
 							ref={cancelRef}>
 							Cancel
 						</Button>
@@ -107,6 +109,8 @@ export default function CreateTagDialog() {
 															clearInterval(
 																repeatInterval
 															);
+
+															onClose();
 														}
 													})
 													.catch(alert);
