@@ -70,7 +70,8 @@ def decrypt(text):
 def get_status_checker():
     url = "https://a37d-95-42-52-106.ngrok-free.app/statusupdate"
     while True:
-        headers = {'X-UUID' : generate_uuid.generate_short_uuid()}
+        # headers = {'X-UUID' : generate_uuid.generate_short_uuid()} for uuids
+        headers = {"X-Mac-Address": "00:00:00:00:00:00"}
         response = requests.get(url, headers = headers)
         data = response.json()
         raspiSend = data["raspiSend"]
