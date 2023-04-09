@@ -10,9 +10,9 @@ export const AuthContext = React.createContext({
 		macAddress: "",
 		_token: "",
 	},
-	login: () => {},
-	register: () => {},
-	logout: () => {},
+	login: async () => {},
+	register: async () => {},
+	logout: async () => {},
 	setUser: () => {},
 });
 

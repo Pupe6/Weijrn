@@ -2,14 +2,10 @@ import React, { useContext } from "react";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
-	Button,
 	Box,
-	HamburgerIcon,
 	Pressable,
-	Heading,
 	VStack,
 	Text,
-	Center,
 	HStack,
 	Divider,
 	Icon,
@@ -21,7 +17,6 @@ import { getIcon } from "../utils/getIcon";
 export default function CustomDrawerContent(props) {
 	const { user } = useContext(AuthContext);
 	const iconColor = useColorModeValue("coolGray.600", "white");
-	// const bgColor = useColorModeValue("white", "coolGray.800");
 
 	return (
 		<DrawerContentScrollView {...props} safeArea>

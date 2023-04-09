@@ -14,9 +14,12 @@ import { receiveStatusUpdate } from "../services/tagService";
 import DeleteTagDialog from "./delete-tag-dialog";
 import EditTagDialog from "./edit-tag-dialog";
 import ShareTagDialog from "./share-tag-dialog";
+import { AuthContext } from "../contexts/authContext";
 
 export default function ControlPanelRow({ tag }) {
 	const toast = useToast();
+
+	const { user } = React.useContext(AuthContext);
 
 	return (
 		<HStack

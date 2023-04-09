@@ -44,7 +44,7 @@ export default function SignOut() {
 							</Button>
 							<Button
 								colorScheme="danger"
-								onPress={() => {
+								onPress={async () => {
 									onClose();
 									toast.show({
 										title: "Signed out",
@@ -53,7 +53,7 @@ export default function SignOut() {
 										duration: 3000,
 										isClosable: true,
 									});
-									logout(user._token);
+									await logout(user._token);
 								}}>
 								Sign Out
 							</Button>

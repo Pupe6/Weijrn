@@ -1,17 +1,6 @@
 import * as React from "react";
-import {
-	Box,
-	Center,
-	Heading,
-	VStack,
-	FormControl,
-	Input,
-	Button,
-	HStack,
-	Text,
-	Link,
-} from "native-base";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Center, Text } from "native-base";
+
 export default function HomeScreen() {
 	return (
 		<Center flex={1}>

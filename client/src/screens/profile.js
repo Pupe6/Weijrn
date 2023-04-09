@@ -15,6 +15,7 @@ import {
 	VStack,
 	useClipboard,
 	useToast,
+	useColorModeValue,
 } from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { Feather } from "@expo/vector-icons";
@@ -24,8 +25,6 @@ import DeleteUserDialog from "../components/delete-user-dialog";
 
 export default function ProfileScreen({ navigation }) {
 	const { user } = useContext(AuthContext);
-	const toast = useToast();
-	const { onCopy } = useClipboard();
 
 	return (
 		<Box
@@ -60,7 +59,10 @@ export default function ProfileScreen({ navigation }) {
 							<Icon
 								as={<Feather name="user" />}
 								size="sm"
-								color="coolGray.800"
+								color={useColorModeValue(
+									"coolGray.800",
+									"white"
+								)}
 							/>
 							<Text
 								_dark={{
@@ -78,7 +80,10 @@ export default function ProfileScreen({ navigation }) {
 							<Icon
 								as={<Feather name="mail" />}
 								size="sm"
-								color="coolGray.800"
+								color={useColorModeValue(
+									"coolGray.800",
+									"white"
+								)}
 							/>
 							<Text
 								_dark={{
@@ -96,7 +101,10 @@ export default function ProfileScreen({ navigation }) {
 							<Icon
 								as={<Feather name="key" />}
 								size="sm"
-								color="coolGray.800"
+								color={useColorModeValue(
+									"coolGray.800",
+									"white"
+								)}
 							/>
 							<Text
 								_dark={{
