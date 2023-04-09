@@ -5,11 +5,10 @@
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./src/assets/logo.png",
-		"userInterfaceStyle": "light",
+		"userInterfaceStyle": "automatic",
 		"splash": {
 			"image": "./src/assets/logo.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
+			"resizeMode": "contain"
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
@@ -23,8 +22,7 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./src/assets/logo.png",
-				"backgroundColor": "#ffffff"
+				"foregroundImage": "./src/assets/logo.png"
 			}
 		},
 		"web": {
