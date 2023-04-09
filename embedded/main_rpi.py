@@ -23,6 +23,9 @@ import json
 
 load_dotenv()
 
+import generate_uuid # this is custom generator for uuid
+
+
 # Set the desired interface to True
 SPI = False
 I2C = True
@@ -67,7 +70,7 @@ def decrypt(text):
 def get_status_checker():
     url = "https://a37d-95-42-52-106.ngrok-free.app/statusupdate"
     while True:
-        headers = {'X-MAC-Address' : '00:00:00:00:00:00'}
+        headers = {'X-UUID' : generate_uuid.generate_short_uuid()}
         response = requests.get(url, headers = headers)
         data = response.json()
         raspiSend = data["raspiSend"]
