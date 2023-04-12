@@ -1,10 +1,16 @@
-import uuid
+from uuid import uuid4
+
 
 def generate_short_uuid():
-    generate_uuid = uuid.uuid4()
-    generate_uuid = str(generate_uuid)[:13].replace("-","")
+    # generate uuid and cut it to 12 characters & remove the dashes
+    generated_uuid = str(uuid4()).replace("-", "")[:12]
 
     # insert - every 3 characters
-    generate_uuid = "-".join([generate_uuid[i:i+3] for i in range(0, len(generate_uuid), 3)])
+    for i in range(3, len(generated_uuid), 4):
+        generated_uuid = f"{generated_uuid[:i]}-{generated_uuid[i:]}"
 
-    return generate_uuid
+    return generated_uuid
+
+
+if __name__ == "__main__":
+    print(generate_short_uuid())
