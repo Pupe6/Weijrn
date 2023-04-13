@@ -1,4 +1,4 @@
-const baseUrl = "http://127.0.0.1:8393";
+const baseUrl = "https://weijrnserver.onrender.com";
 
 const requester = async (
 	method,
