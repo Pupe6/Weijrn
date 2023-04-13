@@ -1,0 +1,7 @@
+name: Deploy Server On Render
+on: [push]
+jobs:
+  Deploy-Server:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl ${{ secrets.DEPLOY_SERVER_URL }}
