@@ -23,11 +23,7 @@ Weijrn е иновативно приложение, което улеснява
 
 - Hardware:
   - Raspberry Pi Zero 2W
-  - Arduino Nano
-  - ST7789 Display
   - PN532 NFC Module
-  - Joystick
-  - Buttons
   - 3D Printed Case
 
 ## Отбор:
