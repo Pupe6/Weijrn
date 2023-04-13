@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useRef, useContext } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -21,9 +21,9 @@ function validatePassword(password, confirmPassword) {
 }
 
 export default function DeleteTagDialog() {
-	const [isOpen, setIsOpen] = React.useState(false);
-	const { user, setUser } = React.useContext(AuthContext);
-	const [newUser, setNewUser] = React.useState({
+	const [isOpen, setIsOpen] = useState(false);
+	const { user, setUser } = useContext(AuthContext);
+	const [newUser, setNewUser] = useState({
 		username: user?.username,
 		email: user?.email,
 		password: "",
@@ -34,7 +34,7 @@ export default function DeleteTagDialog() {
 	const navigation = useNavigation();
 
 	const onClose = () => setIsOpen(false);
-	const cancelRef = React.useRef(null);
+	const cancelRef = useRef(null);
 	const toast = useToast();
 
 	return (
@@ -180,8 +180,6 @@ export default function DeleteTagDialog() {
 												description: err.message,
 											});
 									});
-
-									console.log(updatedUser.user);
 
 									setUser(updatedUser.user);
 

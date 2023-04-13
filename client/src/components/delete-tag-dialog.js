@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useRef, useContext } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -14,12 +14,12 @@ import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 
 export default function DeleteTagDialog({ tag }) {
-	const [isOpen, setIsOpen] = React.useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
 	const onClose = () => setIsOpen(false);
 
-	const cancelRef = React.useRef(null);
-	const { user, setUser } = React.useContext(AuthContext);
+	const cancelRef = useRef(null);
+	const { user, setUser } = useContext(AuthContext);
 	const toast = useToast();
 	const navigation = useNavigation();
 

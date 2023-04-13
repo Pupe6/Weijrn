@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext } from "react";
 
 import {
 	HStack,
@@ -19,7 +19,7 @@ import { AuthContext } from "../contexts/authContext";
 export default function ControlPanelRow({ tag }) {
 	const toast = useToast();
 
-	const { user } = React.useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 
 	return (
 		<HStack

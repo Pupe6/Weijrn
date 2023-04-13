@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useRef, useContext } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -14,11 +14,11 @@ import { Entypo } from "@expo/vector-icons";
 import { deleteUser } from "../services/userService";
 
 export default function DeleteTagDialog() {
-	const [isOpen, setIsOpen] = React.useState(false);
-	const [confirmPassword, setConfirmPassword] = React.useState("");
+	const [isOpen, setIsOpen] = useState(false);
+	const [confirmPassword, setConfirmPassword] = useState("");
 	const onClose = () => setIsOpen(false);
-	const cancelRef = React.useRef(null);
-	const { user, setUser } = React.useContext(AuthContext);
+	const cancelRef = useRef(null);
+	const { user, setUser } = useContext(AuthContext);
 	const toast = useToast();
 
 	return (

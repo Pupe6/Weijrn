@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useColorMode, Icon, useColorModeValue } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable } from "react-native";
-import { ThemeContext } from "../../contexts/themeContext";
+import { ThemeContext } from "../contexts/themeContext";
 import { useEffect } from "react";
 
 export default function ThemeToggle() {

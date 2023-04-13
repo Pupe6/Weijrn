@@ -1,16 +1,4 @@
-// simple profile component that with avatar and dropdown with sign out and profile button
-
-import {
-	Box,
-	Button,
-	Center,
-	HStack,
-	Menu,
-	Text,
-	useColorModeValue,
-	VStack,
-	Icon,
-} from "native-base";
+import { Box, Menu, useColorModeValue, Icon } from "native-base";
 import { Pressable } from "react-native";
 
 import { Entypo } from "@expo/vector-icons";

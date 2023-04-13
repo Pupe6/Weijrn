@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useRef, useContext } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -16,13 +16,13 @@ import { getSharedTag } from "../services/tagService";
 import { useNavigation } from "@react-navigation/native";
 
 export default function GetSharedTagDialog() {
-	const [isOpen, setIsOpen] = React.useState(false);
-	const [shareCode, setShareCode] = React.useState("");
+	const [isOpen, setIsOpen] = useState(false);
+	const [shareCode, setShareCode] = useState("");
 	const onClose = () => setIsOpen(false);
 
-	const cancelRef = React.useRef(null);
+	const cancelRef = useRef(null);
 	const toast = useToast();
-	const { user } = React.useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 	const navigation = useNavigation();
 
 	return (

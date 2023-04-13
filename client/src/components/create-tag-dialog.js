@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useRef, useContext } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -16,16 +16,16 @@ import { useNavigation } from "@react-navigation/native";
 import { createTag, statusUpdate } from "../services/tagService";
 
 export default function CreateTagDialog() {
-	const [isOpen, setIsOpen] = React.useState(false);
-	const [tagNickname, setTagNickname] = React.useState("");
+	const [isOpen, setIsOpen] = useState(false);
+	const [tagNickname, setTagNickname] = useState("");
 	const onClose = () => setIsOpen(false);
 
-	const cancelRef = React.useRef(null);
+	const cancelRef = useRef(null);
 	const toast = useToast();
-	const { user } = React.useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 	const navigation = useNavigation();
 
-	const [intervalId, setIntervalId] = React.useState(null);
+	const [intervalId, setIntervalId] = useState(null);
 
 	return (
 		<Center>

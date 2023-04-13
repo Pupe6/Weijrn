@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import { useState, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/authContext";
 import { AlertDialog, Button, Center, useToast } from "native-base";
 
 export default function SignOut() {
-	const [isOpen, setIsOpen] = React.useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
 	const onClose = () => {
 		setIsOpen(false);
 	};
 
-	const cancelRef = React.useRef(null);
+	const cancelRef = useRef(null);
 	const { logout, user } = useContext(AuthContext);
 	const toast = useToast();
 

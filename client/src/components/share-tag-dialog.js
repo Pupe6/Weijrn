@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useRef, useContext } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -15,16 +15,16 @@ import { shareTag } from "../services/tagService";
 import { AuthContext } from "../contexts/authContext";
 
 export default function ShareTagDialog({ tag }) {
-	const [isOpen, setIsOpen] = React.useState(false);
-	const [shareCode, setShareCode] = React.useState("");
+	const [isOpen, setIsOpen] = useState(false);
+	const [shareCode, setShareCode] = useState("");
 
 	const onClose = () => setIsOpen(false);
 
-	const cancelRef = React.useRef(null);
+	const cancelRef = useRef(null);
 	const toast = useToast();
 	const { onCopy } = useClipboard();
 
-	const { user } = React.useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 
 	return (
 		<Center>

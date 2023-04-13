@@ -25,8 +25,6 @@ const requester = async (
 
 	const response = await res.json();
 
-	console.log(response);
-
 	if (response.valid === false) throw new Error("Token is not valid.");
 
 	if (!res.ok) throw response;

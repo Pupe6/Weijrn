@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 import { AuthContext } from "../contexts/authContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { HStack, useColorModeValue } from "native-base";
@@ -6,13 +6,13 @@ import SignInScreen from "../screens/sign-in";
 import SignUpScreen from "../screens/sign-up";
 import AdminScreen from "../screens/control-panel";
 import ProfileScreen from "../screens/profile";
-import ThemeToggle from "./common/theme-toggle";
+import ThemeToggle from "./theme-toggle";
 import MiniProfile from "./mini-profile";
 import CustomDrawerContent from "../components/custom-drawer-content";
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
-	const { user } = React.useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 	const bg = useColorModeValue("white", "rgb(31, 41, 55)");
 
 	return (

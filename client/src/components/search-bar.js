@@ -1,5 +1,3 @@
-// search bar thats responsive to the screen size with only icon on mobile and icon and text on desktop
-
 import { useState, useEffect } from "react";
 import { Input, useBreakpointValue, Icon } from "native-base";
 import { FontAwesome } from "@expo/vector-icons";

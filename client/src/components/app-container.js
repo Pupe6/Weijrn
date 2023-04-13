@@ -6,7 +6,6 @@ export default function AppContainer({ children }) {
 	global.refresh = 0;
 
 	const linking = {
-		prefixes: ["example://", /https?:\/\/(.+\.)?example\.com/],
 		config: {
 			screens: {
 				"Control Panel": "",

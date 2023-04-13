@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useRef, useContext } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -17,13 +17,13 @@ import { useNavigation } from "@react-navigation/native";
 import { updateTag } from "../services/tagService";
 
 export default function EditTagDialog(props) {
-	const [isOpen, setIsOpen] = React.useState(false);
-	const [nickname, setNickname] = React.useState(props.tag.nickname);
+	const [isOpen, setIsOpen] = useState(false);
+	const [nickname, setNickname] = useState(props.tag.nickname);
 	const onClose = () => setIsOpen(false);
 
-	const cancelRef = React.useRef(null);
+	const cancelRef = useRef(null);
 	const toast = useToast();
-	const { user, setUser } = React.useContext(AuthContext);
+	const { user, setUser } = useContext(AuthContext);
 	const navigation = useNavigation();
 
 	return (
