@@ -29,6 +29,18 @@ export const logoutUser = async token => {
 	return response;
 };
 
+// GET /auth/token
+
+export const checkTokenValidity = async token => {
+	const response = await requester
+		.get("/auth/token", undefined, token)
+		.catch(err => {
+			throw err;
+		});
+
+	return response;
+};
+
 // PUT /users/:id
 export const updateUser = async (user, id, token) => {
 	const response = await requester

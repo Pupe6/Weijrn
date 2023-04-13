@@ -19,17 +19,17 @@ export default function DeleteTagDialog({ tag }) {
 	const onClose = () => setIsOpen(false);
 
 	const cancelRef = React.useRef(null);
-	const { user } = React.useContext(AuthContext);
+	const { user, setUser } = React.useContext(AuthContext);
 	const toast = useToast();
 	const navigation = useNavigation();
 
 	return (
 		<Center>
 			<Tooltip
-				label={user._id === tag._owner ? "Delete tag" : "Remove tag"}
+				label={user?._id === tag._owner ? "Delete tag" : "Remove tag"}
 				placement="top"
 				accessibilityLabel={
-					user._id === tag._owner ? "Delete tag" : "Remove tag"
+					user?._id === tag._owner ? "Delete tag" : "Remove tag"
 				}>
 				<Button colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>
 					<Icon
@@ -57,12 +57,12 @@ export default function DeleteTagDialog({ tag }) {
 					<AlertDialog.Body>
 						<Text>
 							Are you sure you want to{" "}
-							{user._id === tag._owner ? "delete" : "remove"}{" "}
+							{user?._id === tag._owner ? "delete" : "remove"}{" "}
 							<Text bold italic>
 								{tag.nickname}
 							</Text>
 							?
-							{user._id === tag._owner
+							{user?._id === tag._owner
 								? " This will also delete all the data associated with this tag."
 								: " This will remove the tag from your account."}
 							{"\n\n"}
@@ -80,12 +80,11 @@ export default function DeleteTagDialog({ tag }) {
 							</Button>
 							<Button
 								colorScheme="danger"
-								onPress={async () => {
-									await deleteTag(tag.nickname, user._token)
+								onPress={() => {
+									deleteTag(tag.nickname, user?._token)
 										.then(() => {
 											toast.show({
 												title: "Tag deleted",
-												status: "success",
 											});
 											onClose();
 											navigation.navigate(
@@ -95,7 +94,24 @@ export default function DeleteTagDialog({ tag }) {
 												}
 											);
 										})
-										.catch(alert);
+										.catch(err => {
+											if (
+												err.message ===
+												"Token is not valid."
+											) {
+												toast.show({
+													title: "Session expired",
+													description:
+														"Please login again",
+												});
+
+												setUser(null);
+											} else
+												toast.show({
+													title: "Error deleting tag",
+													description: err.message,
+												});
+										});
 								}}>
 								Delete
 							</Button>

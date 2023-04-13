@@ -23,11 +23,11 @@ export default function EditTagDialog(props) {
 
 	const cancelRef = React.useRef(null);
 	const toast = useToast();
-	const { user } = React.useContext(AuthContext);
+	const { user, setUser } = React.useContext(AuthContext);
 	const navigation = useNavigation();
 
 	return (
-		user._id === props.tag._owner && (
+		user?._id === props.tag._owner && (
 			<Center>
 				<Tooltip
 					label="Edit tag"
@@ -90,13 +90,12 @@ export default function EditTagDialog(props) {
 								onPress={async () => {
 									updateTag(
 										props.tag.nickname,
-										user._token,
+										user?._token,
 										nickname
 									)
 										.then(() => {
 											toast.show({
 												title: "Tag updated",
-												status: "success",
 											});
 											onClose();
 											navigation.navigate(
@@ -106,7 +105,24 @@ export default function EditTagDialog(props) {
 												}
 											);
 										})
-										.catch(alert);
+										.catch(err => {
+											if (
+												err.message ===
+												"Token is not valid."
+											) {
+												toast.show({
+													title: "Session expired",
+													description:
+														"Please log in again.",
+												});
+
+												setUser(null);
+											} else
+												toast.show({
+													title: "Error updating tag",
+													description: err.message,
+												});
+										});
 								}}>
 								Edit
 							</Button>

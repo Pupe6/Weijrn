@@ -8,15 +8,18 @@ async function verifyJWT(req, res, next) {
 
 	try {
 		if (!token)
-			return res
-				.status(403)
-				.json({ message: "A token is required for authentication." });
+			return res.status(403).json({
+				message: "A token is required for authentication.",
+				valid: false,
+			});
 
 		if (await BannedToken.findOne({ token }))
 			return res.status(403).json({
 				message: "This token is expired. Please login again.",
+				valid: false,
 			});
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 
@@ -32,7 +35,9 @@ async function verifyJWT(req, res, next) {
 
 		req.user = user;
 	} catch (err) {
-		return res.status(401).json({ message: "Invalid Token." });
+		return res
+			.status(401)
+			.json({ message: "Invalid Token.", valid: false });
 	}
 
 	return next();

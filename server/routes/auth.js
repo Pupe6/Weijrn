@@ -68,6 +68,7 @@ router.post("/register", async (req, res) => {
 			user: { ...user.toJSON(), password: undefined },
 		});
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -107,6 +108,7 @@ router.post("/login", async (req, res) => {
 			res.status(400).json({ message: "Invalid Credentials." });
 		}
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -125,6 +127,17 @@ router.get("/logout", verifyJWT, async (req, res) => {
 
 		res.status(200).json({ message: "Logged out successfully." });
 	} catch (err) {
+		console.log(err);
+		res.status(500).json({ message: err.message });
+	}
+});
+
+// Check Token Validity
+router.get("/token", verifyJWT, async (_, res) => {
+	try {
+		res.status(200).json({ message: "Token is valid.", valid: true });
+	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });

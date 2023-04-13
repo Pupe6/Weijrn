@@ -1,6 +1,11 @@
 import * as React from "react";
 import { useAsyncStorage } from "../hooks/useAsyncStorage";
-import { loginUser, registerUser, logoutUser } from "../services/userService";
+import {
+	loginUser,
+	registerUser,
+	logoutUser,
+	checkTokenValidity,
+} from "../services/userService";
 
 export const AuthContext = React.createContext({
 	user: {
@@ -36,9 +41,20 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const logout = async () => {
-		await logoutUser(user._token).catch(console.error);
+		await logoutUser(user?._token).catch(console.error);
 		setUser(null);
 	};
+
+	// Check if token is valid and log out if not
+	React.useEffect(() => {
+		if (user?._token) {
+			checkTokenValidity(user?._token)
+				.then(res => {
+					if (!res.valid) setUser(null);
+				})
+				.catch(() => setUser(null));
+		}
+	}, [user?._token]);
 
 	return (
 		<AuthContext.Provider

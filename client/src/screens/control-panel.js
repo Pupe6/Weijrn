@@ -15,10 +15,10 @@ export default function AdminScreen(props) {
 		tags: [],
 		filteredTags: [],
 	});
-	const { user } = useContext(AuthContext);
+	const { user, setUser } = useContext(AuthContext);
 
 	useEffect(() => {
-		getTags(user.macAddress)
+		getTags(user?._token)
 			.then(res => {
 				setListData({
 					count: res.count,
@@ -26,7 +26,20 @@ export default function AdminScreen(props) {
 					filteredTags: res.tags,
 				});
 			})
-			.catch(alert);
+			.catch(err => {
+				if (err.message === "Token is not valid.") {
+					toast.show({
+						title: "Session expired",
+						description: "Please log in again.",
+					});
+
+					setUser(null);
+				} else
+					toast.show({
+						title: "Error getting tags",
+						description: err.message,
+					});
+			});
 	}, [props?.route?.params?.refresh]);
 	return (
 		<Box

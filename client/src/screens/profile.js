@@ -73,7 +73,7 @@ export default function ProfileScreen({ navigation }) {
 								}}
 								fontSize="sm"
 								fontWeight={600}>
-								{user.username}
+								{user?.username}
 							</Text>
 						</HStack>
 						<HStack space={4} alignItems="center">
@@ -94,7 +94,7 @@ export default function ProfileScreen({ navigation }) {
 								}}
 								fontSize="sm"
 								fontWeight={600}>
-								{user.email}
+								{user?.email}
 							</Text>
 						</HStack>
 						<HStack space={4} alignItems="center">
@@ -115,7 +115,7 @@ export default function ProfileScreen({ navigation }) {
 								}}
 								fontSize="sm"
 								fontWeight={600}>
-								{user.macAddress}
+								{user?.macAddress}
 							</Text>
 						</HStack>
 						<HStack

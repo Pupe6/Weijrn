@@ -37,7 +37,7 @@ export default function DeleteTagDialog() {
 						<Text>
 							Delete User{" "}
 							<Text bold italic>
-								{user.username}
+								{user?.username}
 							</Text>
 						</Text>
 					</AlertDialog.Header>
@@ -45,7 +45,7 @@ export default function DeleteTagDialog() {
 						<Text>
 							This will remove the user{" "}
 							<Text bold italic>
-								{user.username}.
+								{user?.username}.
 							</Text>
 							This action cannot be reversed. Deleted data can not
 							be recovered.
@@ -72,24 +72,37 @@ export default function DeleteTagDialog() {
 							</Button>
 							<Button
 								colorScheme="danger"
-								onPress={async () => {
-									try {
-										await deleteUser(
-											user._id,
-											user._token,
-											confirmPassword
-										);
-										setUser(null);
-										toast.show({
-											title: "User deleted.",
-											status: "success",
+								onPress={() => {
+									deleteUser(
+										user?._id,
+										user?._token,
+										confirmPassword
+									)
+										.then(() => {
+											setUser(null);
+
+											toast.show({
+												title: "User deleted.",
+											});
+										})
+										.catch(err => {
+											if (
+												err.message ===
+												"Token is not valid."
+											) {
+												toast.show({
+													title: "Session expired",
+													description:
+														"Please log in again.",
+												});
+
+												setUser(null);
+											} else
+												toast.show({
+													title: "Error deleting user.",
+													description: err.message,
+												});
 										});
-									} catch (err) {
-										toast.show({
-											title: "Error deleting user.",
-											status: "error",
-										});
-									}
 								}}>
 								Delete
 							</Button>

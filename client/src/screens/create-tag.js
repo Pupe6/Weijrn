@@ -60,19 +60,17 @@ export default function CreateTagScreen(props) {
 							color: "white",
 						}}
 						onPress={() => {
-							createTag(tag.nickname, user.macAddress)
+							createTag(tag.nickname, user?.macAddress)
 								.then(() => {
 									toast.show({
 										title: "Syncing tag",
-										status: "info",
 									});
 									const repeatInterval = setInterval(() => {
-										statusUpdate(user.macAddress)
+										statusUpdate(user?.macAddress)
 											.then(res => {
 												if (!res.raspiSend.status) {
 													toast.show({
 														title: "Tag synced",
-														status: "success",
 													});
 
 													props.navigation.navigate(

@@ -4,7 +4,6 @@ export default function SwipeListItem({ tag, index }) {
 	return (
 		<Box>
 			<Pressable
-				onPress={() => console.log("You touched me")}
 				_dark={{
 					bg: "coolGray.800",
 				}}

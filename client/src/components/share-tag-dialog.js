@@ -37,7 +37,7 @@ export default function ShareTagDialog({ tag }) {
 					onPress={async () => {
 						const res = await shareTag(
 							tag.nickname,
-							user.macAddress
+							user?.macAddress
 						);
 
 						setShareCode(res.shareCode);

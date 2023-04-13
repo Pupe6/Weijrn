@@ -78,12 +78,15 @@ export default function GetSharedTagDialog() {
 								try {
 									await getSharedTag(
 										shareCode,
-										user.macAddress
+										user?.macAddress
 									);
+
 									toast.show({
-										title: "Tag added successfully",
+										title: "Tag imported successfully",
 									});
+
 									onClose();
+
 									navigation.navigate("Control Panel", {
 										refresh: ++global.refresh,
 									});

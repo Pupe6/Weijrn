@@ -21,6 +21,7 @@ router.get("/", verifyMAC, async (req, res) => {
 
 		res.status(200).json({ ...statusUpdate.toJSON() });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -61,6 +62,7 @@ router.post("/pending", verifyMAC, async (req, res) => {
 			return res.status(400).json({ message: "No action required." });
 		}
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -95,6 +97,7 @@ router.post("/send", verifyMAC, async (req, res) => {
 
 		res.status(200).json({ message: "Success" });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -132,6 +135,7 @@ router.post("/receive", verifyMAC, async (req, res) => {
 
 		res.status(200).json({ message: "Success" });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -158,6 +162,7 @@ router.get("/resolve", verifyMAC, async (req, res) => {
 
 		res.status(200).json({ message: "Success" });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });

@@ -30,7 +30,7 @@ export default function CustomDrawerContent(props) {
 						mt="1"
 						fontWeight="500"
 						color={iconColor}>
-						{user?.email ? user.email : "Not signed in"}
+						{user?.email ? user?.email : "Not signed in"}
 					</Text>
 				</Box>
 				<VStack divider={<Divider />} space="4">

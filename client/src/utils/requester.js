@@ -7,14 +7,17 @@ const requester = async (
 	token = null,
 	macAddress = null
 ) => {
+	let headers = {
+		"Content-Type": "application/json",
+	};
+
+	if (token) headers["X-Token"] = token;
+	if (macAddress) headers["X-Mac-Address"] = macAddress;
+
 	const res = await fetch(`${baseUrl}${path}`, {
 		method,
 		mode: "cors",
-		headers: {
-			"Content-Type": "application/json",
-			"X-Token": token,
-			"X-Mac-Address": macAddress,
-		},
+		headers,
 		body: method !== "GET" ? JSON.stringify(body) : body,
 	}).catch(err => {
 		throw err;
@@ -22,9 +25,11 @@ const requester = async (
 
 	const response = await res.json();
 
-	if (!res.ok) {
-		throw response;
-	}
+	console.log(response);
+
+	if (response.valid === false) throw new Error("Token is not valid.");
+
+	if (!res.ok) throw response;
 
 	return response;
 };

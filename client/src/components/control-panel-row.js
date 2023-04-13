@@ -63,21 +63,17 @@ export default function ControlPanelRow({ tag }) {
 						onPress={async () => {
 							try {
 								const res = await receiveStatusUpdate(
-									user.macAddress,
+									user?.macAddress,
 									tag._id
 								);
 								toast.show({
 									title: res.message,
-									status: "success",
 									duration: 3000,
-									isClosable: true,
 								});
 							} catch {
 								toast.show({
 									title: "Error receiving status update",
-									status: "error",
 									duration: 3000,
-									isClosable: true,
 								});
 							}
 						}}>
@@ -99,7 +95,7 @@ export default function ControlPanelRow({ tag }) {
 						/>
 					</Button>
 				</Tooltip>
-				{user._id === tag._owner && <ShareTagDialog tag={tag} />}
+				{user?._id === tag._owner && <ShareTagDialog tag={tag} />}
 				<EditTagDialog tag={tag} />
 				<DeleteTagDialog tag={tag} />
 			</HStack>

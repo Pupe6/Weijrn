@@ -18,7 +18,7 @@ export default function EditTagScreen(props) {
 		nickname: props?.route?.params?.tag?.nickname,
 	});
 	const toast = useToast();
-	const { user } = useContext(AuthContext);
+	const { user, setUser } = useContext(AuthContext);
 
 	return (
 		<Center h="290px">
@@ -85,19 +85,31 @@ export default function EditTagScreen(props) {
 						onPress={() => {
 							updateTag(
 								tag.oldNickname,
-								user._token,
+								user?._token,
 								tag.nickname
 							)
 								.then(() => {
 									toast.show({
 										title: "Tag updated",
-										status: "success",
 									});
 									props.navigation.navigate("Control Panel", {
 										refresh: ++global.refresh,
 									});
 								})
-								.catch(alert);
+								.catch(err => {
+									if (err.message === "Token is not valid.") {
+										toast.show({
+											title: "Session expired",
+											description: "Please log in again.",
+										});
+
+										setUser(null);
+									} else
+										toast.show({
+											title: "Error updating tag",
+											description: err.message,
+										});
+								});
 						}}>
 						Edit Tag
 					</Button>

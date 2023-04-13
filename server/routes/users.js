@@ -19,6 +19,7 @@ router.get("/", async (_, res) => {
 
 		res.status(200).json({ users, count });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -26,11 +27,15 @@ router.get("/", async (_, res) => {
 // Get User By Id
 router.get("/:id", async (req, res) => {
 	try {
-		const { err, users } = await getUsers({
+		const res = await getUsers({
 			_id: req.params.id,
 		});
 
-		if (err) throw err;
+		const { message, users } = res;
+
+		console.log(res);
+
+		if (message) throw message;
 
 		const user = users[0];
 
@@ -42,6 +47,7 @@ router.get("/:id", async (req, res) => {
 
 		res.status(200).json({ user });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -53,12 +59,13 @@ router.put("/:id", verifyJWT, async (req, res) => {
 
 		if (user.err) throw user.err;
 
-		user._token = undefined;
+		// user._token = undefined;
 		user.password = undefined;
 		user.macAddress = undefined;
 
 		res.status(200).json({ user });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -75,8 +82,9 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 
 		if (user.err) throw user.err;
 
-		res.status(200).json(user);
+		res.status(200).json({ user });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });

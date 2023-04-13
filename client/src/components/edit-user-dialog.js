@@ -24,8 +24,8 @@ export default function DeleteTagDialog() {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const { user, setUser } = React.useContext(AuthContext);
 	const [newUser, setNewUser] = React.useState({
-		username: user.username,
-		email: user.email,
+		username: user?.username,
+		email: user?.email,
 		password: "",
 		newPassword: "",
 		confirmNewPassword: "",
@@ -57,7 +57,7 @@ export default function DeleteTagDialog() {
 						<Text>
 							Edit User{" "}
 							<Text bold italic>
-								{user.username}
+								{user?.username}
 							</Text>
 						</Text>
 					</AlertDialog.Header>
@@ -147,7 +147,6 @@ export default function DeleteTagDialog() {
 									if (!valid) {
 										toast.show({
 											title: "Password mismatch",
-											status: "error",
 											description:
 												"Please check your passwords",
 										});
@@ -159,30 +158,38 @@ export default function DeleteTagDialog() {
 										return;
 									}
 
-									try {
-										setUser({
-											...(await updateUser(
-												newUser,
-												user._id,
-												user._token
-											)),
-										});
+									setUser({
+										...(await updateUser(
+											newUser,
+											user?._id,
+											user?._token
+										).catch(err => {
+											if (
+												err.message ===
+												"Token is not valid."
+											) {
+												toast.show({
+													title: "Session expired",
+													description:
+														"Please log in again.",
+												});
 
-										toast.show({
-											title: "Success",
-											status: "success",
-										});
+												setUser(null);
+											} else
+												toast.show({
+													title: "Error updating user",
+													description: err.message,
+												});
+										})),
+									});
 
-										onClose();
+									toast.show({
+										title: "User successfully updated",
+									});
 
-										navigation.navigate("Profile");
-									} catch (error) {
-										toast.show({
-											title: "Error",
-											status: "error",
-											description: "Something went wrong",
-										});
-									}
+									onClose();
+
+									navigation.navigate("Profile");
 								}}>
 								Edit
 							</Button>

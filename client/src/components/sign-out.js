@@ -49,11 +49,8 @@ export default function SignOut() {
 									toast.show({
 										title: "Signed out",
 										description: "You have been signed out",
-										status: "success",
-										duration: 3000,
-										isClosable: true,
 									});
-									await logout(user._token);
+									await logout(user?._token);
 								}}>
 								Sign Out
 							</Button>

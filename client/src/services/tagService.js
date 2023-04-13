@@ -2,9 +2,9 @@ import * as requester from "../utils/requester";
 
 // GET /jrn/tags
 
-export const getTags = async macAddress => {
+export const getTags = async token => {
 	const response = await requester
-		.get("/jrn/tags", undefined, null, macAddress)
+		.get("/jrn/tags", undefined, token)
 		.catch(err => {
 			throw err;
 		});

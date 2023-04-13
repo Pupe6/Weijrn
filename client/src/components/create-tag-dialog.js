@@ -81,17 +81,16 @@ export default function CreateTagDialog() {
 							onPress={async () => {
 								createTag(
 									tagNickname,
-									user._id,
-									user.macAddress
+									user?._id,
+									user?.macAddress
 								)
 									.then(() => {
 										toast.show({
 											title: "Syncing tag",
-											status: "info",
 										});
 										const repeatInterval = setInterval(
 											() => {
-												statusUpdate(user.macAddress)
+												statusUpdate(user?.macAddress)
 													.then(res => {
 														if (
 															!res.raspiSend
@@ -99,7 +98,6 @@ export default function CreateTagDialog() {
 														) {
 															toast.show({
 																title: "Tag synced",
-																status: "success",
 															});
 
 															navigation.navigate(

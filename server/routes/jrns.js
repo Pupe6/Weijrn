@@ -10,7 +10,7 @@ const randomCodeGenerator = require("../utils/randomCodeGenerator");
 
 const router = require("express").Router();
 
-router.get("/tags", verifyMAC, async (req, res) => {
+router.get("/tags", verifyJWT, async (req, res) => {
 	try {
 		const user = req.user;
 
@@ -21,6 +21,7 @@ router.get("/tags", verifyMAC, async (req, res) => {
 
 		res.status(200).json({ tags });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -42,6 +43,7 @@ router.get("/tags/:nickname", verifyMAC, async (req, res) => {
 			data: undefined,
 		});
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -95,6 +97,7 @@ router.post("/tags", verifyMAC, async (req, res) => {
 
 		res.status(201).json({ tag: { ...tag.toJSON(), data: undefined } });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -122,6 +125,7 @@ router.put("/tags/:nickname", verifyJWT, async (req, res) => {
 
 		res.status(200).json({ tag: updatedTag, data: undefined });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -194,6 +198,7 @@ router.post("/tags/share/:nickname", verifyMAC, async (req, res) => {
 
 		res.status(200).json({ shareCode: shareCode.shareCode });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -226,6 +231,7 @@ router.get("/tags/share/:code", verifyMAC, async (req, res) => {
 
 		res.status(200).json({ message: "Tag shared." });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
