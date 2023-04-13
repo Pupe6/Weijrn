@@ -97,27 +97,6 @@ export default function ProfileScreen({ navigation }) {
 								{user?.email}
 							</Text>
 						</HStack>
-						<HStack space={4} alignItems="center">
-							<Icon
-								as={<Feather name="key" />}
-								size="sm"
-								color={useColorModeValue(
-									"coolGray.800",
-									"white"
-								)}
-							/>
-							<Text
-								_dark={{
-									color: "warmGray.50",
-								}}
-								_light={{
-									color: "coolGray.800",
-								}}
-								fontSize="sm"
-								fontWeight={600}>
-								{user?.macAddress}
-							</Text>
-						</HStack>
 						<HStack
 							space={4}
 							alignItems="center"

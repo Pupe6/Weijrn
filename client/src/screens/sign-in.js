@@ -97,7 +97,7 @@ export default function SignInScreen({ navigation }) {
 								_dark={{
 									color: "warmGray.200",
 								}}>
-								I'm a new user?.{" "}
+								I'm a new user.{" "}
 							</Text>
 							<Button
 								variant="link"

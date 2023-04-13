@@ -158,30 +158,32 @@ export default function DeleteTagDialog() {
 										return;
 									}
 
-									setUser({
-										...(await updateUser(
-											newUser,
-											user?._id,
-											user?._token
-										).catch(err => {
-											if (
-												err.message ===
-												"Token is not valid."
-											) {
-												toast.show({
-													title: "Session expired",
-													description:
-														"Please log in again.",
-												});
+									const updatedUser = await updateUser(
+										newUser,
+										user?._id,
+										user?._token
+									).catch(err => {
+										if (
+											err.message ===
+											"Token is not valid."
+										) {
+											toast.show({
+												title: "Session expired",
+												description:
+													"Please log in again.",
+											});
 
-												setUser(null);
-											} else
-												toast.show({
-													title: "Error updating user",
-													description: err.message,
-												});
-										})),
+											setUser(null);
+										} else
+											toast.show({
+												title: "Error updating user",
+												description: err.message,
+											});
 									});
+
+									console.log(updatedUser.user);
+
+									setUser(updatedUser.user);
 
 									toast.show({
 										title: "User successfully updated",
