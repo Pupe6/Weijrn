@@ -1,0 +1,12 @@
+on: push
+
+jobs:
+	deploy-server:
+		runs-on: ubuntu-latest
+		name: Deploy Server To Render
+		steps:
+			- name: Deploy Server To Render
+				id: ping
+				uses: soul-wish/ping-url-javascript-action@v1.1
+				with:
+					url: ${{ secrets.SERVER_DEPLOY_URL }}
