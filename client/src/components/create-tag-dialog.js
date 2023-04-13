@@ -25,6 +25,8 @@ export default function CreateTagDialog() {
 	const { user } = React.useContext(AuthContext);
 	const navigation = useNavigation();
 
+	const [intervalId, setIntervalId] = React.useState(null);
+
 	return (
 		<Center>
 			<Tooltip
@@ -71,6 +73,10 @@ export default function CreateTagDialog() {
 							variant="unstyled"
 							colorScheme="coolGray"
 							onPress={() => {
+								if (intervalId) {
+									clearInterval(intervalId);
+									setIntervalId(null);
+								}
 								onClose();
 							}}
 							ref={cancelRef}>
@@ -79,46 +85,57 @@ export default function CreateTagDialog() {
 						<Button
 							colorScheme="success"
 							onPress={async () => {
-								createTag(
-									tagNickname,
-									user._id,
-									user.macAddress
-								)
-									.then(() => {
-										toast.show({
-											title: "Syncing tag",
-											status: "info",
-										});
-										const repeatInterval = setInterval(
-											() => {
-												statusUpdate(user.macAddress)
-													.then(res => {
-														if (
-															!res.raspiSend
-																.status
-														) {
-															toast.show({
-																title: "Tag synced",
-																status: "success",
-															});
+								try {
+									await createTag(
+										tagNickname,
+										user._id,
+										user.macAddress
+									);
+									if (!intervalId) {
+										const id = setInterval(async () => {
+											try {
+												await statusUpdate(
+													user.macAddress
+												);
 
-															navigation.navigate(
-																"Control Panel"
-															);
+												if (!res.raspiSend.status) {
+													toast.show({
+														title: "Tag synced",
+														status: "success",
+													});
 
-															clearInterval(
-																repeatInterval
-															);
+													navigation.navigate(
+														"Control Panel"
+													);
 
-															onClose();
-														}
-													})
-													.catch(alert);
-											},
-											2000
-										);
-									})
-									.catch(alert);
+													clearInterval(
+														repeatInterval
+													);
+
+													onClose();
+												}
+											} catch (err) {
+												toast.show({
+													title: "Error",
+													description: err.message,
+													status: "error",
+												});
+											}
+											toast.show({
+												title: "Syncing tag",
+												status: "info",
+												duration: 2000,
+											});
+										}, 2000);
+										setIntervalId(id);
+									}
+								} catch (err) {
+									toast.show({
+										title: "Error",
+										description: err.message,
+										status: "error",
+									});
+								}
 							}}>
 							Create
 						</Button>
