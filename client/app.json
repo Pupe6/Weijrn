@@ -26,7 +26,7 @@
 			}
 		},
 		"web": {
-			"favicon": "./src/assets/favicon.png"
+			"favicon": "http://127.0.0.1:8393/favicon"
 		}
 	}
 }
