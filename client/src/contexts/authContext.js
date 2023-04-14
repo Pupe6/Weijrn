@@ -12,7 +12,7 @@ export const AuthContext = React.createContext({
 		_id: "",
 		username: "",
 		email: "",
-		macAddress: "",
+		uuid: "",
 		_token: "",
 	},
 	login: async () => {},
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 		_id: "",
 		username: "",
 		email: "",
-		macAddress: "",
+		uuid: "",
 		_token: "",
 	});
 

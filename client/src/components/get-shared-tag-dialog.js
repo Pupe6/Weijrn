@@ -76,10 +76,7 @@ export default function GetSharedTagDialog() {
 							colorScheme="info"
 							onPress={async () => {
 								try {
-									await getSharedTag(
-										shareCode,
-										user?.macAddress
-									);
+									await getSharedTag(shareCode, user?.uuid);
 
 									toast.show({
 										title: "Tag imported successfully",

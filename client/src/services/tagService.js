@@ -14,9 +14,9 @@ export const getTags = async token => {
 
 // GET /jrn/tags/:nickname
 
-export const getTag = async (nickname, macAddress) => {
+export const getTag = async (nickname, uuid) => {
 	const response = await requester
-		.get(`/jrn/tags/${nickname}`, undefined, null, macAddress)
+		.get(`/jrn/tags/${nickname}`, undefined, null, uuid)
 		.catch(err => {
 			throw err;
 		});
@@ -26,15 +26,16 @@ export const getTag = async (nickname, macAddress) => {
 
 // POST /jrn/tags/:nickname
 
-export const createTag = async (nickname, _owner, macAddress) => {
+export const createTag = async (nickname, uuid) => {
 	const response = await requester
-		.post(`/statusupdate/send`, { nickname, _owner }, null, macAddress)
+		.post(`/statusupdate/send`, { nickname }, null, uuid)
 		.catch(err => {
 			throw err;
 		});
 
 	return response;
 };
+
 // PUT   /jrn/tags/:x-token
 
 export const updateTag = async (nickname, token, newNickname) => {
@@ -61,9 +62,9 @@ export const deleteTag = async (nickname, token) => {
 
 // GET /statusupdate
 
-export const statusUpdate = async macAddress => {
+export const statusUpdate = async uuid => {
 	const response = await requester
-		.get("/statusupdate", undefined, null, macAddress)
+		.get("/statusupdate", undefined, null, uuid)
 		.catch(err => {
 			throw err;
 		});
@@ -73,9 +74,9 @@ export const statusUpdate = async macAddress => {
 
 // POST /statusupdate/receive
 
-export const receiveStatusUpdate = async (macAddress, _id) => {
+export const receiveStatusUpdate = async (uuid, _id) => {
 	const response = await requester
-		.post("/statusupdate/receive", { _id }, null, macAddress)
+		.post("/statusupdate/receive", { _id }, null, uuid)
 		.catch(err => {
 			throw err;
 		});
@@ -84,9 +85,9 @@ export const receiveStatusUpdate = async (macAddress, _id) => {
 };
 // GET /jrn/tags/share/:code
 
-export const getSharedTag = async (code, macAddress) => {
+export const getSharedTag = async (code, uuid) => {
 	const response = await requester
-		.get(`/jrn/tags/share/${code}`, undefined, null, macAddress)
+		.get(`/jrn/tags/share/${code}`, undefined, null, uuid)
 		.catch(err => {
 			throw err;
 		});
@@ -96,9 +97,9 @@ export const getSharedTag = async (code, macAddress) => {
 
 // POST /jrn/tags/share/:nickname
 
-export const shareTag = async (nickname, macAddress) => {
+export const shareTag = async (nickname, uuid) => {
 	const response = await requester
-		.post(`/jrn/tags/share/${nickname}`, undefined, null, macAddress)
+		.post(`/jrn/tags/share/${nickname}`, undefined, null, uuid)
 		.catch(err => {
 			throw err;
 		});

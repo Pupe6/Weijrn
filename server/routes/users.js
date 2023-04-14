@@ -14,7 +14,7 @@ router.get("/", async (_, res) => {
 		users.forEach(user => {
 			user._token = undefined;
 			user.password = undefined;
-			user.macAddress = undefined;
+			user.uuid = undefined;
 		});
 
 		res.status(200).json({ users, count });
@@ -27,13 +27,9 @@ router.get("/", async (_, res) => {
 // Get User By Id
 router.get("/:id", async (req, res) => {
 	try {
-		const res = await getUsers({
+		const { message, users } = await getUsers({
 			_id: req.params.id,
 		});
-
-		const { message, users } = res;
-
-		console.log(res);
 
 		if (message) throw message;
 
@@ -41,7 +37,7 @@ router.get("/:id", async (req, res) => {
 
 		user._token = undefined;
 		user.password = undefined;
-		user.macAddress = undefined;
+		user.uuid = undefined;
 
 		if (!users) throw new Error("There is no such user with provided id.");
 
@@ -59,9 +55,8 @@ router.put("/:id", verifyJWT, async (req, res) => {
 
 		if (user.err) throw user.err;
 
-		// user._token = undefined;
 		user.password = undefined;
-		user.macAddress = undefined;
+		user.uuid = undefined;
 
 		res.status(200).json({ user });
 	} catch (err) {
@@ -82,9 +77,8 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 
 		if (user.err) throw user.err;
 
-		res.status(200).json({ user });
+		res.status(200).json(user);
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });

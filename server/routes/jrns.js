@@ -2,7 +2,7 @@ const Tag = require("../models/Tag");
 const User = require("../models/User");
 const ShareCode = require("../models/ShareCode");
 
-const verifyMAC = require("../middleware/verifyMAC");
+const verifyUUID = require("../middleware/verifyUUID");
 const verifyJWT = require("../middleware/verifyJWT");
 
 const { encrypt } = require("../utils/encryption");
@@ -26,7 +26,7 @@ router.get("/tags", verifyJWT, async (req, res) => {
 	}
 });
 
-router.get("/tags/:nickname", verifyMAC, async (req, res) => {
+router.get("/tags/:nickname", verifyJWT, async (req, res) => {
 	try {
 		const { nickname } = req.params;
 		const user = req.user;
@@ -48,12 +48,12 @@ router.get("/tags/:nickname", verifyMAC, async (req, res) => {
 	}
 });
 
-router.post("/tags", verifyMAC, async (req, res) => {
+router.post("/tags", verifyUUID, async (req, res) => {
 	try {
-		const { _owner, nickname, data, type } = req.body;
+		const { nickname, data, type } = req.body;
 		const user = req.user;
 
-		if (!(_owner && nickname && data && type))
+		if (!(nickname && data && type))
 			return res
 				.status(400)
 				.json({ message: "Please fullfil all fields." });
@@ -74,7 +74,7 @@ router.post("/tags", verifyMAC, async (req, res) => {
 		const encryptedData = encrypt(data, process.env.ENCRYPTION_KEY);
 
 		const tag = await Tag.create({
-			_owner,
+			_owner: user._id,
 			nickname,
 			data: encryptedData,
 			type,
@@ -107,15 +107,30 @@ router.put("/tags/:nickname", verifyJWT, async (req, res) => {
 		const { nickname } = req.params;
 		const { nickname: newNickname, data, type } = req.body;
 
+		const user = req.user;
+
 		const tagToUpdate = await Tag.findOne({
 			nickname,
-			_owner: req.user._id,
+			_owner: user._id,
 		});
 
 		if (!tagToUpdate)
 			return res.status(404).json({
 				message: `Tag "${nickname}" not found or you are not authorized to update it.`,
 			});
+
+		let errorMessage = "";
+
+		if (user._tags.find(tag => tag.nickname === newNickname))
+			errorMessage += `Tag "${newNickname}" already exists.\n`;
+
+		const tagWithSameData = user._tags.find(tag => tag.data === data);
+
+		if (tagWithSameData)
+			errorMessage += `Tag "${tagWithSameData.nickname}" already has the same data.\n`;
+
+		if (errorMessage)
+			return res.status(400).json({ message: errorMessage });
 
 		const updatedTag = await Tag.findOneAndUpdate(
 			{ nickname },
@@ -173,7 +188,7 @@ router.delete("/tags/:nickname", verifyJWT, async (req, res) => {
 	}
 });
 
-router.post("/tags/share/:nickname", verifyMAC, async (req, res) => {
+router.post("/tags/share/:nickname", verifyUUID, async (req, res) => {
 	try {
 		const { nickname } = req.params;
 		const user = req.user;
@@ -203,7 +218,7 @@ router.post("/tags/share/:nickname", verifyMAC, async (req, res) => {
 	}
 });
 
-router.get("/tags/share/:code", verifyMAC, async (req, res) => {
+router.get("/tags/share/:code", verifyUUID, async (req, res) => {
 	try {
 		const { code } = req.params;
 		const user = req.user;

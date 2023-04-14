@@ -3,19 +3,13 @@ import {
 	Box,
 	Button,
 	Center,
-	FormControl,
 	Heading,
 	HStack,
 	Icon,
-	Input,
-	Item,
-	Label,
-	ScrollView,
 	Text,
 	VStack,
-	useClipboard,
-	useToast,
 	useColorModeValue,
+	Tooltip,
 } from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { Feather } from "@expo/vector-icons";
@@ -24,6 +18,8 @@ import EditUserDialog from "../components/edit-user-dialog";
 import DeleteUserDialog from "../components/delete-user-dialog";
 
 export default function ProfileScreen({ navigation }) {
+	const [showUUID, setShowUUID] = useState(false);
+
 	const { user } = useContext(AuthContext);
 
 	return (
@@ -96,6 +92,92 @@ export default function ProfileScreen({ navigation }) {
 								fontWeight={600}>
 								{user?.email}
 							</Text>
+						</HStack>
+						<HStack space={4} alignItems="center">
+							<Icon
+								as={<Feather name="key" />}
+								size="sm"
+								color={useColorModeValue(
+									"coolGray.800",
+									"white"
+								)}
+							/>
+							{showUUID ? (
+								<>
+									<Text
+										_dark={{
+											color: "warmGray.50",
+										}}
+										_light={{
+											color: "coolGray.800",
+										}}
+										fontSize="sm"
+										fontWeight={600}>
+										{user?.uuid}
+									</Text>
+									<Tooltip
+										label="Hide UUID"
+										placement="top"
+										accessibilityLabel="Hide UUID">
+										<Button
+											_dark={{
+												bg: "coolGray.800",
+											}}
+											_light={{
+												bg: "white",
+											}}
+											rounded="full"
+											size="sm"
+											onPress={() => setShowUUID(false)}>
+											<Icon
+												as={<Feather name="eye-off" />}
+												size="sm"
+												color={useColorModeValue(
+													"coolGray.800",
+													"white"
+												)}
+											/>
+										</Button>
+									</Tooltip>
+								</>
+							) : (
+								<>
+									<Text
+										_dark={{
+											color: "warmGray.50",
+										}}
+										_light={{
+											color: "coolGray.800",
+										}}
+										fontWeight={600}>
+										{"  "}***-***-***-***{"  "}
+									</Text>
+									<Tooltip
+										label="Show UUID"
+										placement="top"
+										accessibilityLabel="Show UUID">
+										<Button
+											_dark={{
+												bg: "coolGray.800",
+											}}
+											_light={{
+												bg: "white",
+											}}
+											rounded="full"
+											size="sm"
+											onPress={() => setShowUUID(true)}>
+											<Icon
+												as={<Feather name="eye" />}
+												size="sm"
+												color={useColorModeValue(
+													"coolGray.800",
+													"white"
+												)}
+											/>
+										</Button>
+									</Tooltip>
+								</>
+							)}
 						</HStack>
 						<HStack
 							space={4}

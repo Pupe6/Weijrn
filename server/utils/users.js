@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 
 const User = require("../models/User");
+const Tag = require("../models/Tag");
 
 async function getUsers(query = {}) {
 	try {
@@ -62,6 +63,9 @@ async function deleteUser(userId, userPassword) {
 		// Verify User Ownership
 		if (!(await bcrypt.compare(userPassword, userToDelete.password)))
 			throw new Error("The password you entered is incorrect.");
+
+		// Delete All Tags The User Owns
+		await Tag.deleteMany({ _owner: userId });
 
 		await User.findByIdAndDelete(userId);
 

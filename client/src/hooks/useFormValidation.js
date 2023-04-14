@@ -5,7 +5,7 @@ import {
 	validateEmail,
 	validatePassword,
 	validateConfirmPassword,
-	validateMacAddress,
+	validateUUID,
 } from "../utils/validation";
 
 export const useFormValidation = (initialState, validate) => {
@@ -45,8 +45,8 @@ export const useFormValidation = (initialState, validate) => {
 					),
 				});
 				break;
-			case "macAddress":
-				setErrors({ ...errors, macAddress: validateMacAddress(value) });
+			case "uuid":
+				setErrors({ ...errors, uuid: validateUUID(value) });
 				break;
 		}
 	};

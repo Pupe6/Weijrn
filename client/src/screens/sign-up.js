@@ -23,7 +23,7 @@ export default function SignUpScreen({ navigation }) {
 				email: "",
 				password: "",
 				confirmPassword: "",
-				macAddress: "",
+				uuid: "",
 			},
 			validateSignUpForm
 		);
@@ -113,19 +113,30 @@ export default function SignUpScreen({ navigation }) {
 								{errors?.confirmPassword}
 							</FormControl.ErrorMessage>
 						</FormControl>
-						<FormControl isInvalid={errors?.macAddress}>
-							<FormControl.Label>Mac Address</FormControl.Label>
+						<FormControl isInvalid={errors?.uuid}>
+							<FormControl.Label>UUID</FormControl.Label>
 							<Input
 								onChangeText={text => {
-									const strippedMac = text
-										.replace(/^a-zA-Z0-9]/g, ":")
-										.trim();
-									handleChange("macAddress", strippedMac);
+									let uuid = text
+										.trim()
+										.replace(
+											/[^0-9a-zA-Z]([0-9a-zA-Z])/g,
+											"$1"
+										);
+
+									// place "-" every 3 characters
+									uuid = uuid.replace(/(.{3})/g, "$1-");
+
+									// remove last "-" if it exists
+									if (uuid[uuid.length - 1] === "-")
+										uuid = uuid.slice(0, -1);
+
+									handleChange("uuid", uuid);
 								}}
 							/>
 
 							<FormControl.ErrorMessage>
-								{errors?.macAddress}
+								{errors?.uuid}
 							</FormControl.ErrorMessage>
 						</FormControl>
 						<Button

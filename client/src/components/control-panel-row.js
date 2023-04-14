@@ -63,7 +63,7 @@ export default function ControlPanelRow({ tag }) {
 						onPress={async () => {
 							try {
 								const res = await receiveStatusUpdate(
-									user?.macAddress,
+									user?.uuid,
 									tag._id
 								);
 								toast.show({

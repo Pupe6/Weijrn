@@ -2,12 +2,13 @@ const { Schema, model, models } = require("mongoose");
 
 const userSchema = new Schema(
 	{
-		macAddress: {
+		uuid: {
 			type: String,
-			required: [true, "MAC address is required."],
+			required: [true, "UUID is required."],
 			match: [
-				/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/,
-				'"{VALUE}" is not a valid MAC address.',
+				// 12 characters long, 4 groups of 3 characters separated by hyphens
+				/^[0-9a-f]{3}-[0-9a-f]{3}-[0-9a-f]{3}-[0-9a-f]{3}$/i,
+				'"{VALUE}" is not a valid UUID.',
 			],
 		},
 		username: {
@@ -22,7 +23,7 @@ const userSchema = new Schema(
 			unique: [true, 'The email "{VALUE}" is already taken.'],
 			match: [
 				/^[A-Za-z0-9_\.]+@[A-Za-z]+\.[A-Za-z]{2,3}$/,
-				'"{VALUE}" is not a valid email address.',
+				'"{VALUE}" is not a valid email.',
 			],
 		},
 		password: {

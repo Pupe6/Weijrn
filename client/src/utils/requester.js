@@ -5,14 +5,14 @@ const requester = async (
 	path,
 	body = undefined,
 	token = null,
-	macAddress = null
+	uuid = null
 ) => {
 	let headers = {
 		"Content-Type": "application/json",
 	};
 
 	if (token) headers["X-Token"] = token;
-	if (macAddress) headers["X-Mac-Address"] = macAddress;
+	if (uuid) headers["X-UUID"] = uuid;
 
 	const res = await fetch(`${baseUrl}${path}`, {
 		method,

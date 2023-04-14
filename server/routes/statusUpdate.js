@@ -1,18 +1,18 @@
 const Tag = require("../models/Tag");
 const Status = require("../models/Status");
 
-const verifyMAC = require("../middleware/verifyMAC");
+const verifyUUID = require("../middleware/verifyUUID");
 
 const router = require("express").Router();
 
-router.get("/", verifyMAC, async (req, res) => {
+router.get("/", verifyUUID, async (req, res) => {
 	try {
-		const { macAddress } = req.user;
+		const { uuid } = req.user;
 
-		const statusUpdate = await Status.findOne({ macAddress });
+		const statusUpdate = await Status.findOne({ uuid });
 
 		if (!statusUpdate) {
-			const newStatusUpdate = new Status({ macAddress });
+			const newStatusUpdate = new Status({ uuid });
 
 			await newStatusUpdate.save();
 
@@ -26,14 +26,14 @@ router.get("/", verifyMAC, async (req, res) => {
 	}
 });
 
-router.post("/pending", verifyMAC, async (req, res) => {
+router.post("/pending", verifyUUID, async (req, res) => {
 	try {
-		const { macAddress } = req.user;
+		const { uuid } = req.user;
 
-		let statusUpdate = await Status.findOne({ macAddress });
+		let statusUpdate = await Status.findOne({ uuid });
 
 		if (!statusUpdate) {
-			statusUpdate = new Status({ macAddress });
+			statusUpdate = new Status({ uuid });
 
 			await statusUpdate.save();
 		}
@@ -67,19 +67,19 @@ router.post("/pending", verifyMAC, async (req, res) => {
 	}
 });
 
-router.post("/send", verifyMAC, async (req, res) => {
+router.post("/send", verifyUUID, async (req, res) => {
 	try {
-		const { macAddress } = req.user;
+		const { uuid, _id: _owner } = req.user;
 
-		let statusUpdate = await Status.findOne({ macAddress });
+		let statusUpdate = await Status.findOne({ uuid });
 
 		if (!statusUpdate) {
-			statusUpdate = new Status({ macAddress });
+			statusUpdate = new Status({ uuid });
 
 			await statusUpdate.save();
 		}
 
-		const { nickname, _owner } = req.body;
+		const { nickname } = req.body;
 
 		if (!(nickname && _owner))
 			return res
@@ -102,14 +102,14 @@ router.post("/send", verifyMAC, async (req, res) => {
 	}
 });
 
-router.post("/receive", verifyMAC, async (req, res) => {
+router.post("/receive", verifyUUID, async (req, res) => {
 	try {
-		const { macAddress } = req.user;
+		const { uuid } = req.user;
 
-		let statusUpdate = await Status.findOne({ macAddress });
+		let statusUpdate = await Status.findOne({ uuid });
 
 		if (!statusUpdate) {
-			statusUpdate = new Status({ macAddress });
+			statusUpdate = new Status({ uuid });
 
 			await statusUpdate.save();
 		}
@@ -140,12 +140,12 @@ router.post("/receive", verifyMAC, async (req, res) => {
 	}
 });
 
-router.get("/resolve", verifyMAC, async (req, res) => {
+router.get("/resolve", verifyUUID, async (req, res) => {
 	try {
-		const { macAddress } = req.user;
+		const { uuid } = req.user;
 
 		await Status.findOneAndUpdate(
-			{ macAddress },
+			{ uuid },
 			{
 				raspiReceive: {
 					status: false,

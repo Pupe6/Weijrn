@@ -17,7 +17,7 @@ export const validateSignUpForm = formState => {
 		formState.confirmPassword,
 		formState.password
 	);
-	errors.macAddress = validateMacAddress(formState.macAddress);
+	errors.uuid = validateUUID(formState.uuid);
 
 	return errors;
 };
@@ -56,11 +56,11 @@ export function validateConfirmPassword(password, confirmPassword) {
 	else return "Passwords do not match";
 }
 
-export function validateMacAddress(macAddress) {
-	if (!macAddress) return "Mac Address is required";
+export function validateUUID(uuid) {
+	if (!uuid) return "UUID is required";
 
-	const re = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+	const re = /^[0-9a-f]{3}-[0-9a-f]{3}-[0-9a-f]{3}-[0-9a-f]{3}$/i;
 
-	if (re.test(macAddress)) return null;
-	else return "Invalid Mac Address";
+	if (re.test(uuid)) return null;
+	else return "Invalid UUID";
 }

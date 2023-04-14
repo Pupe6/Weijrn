@@ -13,6 +13,7 @@ import write
 
 # Load environment variables
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # Set the desired interface to True
@@ -33,8 +34,8 @@ ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY").encode("utf-8")
 IV_LENGTH = 16
 
 SERVER_URL = "http://localhost:8393"
-MAC_ADDRESS = "00:00:00:00:00:00"
-# UUID = "32d-ef2-7e5-4f0"
+UUID = "32d-ef2-7e5-4f0"
+# MAC_ADDRESS = "00:00:00:00:00:00"
 
 
 def encrypt(data: str) -> str:
@@ -58,7 +59,7 @@ def decrypt(data: str) -> str:
 
     unpadded = Padding.unpad(decrypted, AES.block_size)
 
-    return unpadded.decode('utf-8')
+    return unpadded.decode("utf-8")
 
 
 # Requests
@@ -67,8 +68,8 @@ def get_status_checker():
 
     while True:
         # headers for uuid
-        # headers = {"X-UUID": UUID}
-        headers = {"X-Mac-Address": MAC_ADDRESS}
+        headers = {"X-UUID": UUID}
+        # headers = {"X-Mac-Address": MAC_ADDRESS}
 
         response = requests.get(status_update_url, headers=headers)
         data = response.json()
@@ -137,8 +138,8 @@ def get_status_checker():
 
 def create_tag(_owner: str, nickname: str, type: str, data: str):
     # headers for uuid
-    # headers = {"X-UUID": UUID}
-    headers = {"X-Mac-Address": MAC_ADDRESS}
+    headers = {"X-UUID": UUID}
+    # headers = {"X-Mac-Address": MAC_ADDRESS}
 
     data = {
         "_owner": _owner,
@@ -156,7 +157,7 @@ def create_tag(_owner: str, nickname: str, type: str, data: str):
         print("Tag creation failed")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     while True:
         try:
             get_status_checker()

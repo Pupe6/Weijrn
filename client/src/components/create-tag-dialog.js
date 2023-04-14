@@ -85,47 +85,46 @@ export default function CreateTagDialog() {
 						<Button
 							colorScheme="success"
 							onPress={async () => {
-								await createTag(
-									tagNickname,
-									user?._id,
-									user?.macAddress
-								).then(() => {
-									if (!intervalId) {
-										const id = setInterval(async () => {
-											try {
-												await statusUpdate(
-													user?.macAddress
-												);
+								await createTag(tagNickname, user?.uuid).then(
+									() => {
+										if (!intervalId) {
+											const id = setInterval(async () => {
+												try {
+													await statusUpdate(
+														user?.uuid
+													);
 
-												if (!res.raspiSend.status) {
+													if (!res.raspiSend.status) {
+														toast.show({
+															title: "Tag synced",
+														});
+
+														navigation.navigate(
+															"Control Panel"
+														);
+
+														clearInterval(
+															repeatInterval
+														);
+
+														onClose();
+													}
+												} catch (err) {
 													toast.show({
-														title: "Tag synced",
+														title: "Error",
+														description:
+															err.message,
 													});
-
-													navigation.navigate(
-														"Control Panel"
-													);
-
-													clearInterval(
-														repeatInterval
-													);
-
-													onClose();
 												}
-											} catch (err) {
 												toast.show({
-													title: "Error",
-													description: err.message,
+													title: "Syncing tag",
+													duration: 5000,
 												});
-											}
-											toast.show({
-												title: "Syncing tag",
-												duration: 5000,
-											});
-										}, 2000);
-										setIntervalId(id);
+											}, 2000);
+											setIntervalId(id);
+										}
 									}
-								});
+								);
 							}}>
 							Create
 						</Button>

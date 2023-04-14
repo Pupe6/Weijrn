@@ -35,10 +35,7 @@ export default function ShareTagDialog({ tag }) {
 				<Button
 					colorScheme="info"
 					onPress={async () => {
-						const res = await shareTag(
-							tag.nickname,
-							user?.macAddress
-						);
+						const res = await shareTag(tag.nickname, user?.uuid);
 
 						setShareCode(res.shareCode);
 						setIsOpen(!isOpen);

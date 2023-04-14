@@ -16,26 +16,26 @@ const BannedToken = require("../models/BannedToken");
 
 router.post("/register", async (req, res) => {
 	try {
-		const { macAddress, username, email, password } = req.body;
+		const { uuid, username, email, password } = req.body;
 
-		if (!(macAddress && username && email && password)) {
+		if (!(uuid && username && email && password)) {
 			return res
 				.status(400)
 				.json({ message: "Please fullfil all fields." });
 		}
 
-		// Make Sure The MAC Address Is Unique
-		let userWithSameMacAddress = (await getUsers({ macAddress })).users[0];
+		// Make Sure The UUID Is Unique
+		let userWithSameUUID = (await getUsers({ uuid })).users[0];
 
-		if (userWithSameMacAddress)
+		if (userWithSameUUID)
 			return res.status(409).json({
-				message: "This MAC Address is already registered.",
+				message: "This UUID is already registered.",
 			});
 
 		let encryptedPassword = await bcrypt.hash(password, 10);
 
 		let user = await createUser({
-			macAddress,
+			uuid,
 			username,
 			email: email.toLowerCase(),
 			password: encryptedPassword,
@@ -57,7 +57,7 @@ router.post("/register", async (req, res) => {
 			{
 				_id: user._id,
 				username: user.username,
-				macAddress: user.macAddress,
+				uuid: user.uuid,
 			},
 			process.env.TOKEN_KEY
 		);
@@ -89,7 +89,7 @@ router.post("/login", async (req, res) => {
 				{
 					_id: user._id,
 					username: user.username,
-					macAddress: user.macAddress,
+					uuid: user.uuid,
 				},
 				process.env.TOKEN_KEY
 			);
