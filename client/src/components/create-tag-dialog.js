@@ -88,40 +88,46 @@ export default function CreateTagDialog() {
 								await createTag(tagNickname, user?.uuid).then(
 									() => {
 										if (!intervalId) {
-											const id = setInterval(async () => {
-												try {
-													await statusUpdate(
-														user?.uuid
-													);
+											const id = setInterval(() => {
+												statusUpdate(user?.uuid)
+													.then(res => {
+														if (
+															!res.raspiSend
+																.status
+														) {
+															toast.show({
+																title: "Tag synced",
+															});
 
-													if (!res.raspiSend.status) {
+															navigation.navigate(
+																"Control Panel"
+															);
+
+															clearInterval(
+																intervalId
+															);
+
+															toast.closeAll();
+
+															onClose();
+														}
+													})
+													.catch(err => {
 														toast.show({
-															title: "Tag synced",
+															title: "Error",
+															description:
+																err.message,
+															duration: null,
 														});
-
-														navigation.navigate(
-															"Control Panel"
-														);
-
-														clearInterval(
-															repeatInterval
-														);
-
-														onClose();
-													}
-												} catch (err) {
-													toast.show({
-														title: "Error",
-														description:
-															err.message,
 													});
-												}
-												toast.show({
-													title: "Syncing tag",
-													duration: 5000,
-												});
 											}, 2000);
+
 											setIntervalId(id);
+
+											toast.show({
+												title: "Syncing tag",
+												duration: null,
+											});
 										}
 									}
 								);

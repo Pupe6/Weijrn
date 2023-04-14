@@ -104,8 +104,7 @@ def get_status_checker():
                 except Exception:
                     pass
 
-            create_tag(raspiSend["_owner"],
-                       raspiSend["nickname"], "nfc", read_data)
+            create_tag(raspiSend["nickname"], "nfc", read_data)
 
             # Set the status to resolved
             requests.get(f"{status_update_url}/resolve", headers=headers)
@@ -136,13 +135,12 @@ def get_status_checker():
             requests.get(f"{status_update_url}/resolve", headers=headers)
 
 
-def create_tag(_owner: str, nickname: str, type: str, data: str):
+def create_tag(nickname: str, type: str, data: str):
     # headers for uuid
     headers = {"X-UUID": UUID}
     # headers = {"X-Mac-Address": MAC_ADDRESS}
 
     data = {
-        "_owner": _owner,
         "nickname": nickname,
         "type": type,
         "data": data.decode()
