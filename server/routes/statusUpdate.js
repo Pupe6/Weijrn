@@ -153,7 +153,7 @@ router.post("/receive", verifyUUID, async (req, res) => {
 	}
 });
 
-router.get("/resolve", verifyUUID, async (req, res) => {
+router.post("/resolve", verifyUUID, async (req, res) => {
 	try {
 		const { uuid } = req.user;
 

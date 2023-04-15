@@ -85,8 +85,8 @@ export default function CreateTagDialog() {
 						<Button
 							colorScheme="success"
 							onPress={async () => {
-								await createTag(tagNickname, user?.uuid).then(
-									() => {
+								await createTag(tagNickname, user?.uuid)
+									.then(() => {
 										if (!intervalId) {
 											const id = setInterval(() => {
 												statusUpdate(user?.uuid)
@@ -132,9 +132,18 @@ export default function CreateTagDialog() {
 												title: "Syncing tag",
 												duration: null,
 											});
+										} else {
+											toast.show({
+												title: "Tag already syncing, please wait",
+											});
 										}
-									}
-								);
+									})
+									.catch(err => {
+										toast.show({
+											title: "Error",
+											description: err.message,
+										});
+									});
 							}}>
 							Create
 						</Button>

@@ -36,11 +36,11 @@ export const updateTag = async (nickname, token, newNickname) => {
 	return response;
 };
 
-// DELETE  /tags/:nickname
+// DELETE  /tags/:id
 
-export const deleteTag = async (nickname, token) => {
+export const deleteTag = async (id, token) => {
 	const response = await requester
-		.del(`/tags/${nickname}`, undefined, token)
+		.del(`/tags/${id}`, undefined, token)
 		.catch(err => {
 			throw err;
 		});
@@ -71,6 +71,7 @@ export const receiveStatusUpdate = async (uuid, _id) => {
 
 	return response;
 };
+
 // GET /tags/share/:code
 
 export const getSharedTag = async (code, uuid) => {

@@ -45,12 +45,15 @@ export default function SignOut() {
 							<Button
 								colorScheme="danger"
 								onPress={async () => {
+									await logout(user?._token);
+
 									onClose();
+
 									toast.show({
 										title: "Signed out",
-										description: "You have been signed out",
+										description:
+											"You have successfully signed out.",
 									});
-									await logout(user?._token);
 								}}>
 								Sign Out
 							</Button>

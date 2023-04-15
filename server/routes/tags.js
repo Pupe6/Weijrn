@@ -120,19 +120,19 @@ router.put("/:nickname", verifyJWT, async (req, res) => {
 	}
 });
 
-router.delete("/:nickname", verifyJWT, async (req, res) => {
+router.delete("/:id", verifyJWT, async (req, res) => {
 	try {
-		const { nickname } = req.params;
+		const { id } = req.params;
 		const user = req.user;
 
-		const tagToDelete = await Tag.findOne({ nickname, _owner: user._id });
+		const tagToDelete = await Tag.findOne({ _id: id, _owner: user._id });
 
 		if (!tagToDelete) {
-			const tag = user._tags.find(tag => tag.nickname === nickname);
+			const tag = user._tags.find(tag => tag._id.equals(id));
 
 			if (!tag)
 				return res.status(404).json({
-					message: `Tag "${nickname}" not found.`,
+					message: "Tag not found.",
 				});
 
 			await User.updateOne(
@@ -141,7 +141,7 @@ router.delete("/:nickname", verifyJWT, async (req, res) => {
 			);
 
 			return res.status(200).json({
-				message: `Tag "${nickname}" deleted.`,
+				message: "Tag deleted.",
 			});
 		}
 
@@ -156,7 +156,7 @@ router.delete("/:nickname", verifyJWT, async (req, res) => {
 		// Delete All Share Codes For Tag
 		await ShareCode.deleteMany({ _tag: tagToDelete._id });
 
-		res.status(200).json({ message: `Tag "${nickname}" deleted.` });
+		res.status(200).json({ message: "Tag deleted." });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}

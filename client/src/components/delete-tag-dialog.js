@@ -81,7 +81,7 @@ export default function DeleteTagDialog({ tag }) {
 							<Button
 								colorScheme="danger"
 								onPress={() => {
-									deleteTag(tag.nickname, user?._token)
+									deleteTag(tag._id, user?._token)
 										.then(() => {
 											toast.show({
 												title: "Tag deleted",

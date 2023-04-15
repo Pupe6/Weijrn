@@ -107,7 +107,7 @@ def get_status_checker():
             create_tag(raspiSend["nickname"], "nfc", read_data)
 
             # Set the status to resolved
-            requests.get(f"{status_update_url}/resolve", headers=headers)
+            requests.post(f"{status_update_url}/resolve", headers=headers)
 
         elif raspiReceive["status"]:
             # Set the status to pending
@@ -132,7 +132,7 @@ def get_status_checker():
                     pass
 
             # Set the status to resolved
-            requests.get(f"{status_update_url}/resolve", headers=headers)
+            requests.post(f"{status_update_url}/resolve", headers=headers)
 
 
 def create_tag(nickname: str, type: str, data: str):

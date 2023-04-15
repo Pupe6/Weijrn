@@ -28,12 +28,19 @@ export default function SignInScreen({ navigation }) {
 
 	useEffect(() => {
 		if (isSubmitting && Object.values(errors).some(error => !error)) {
-			login(values).catch(err => {
-				toast.show({
-					title: "Error",
-					description: err.message,
+			login(values)
+				.then(() => {
+					toast.show({
+						title: "Signed In",
+						description: "You have successfully signed in.",
+					});
+				})
+				.catch(err => {
+					toast.show({
+						title: "Error",
+						description: err.message,
+					});
 				});
-			});
 		}
 	}, [isSubmitting]);
 

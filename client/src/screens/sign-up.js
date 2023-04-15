@@ -34,12 +34,19 @@ export default function SignUpScreen({ navigation }) {
 
 	useEffect(() => {
 		if (isSubmitting && Object.values(errors).some(error => !error)) {
-			register(values).catch(err => {
-				toast.show({
-					title: "Error",
-					description: err.message,
+			register(values)
+				.then(() => {
+					toast.show({
+						title: "Signed Up",
+						description: "You have successfully signed up.",
+					});
+				})
+				.catch(err => {
+					toast.show({
+						title: "Error",
+						description: err.message,
+					});
 				});
-			});
 		}
 	}, [isSubmitting]);
 
