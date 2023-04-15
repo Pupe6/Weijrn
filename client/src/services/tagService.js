@@ -24,11 +24,11 @@ export const createTag = async (nickname, uuid) => {
 	return response;
 };
 
-// PUT   /tags/:nickname
+// PUT   /tags/:id
 
-export const updateTag = async (nickname, token, newNickname) => {
+export const updateTag = async (id, token, newNickname) => {
 	const response = await requester
-		.put(`/tags/${nickname}`, { nickname: newNickname }, token)
+		.put(`/tags/${id}`, { nickname: newNickname }, token)
 		.catch(err => {
 			throw err;
 		});

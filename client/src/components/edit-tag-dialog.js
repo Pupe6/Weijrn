@@ -92,7 +92,7 @@ export default function EditTagDialog(props) {
 								colorScheme="amber"
 								onPress={async () => {
 									updateTag(
-										props.tag.nickname,
+										props.tag._id,
 										user?._token,
 										nickname
 									)

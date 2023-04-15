@@ -78,27 +78,31 @@ router.post("/", verifyUUID, async (req, res) => {
 	}
 });
 
-router.put("/:nickname", verifyJWT, async (req, res) => {
+router.put("/:id", verifyJWT, async (req, res) => {
 	try {
-		const { nickname } = req.params;
-		const { nickname: newNickname, data, type } = req.body;
+		const { id } = req.params;
+		const { nickname, data, type } = req.body;
 
 		const user = req.user;
 
 		const tagToUpdate = await Tag.findOne({
-			nickname,
-			_owner: user._id,
+			_id: id,
 		});
 
 		if (!tagToUpdate)
 			return res.status(404).json({
-				message: `Tag "${nickname}" not found or you are not authorized to update it.`,
+				message: "Tag not found.",
+			});
+
+		if (!tagToUpdate._owner.equals(user._id))
+			return res.status(403).json({
+				message: "You are not authorized to update this tag.",
 			});
 
 		let errorMessage = "";
 
-		if (user._tags.find(tag => tag.nickname === newNickname))
-			errorMessage += `Tag "${newNickname}" already exists.\n`;
+		if (user._tags.find(tag => tag.nickname === nickname))
+			errorMessage += `Tag "${nickname}" already exists.\n`;
 
 		const tagWithSameData = user._tags.find(tag => tag.data === data);
 
@@ -109,8 +113,8 @@ router.put("/:nickname", verifyJWT, async (req, res) => {
 			return res.status(400).json({ message: errorMessage });
 
 		const updatedTag = await Tag.findOneAndUpdate(
-			{ nickname },
-			{ nickname: newNickname, data, type },
+			{ _id: id },
+			{ nickname, data, type },
 			{ new: true }
 		);
 
