@@ -1,4 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { Text } from "native-base";
 import { AuthProvider } from "../contexts/authContext";
 import { ThemeProvider } from "../contexts/themeContext";
 
