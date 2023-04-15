@@ -1,6 +1,6 @@
 import { useState, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/authContext";
-import { AlertDialog, Button, Center, useToast } from "native-base";
+import { AlertDialog, Button, Center } from "native-base";
 
 export default function SignOut() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +11,6 @@ export default function SignOut() {
 
 	const cancelRef = useRef(null);
 	const { logout, user } = useContext(AuthContext);
-	const toast = useToast();
 
 	return (
 		<Center>
@@ -48,12 +47,7 @@ export default function SignOut() {
 									await logout(user?._token);
 
 									onClose();
-
-									toast.show({
-										title: "Signed out",
-										description:
-											"You have successfully signed out.",
-									});
+									await logout(user?._token);
 								}}>
 								Sign Out
 							</Button>

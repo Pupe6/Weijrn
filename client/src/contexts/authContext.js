@@ -38,9 +38,15 @@ export const AuthProvider = ({ children }) => {
 			toast.show({
 				title: "Error",
 				description: err.message,
+				duration: 2000,
 			});
 		});
 		setUser(user);
+		toast.show({
+			title: "Signed in",
+			description: "You have been signed in",
+			duration: 2000,
+		});
 	};
 
 	const register = async data => {
@@ -48,9 +54,15 @@ export const AuthProvider = ({ children }) => {
 			toast.show({
 				title: "Error",
 				description: err.message,
+				duration: 2000,
 			});
 		});
 		setUser(user);
+		toast.show({
+			title: "Signed up",
+			description: "You have been signed up",
+			duration: 2000,
+		});
 	};
 
 	const logout = async () => {
@@ -58,9 +70,15 @@ export const AuthProvider = ({ children }) => {
 			toast.show({
 				title: "Error",
 				description: err.message,
+				duration: 2000,
 			});
 		});
 		setUser(null);
+		toast.show({
+			title: "Signed out",
+			description: "You have been signed out",
+			duration: 2000,
+		});
 	};
 
 	// Check if token is valid and log out if not
