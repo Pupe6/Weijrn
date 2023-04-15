@@ -30,6 +30,30 @@ async function verifyJWT(req, res, next) {
 			"_tags"
 		);
 
+		// Update user's lastActivity timestamp
+		await User.updateOne(
+			{ _id: user._id },
+			{ $set: { lastActivity: new Date() } }
+		);
+
+		// Check if user has been active within the last 30 minutes
+		const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+
+		if (user.lastActivity.getTime() < thirtyMinutesAgo.getTime()) {
+			// Delete user's token
+			await User.updateOne({ _id: user._id }, { $set: { _token: null } });
+
+			// Ban token
+			await BannedToken.create({ token });
+
+			return res.status(403).json({
+				message:
+					"This token is expired due to inactivity. Please login again.",
+				valid: false,
+			});
+		}
+
+		// Attach user object to request for other middleware to use
 		delete user.password;
 		delete user._token;
 

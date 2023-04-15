@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Center, Box, Heading, HStack } from "native-base";
+import { Center, Box, Heading, HStack, useToast } from "native-base";
 import { getTags } from "../services/tagService";
 import { ScrollView } from "react-native";
 import ControlPanelRow from "../components/control-panel-row";
@@ -15,6 +15,8 @@ export default function AdminScreen(props) {
 		filteredTags: [],
 	});
 	const { user, setUser } = useContext(AuthContext);
+
+	const toast = useToast();
 
 	useEffect(() => {
 		getTags(user?._token)

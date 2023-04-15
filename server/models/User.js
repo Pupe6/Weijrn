@@ -39,6 +39,10 @@ const userSchema = new Schema(
 			],
 			default: [],
 		},
+		lastActivity: {
+			type: Date,
+			default: new Date(),
+		},
 		_token: {
 			type: String,
 		},

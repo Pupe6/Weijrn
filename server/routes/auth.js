@@ -99,6 +99,7 @@ router.post("/login", async (req, res) => {
 				await BannedToken.create({ token: user._token });
 
 			user._token = token;
+			user.lastActivity = Date.now();
 			await user.save();
 
 			res.status(200).json({
