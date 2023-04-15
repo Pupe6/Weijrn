@@ -1,12 +1,12 @@
 # Weijrn
 
-# Описание:
+# Description
 
-Weijrn е иновативно приложение, което улеснява управлението и съхранението на NFC тагове. Приложението се интегрира безупречно с устройство, наречено JRN, което позволява на потребителите да четат, пишат и форматират NFC тагове с лекота. Освен това Weijrn улеснява сигурното споделяне на тагове между групи чрез интуитивния си уеб интерфейс.
+Weijrn is an innovative application that makes managing and storing NFC tags easy. The application seamlessly integrates with a device called JRN, which allows users to read, write and format NFC tags with ease. In addition, Weijrn makes it easy to securely share tags between groups through its intuitive web interface.
 
-Тази съвременна технология предоставя на служителите в офиса удобен и сигурен начин за управление на достъпа, като позволява бърз и лесен достъп до стаи. С Weijrn можете да управлявате NFC таговете си ефективно и да оптимизирате работния си процес като никога до сега
+This modern technology provides office employees with a convenient and secure way to manage access by allowing fast and easy access to rooms. With Weijrn you can manage your NFC tags efficiently and optimize your work process like never before
 
-## Технологии:
+## Technologies:
 
 - Backend:
 
@@ -26,10 +26,10 @@ Weijrn е иновативно приложение, което улеснява
   - PN532 NFC Module
   - 3D Printed Case
 
-## Отбор:
+## Team:
 
-- [Александър](https://github.com/ProGamer2711) - Server
-- [Борислав](https://github.com/bobikenobi12) - Frontend
-- [Калоян](https://github.com/Flychuban) - Hardware
-- [Станислав](https://github.com/StanislavxIvanov) - Hardware
-- [Ясен](https://github.com/yasenOfficial) - Hardware
+- [Alexander](https://github.com/ProGamer2711) - Server
+- [Borislav](https://github.com/bobikenobi12) - Frontend
+- [Kaloqn](https://github.com/Flychuban) - Hardware
+- [Stanislav](https://github.com/StanislavxIvanov) - Hardware
+- [Yasen](https://github.com/yasenOfficial) - Hardware

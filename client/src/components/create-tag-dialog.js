@@ -13,7 +13,11 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
-import { createTag, statusUpdate } from "../services/tagService";
+import {
+	createTag,
+	statusUpdate,
+	resolveStatusUpdate,
+} from "../services/tagService";
 
 export default function CreateTagDialog() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -72,10 +76,15 @@ export default function CreateTagDialog() {
 						<Button
 							variant="unstyled"
 							colorScheme="coolGray"
-							onPress={() => {
+							onPress={async () => {
 								if (intervalId) {
 									clearInterval(intervalId);
 									setIntervalId(null);
+									await resolveStatusUpdate(user?.uuid).then(
+										() => {
+											toast.closeAll();
+										}
+									);
 								}
 								onClose();
 							}}

@@ -72,6 +72,18 @@ export const receiveStatusUpdate = async (uuid, _id) => {
 	return response;
 };
 
+// POST /statusupdate/resolve
+
+export const resolveStatusUpdate = async uuid => {
+	const response = await requester
+		.post("/statusupdate/resolve", undefined, null, uuid)
+		.catch(err => {
+			throw err;
+		});
+
+	return response;
+};
+
 // GET /tags/share/:code
 
 export const getSharedTag = async (code, uuid) => {
