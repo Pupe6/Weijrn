@@ -64,11 +64,8 @@ router.post("/register", async (req, res) => {
 
 		await user.save();
 
-		res.status(201).json({
-			user: { ...user.toJSON(), password: undefined },
-		});
+		res.status(201).json({ ...user.toJSON(), password: undefined });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -102,14 +99,11 @@ router.post("/login", async (req, res) => {
 			user.lastActivity = Date.now();
 			await user.save();
 
-			res.status(200).json({
-				user: { ...user.toJSON(), password: undefined },
-			});
+			res.status(200).json({ ...user.toJSON(), password: undefined });
 		} else {
 			res.status(400).json({ message: "Invalid Credentials." });
 		}
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -128,7 +122,6 @@ router.get("/logout", verifyJWT, async (req, res) => {
 
 		res.status(200).json({ message: "Logged out successfully." });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -138,7 +131,6 @@ router.get("/token", verifyJWT, async (_, res) => {
 	try {
 		res.status(200).json({ message: "Token is valid.", valid: true });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });

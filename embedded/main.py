@@ -146,7 +146,7 @@ def create_tag(nickname: str, type: str, data: str):
         "data": data.decode()
     }
 
-    create_tag_url = f"{SERVER_URL}/jrn/tags"
+    create_tag_url = f"{SERVER_URL}/tags"
     res = requests.post(create_tag_url, headers=headers, json=data)
 
     if res.ok:

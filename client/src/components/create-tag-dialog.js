@@ -100,7 +100,11 @@ export default function CreateTagDialog() {
 															});
 
 															navigation.navigate(
-																"Control Panel"
+																"Control Panel",
+																{
+																	refresh:
+																		++global.refresh,
+																}
 															);
 
 															clearInterval(

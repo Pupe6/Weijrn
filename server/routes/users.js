@@ -1,66 +1,19 @@
 const router = require("express").Router();
 
-const { getUsers, updateUser, deleteUser } = require("../utils/users");
+const { updateUser, deleteUser } = require("../utils/users");
 
 const verifyJWT = require("../middleware/verifyJWT");
-
-// Get All Users
-router.get("/", async (_, res) => {
-	try {
-		const { err, count, users } = await getUsers({});
-
-		if (err) throw err;
-
-		users.forEach(user => {
-			user._token = undefined;
-			user.password = undefined;
-			user.uuid = undefined;
-		});
-
-		res.status(200).json({ users, count });
-	} catch (err) {
-		console.log(err);
-		res.status(500).json({ message: err.message });
-	}
-});
-
-// Get User By Id
-router.get("/:id", async (req, res) => {
-	try {
-		const { message, users } = await getUsers({
-			_id: req.params.id,
-		});
-
-		if (message) throw message;
-
-		const user = users[0];
-
-		user._token = undefined;
-		user.password = undefined;
-		user.uuid = undefined;
-
-		if (!users) throw new Error("There is no such user with provided id.");
-
-		res.status(200).json({ user });
-	} catch (err) {
-		console.log(err);
-		res.status(500).json({ message: err.message });
-	}
-});
 
 // Update User
 router.put("/:id", verifyJWT, async (req, res) => {
 	try {
 		const user = await updateUser(req.params.id, req.body);
 
-		if (user.err) throw user.err;
-
 		user.password = undefined;
 		user.uuid = undefined;
 
-		res.status(200).json({ user });
+		res.status(200).json(user);
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -74,8 +27,6 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 			);
 
 		const user = await deleteUser(req.params.id, req.body.password);
-
-		if (user.err) throw user.err;
 
 		res.status(200).json(user);
 	} catch (err) {

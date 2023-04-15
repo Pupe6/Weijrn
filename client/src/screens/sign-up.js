@@ -28,12 +28,18 @@ export default function SignUpScreen({ navigation }) {
 			validateSignUpForm
 		);
 	const bg = useColorModeValue("white", "coolGray.800");
-	const textColor = useColorModeValue("coolGray.800", "warmGray.50");
 	const { register } = useContext(AuthContext);
+
+	const toast = useToast();
 
 	useEffect(() => {
 		if (isSubmitting && Object.values(errors).some(error => !error)) {
-			register(values).catch(console.error);
+			register(values).catch(err => {
+				toast.show({
+					title: "Error",
+					description: err.message,
+				});
+			});
 		}
 	}, [isSubmitting]);
 

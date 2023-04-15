@@ -11,6 +11,7 @@ import {
 	HStack,
 	Text,
 	useColorModeValue,
+	useToast,
 } from "native-base";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignInForm } from "../utils/validation";
@@ -22,11 +23,17 @@ export default function SignInScreen({ navigation }) {
 
 	const { login } = useContext(AuthContext);
 	const bg = useColorModeValue("white", "coolGray.800");
-	const textColor = useColorModeValue("coolGray.800", "warmGray.50");
+
+	const toast = useToast();
 
 	useEffect(() => {
 		if (isSubmitting && Object.values(errors).some(error => !error)) {
-			login(values).catch(console.error);
+			login(values).catch(err => {
+				toast.show({
+					title: "Error",
+					description: err.message,
+				});
+			});
 		}
 	}, [isSubmitting]);
 

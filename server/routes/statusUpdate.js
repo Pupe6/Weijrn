@@ -9,19 +9,16 @@ router.get("/", verifyUUID, async (req, res) => {
 	try {
 		const { uuid } = req.user;
 
-		const statusUpdate = await Status.findOne({ uuid });
+		let statusUpdate = await Status.findOne({ uuid });
 
 		if (!statusUpdate) {
-			const newStatusUpdate = new Status({ uuid });
+			statusUpdate = new Status({ uuid });
 
-			await newStatusUpdate.save();
-
-			return res.status(200).json({ ...newStatusUpdate.toJSON() });
+			await statusUpdate.save();
 		}
 
 		res.status(200).json({ ...statusUpdate.toJSON() });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -62,14 +59,13 @@ router.post("/pending", verifyUUID, async (req, res) => {
 			return res.status(400).json({ message: "No action required." });
 		}
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
 
 router.post("/send", verifyUUID, async (req, res) => {
 	try {
-		const { uuid, _id: _owner } = req.user;
+		const { uuid } = req.user;
 
 		let statusUpdate = await Status.findOne({ uuid });
 
@@ -79,9 +75,19 @@ router.post("/send", verifyUUID, async (req, res) => {
 			await statusUpdate.save();
 		}
 
+		// Make sure we are not receiving a tag while sending one
+		if (statusUpdate.raspiSend.status)
+			return res.status(400).json({ message: "Already sending a tag." });
+
+		// Make sure we are not sending a tag while receiving one
+		if (statusUpdate.raspiReceive.status)
+			return res
+				.status(400)
+				.json({ message: "Already receiving a tag." });
+
 		const { nickname } = req.body;
 
-		if (!(nickname && _owner))
+		if (!nickname)
 			return res
 				.status(400)
 				.json({ message: "Please fullfil all fields." });
@@ -90,14 +96,12 @@ router.post("/send", verifyUUID, async (req, res) => {
 			status: true,
 			pending: false,
 			nickname,
-			_owner,
 		};
 
 		await statusUpdate.save();
 
 		res.status(200).json({ message: "Success" });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -113,6 +117,16 @@ router.post("/receive", verifyUUID, async (req, res) => {
 
 			await statusUpdate.save();
 		}
+
+		// Make sure we are not receiving a tag while sending one
+		if (statusUpdate.raspiSend.status)
+			return res.status(400).json({ message: "Already sending a tag." });
+
+		// Make sure we are not sending a tag while receiving one
+		if (statusUpdate.raspiReceive.status)
+			return res
+				.status(400)
+				.json({ message: "Already receiving a tag." });
 
 		const { _id } = req.body;
 
@@ -135,7 +149,6 @@ router.post("/receive", verifyUUID, async (req, res) => {
 
 		res.status(200).json({ message: "Success" });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
@@ -162,7 +175,6 @@ router.get("/resolve", verifyUUID, async (req, res) => {
 
 		res.status(200).json({ message: "Success" });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });

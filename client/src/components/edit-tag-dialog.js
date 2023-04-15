@@ -81,7 +81,10 @@ export default function EditTagDialog(props) {
 							<Button
 								variant="unstyled"
 								colorScheme="coolGray"
-								onPress={onClose}
+								onPress={() => {
+									setNickname(props.tag.nickname);
+									onClose();
+								}}
 								ref={cancelRef}>
 								Cancel
 							</Button>

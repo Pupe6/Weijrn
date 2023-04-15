@@ -1,4 +1,4 @@
-import * as React from "react";
+import { createContext, useEffect } from "react";
 import { useAsyncStorage } from "../hooks/useAsyncStorage";
 import {
 	loginUser,
@@ -6,8 +6,9 @@ import {
 	logoutUser,
 	checkTokenValidity,
 } from "../services/userService";
+import { useToast } from "native-base";
 
-export const AuthContext = React.createContext({
+export const AuthContext = createContext({
 	user: {
 		_id: "",
 		username: "",
@@ -30,23 +31,40 @@ export const AuthProvider = ({ children }) => {
 		_token: "",
 	});
 
+	const toast = useToast();
+
 	const login = async (username, password) => {
-		const res = await loginUser(username, password).catch(console.error);
-		setUser(res.user);
+		const user = await loginUser(username, password).catch(err => {
+			toast.show({
+				title: "Error",
+				description: err.message,
+			});
+		});
+		setUser(user);
 	};
 
 	const register = async data => {
-		const res = await registerUser(data).catch(console.error);
-		setUser(res.user);
+		const user = await registerUser(data).catch(err => {
+			toast.show({
+				title: "Error",
+				description: err.message,
+			});
+		});
+		setUser(user);
 	};
 
 	const logout = async () => {
-		await logoutUser(user?._token).catch(console.error);
+		await logoutUser(user?._token).catch(err => {
+			toast.show({
+				title: "Error",
+				description: err.message,
+			});
+		});
 		setUser(null);
 	};
 
 	// Check if token is valid and log out if not
-	React.useEffect(() => {
+	useEffect(() => {
 		if (user?._token) {
 			checkTokenValidity(user?._token)
 				.then(res => {

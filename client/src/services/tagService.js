@@ -1,10 +1,10 @@
 import * as requester from "../utils/requester";
 
-// GET /jrn/tags
+// GET /tags
 
 export const getTags = async token => {
 	const response = await requester
-		.get("/jrn/tags", undefined, token)
+		.get("/tags", undefined, token)
 		.catch(err => {
 			throw err;
 		});
@@ -12,19 +12,7 @@ export const getTags = async token => {
 	return response;
 };
 
-// GET /jrn/tags/:nickname
-
-export const getTag = async (nickname, uuid) => {
-	const response = await requester
-		.get(`/jrn/tags/${nickname}`, undefined, null, uuid)
-		.catch(err => {
-			throw err;
-		});
-
-	return response;
-};
-
-// POST /jrn/tags/:nickname
+// POST /tags/:nickname
 
 export const createTag = async (nickname, uuid) => {
 	const response = await requester
@@ -36,11 +24,11 @@ export const createTag = async (nickname, uuid) => {
 	return response;
 };
 
-// PUT   /jrn/tags/:x-token
+// PUT   /tags/:nickname
 
 export const updateTag = async (nickname, token, newNickname) => {
 	const response = await requester
-		.put(`/jrn/tags/${nickname}`, { nickname: newNickname }, token)
+		.put(`/tags/${nickname}`, { nickname: newNickname }, token)
 		.catch(err => {
 			throw err;
 		});
@@ -48,11 +36,11 @@ export const updateTag = async (nickname, token, newNickname) => {
 	return response;
 };
 
-// DELETE  /jrn/tags/:x-token
+// DELETE  /tags/:nickname
 
 export const deleteTag = async (nickname, token) => {
 	const response = await requester
-		.del(`/jrn/tags/${nickname}`, undefined, token)
+		.del(`/tags/${nickname}`, undefined, token)
 		.catch(err => {
 			throw err;
 		});
@@ -83,11 +71,11 @@ export const receiveStatusUpdate = async (uuid, _id) => {
 
 	return response;
 };
-// GET /jrn/tags/share/:code
+// GET /tags/share/:code
 
 export const getSharedTag = async (code, uuid) => {
 	const response = await requester
-		.get(`/jrn/tags/share/${code}`, undefined, null, uuid)
+		.get(`/tags/share/${code}`, undefined, null, uuid)
 		.catch(err => {
 			throw err;
 		});
@@ -95,11 +83,11 @@ export const getSharedTag = async (code, uuid) => {
 	return response;
 };
 
-// POST /jrn/tags/share/:nickname
+// POST /tags/share/:nickname
 
 export const shareTag = async (nickname, uuid) => {
 	const response = await requester
-		.post(`/jrn/tags/share/${nickname}`, undefined, null, uuid)
+		.post(`/tags/share/${nickname}`, undefined, null, uuid)
 		.catch(err => {
 			throw err;
 		});

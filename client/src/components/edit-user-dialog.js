@@ -20,7 +20,7 @@ function validatePassword(password, confirmPassword) {
 	return !!(password && confirmPassword);
 }
 
-export default function DeleteTagDialog() {
+export default function EditUserDialog() {
 	const [isOpen, setIsOpen] = useState(false);
 	const { user, setUser } = useContext(AuthContext);
 	const [newUser, setNewUser] = useState({
@@ -181,7 +181,7 @@ export default function DeleteTagDialog() {
 											});
 									});
 
-									setUser(updatedUser.user);
+									setUser(updatedUser);
 
 									toast.show({
 										title: "User successfully updated",

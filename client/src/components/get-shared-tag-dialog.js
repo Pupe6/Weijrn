@@ -88,7 +88,11 @@ export default function GetSharedTagDialog() {
 										refresh: ++global.refresh,
 									});
 								} catch (error) {
-									console.log(error);
+									toast.show({
+										title: "Error",
+										description: error.message,
+										status: "error",
+									});
 								}
 							}}>
 							Import

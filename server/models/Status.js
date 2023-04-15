@@ -38,11 +38,6 @@ const statusSchema = new Schema(
 				type: String,
 				default: null,
 			},
-			_owner: {
-				type: Schema.Types.ObjectId,
-				ref: "User",
-				default: null,
-			},
 		},
 	},
 	{ timestamps: true, versionKey: false }

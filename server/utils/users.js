@@ -64,6 +64,14 @@ async function deleteUser(userId, userPassword) {
 		if (!(await bcrypt.compare(userPassword, userToDelete.password)))
 			throw new Error("The password you entered is incorrect.");
 
+		// Remove Tags The User Owns From Other Users
+		userToDelete._tags.forEach(async tagId => {
+			await User.updateMany(
+				{ _tags: tagId },
+				{ $pull: { _tags: tagId } }
+			);
+		});
+
 		// Delete All Tags The User Owns
 		await Tag.deleteMany({ _owner: userId });
 

@@ -10,7 +10,7 @@ const randomCodeGenerator = require("../utils/randomCodeGenerator");
 
 const router = require("express").Router();
 
-router.get("/tags", verifyJWT, async (req, res) => {
+router.get("/", verifyJWT, async (req, res) => {
 	try {
 		const user = req.user;
 
@@ -19,36 +19,13 @@ router.get("/tags", verifyJWT, async (req, res) => {
 		// Remove Data From Tags
 		tags.forEach(tag => (tag.data = undefined));
 
-		res.status(200).json({ tags });
+		res.status(200).json(tags);
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
 
-router.get("/tags/:nickname", verifyJWT, async (req, res) => {
-	try {
-		const { nickname } = req.params;
-		const user = req.user;
-
-		const tag = user._tags.find(tag => tag.nickname === nickname);
-
-		if (!tag)
-			return res
-				.status(404)
-				.json({ message: `Tag "${nickname}" not found.` });
-
-		res.status(200).json({
-			tag: tag.toJSON(),
-			data: undefined,
-		});
-	} catch (err) {
-		console.log(err);
-		res.status(500).json({ message: err.message });
-	}
-});
-
-router.post("/tags", verifyUUID, async (req, res) => {
+router.post("/", verifyUUID, async (req, res) => {
 	try {
 		const { nickname, data, type } = req.body;
 		const user = req.user;
@@ -95,14 +72,13 @@ router.post("/tags", verifyUUID, async (req, res) => {
 		user._tags.push(tag._id);
 		await user.save();
 
-		res.status(201).json({ tag: { ...tag.toJSON(), data: undefined } });
+		res.status(201).json({ ...tag.toJSON(), data: undefined });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
 
-router.put("/tags/:nickname", verifyJWT, async (req, res) => {
+router.put("/:nickname", verifyJWT, async (req, res) => {
 	try {
 		const { nickname } = req.params;
 		const { nickname: newNickname, data, type } = req.body;
@@ -138,14 +114,13 @@ router.put("/tags/:nickname", verifyJWT, async (req, res) => {
 			{ new: true }
 		);
 
-		res.status(200).json({ tag: updatedTag, data: undefined });
+		res.status(200).json({ ...updatedTag, data: undefined });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
 
-router.delete("/tags/:nickname", verifyJWT, async (req, res) => {
+router.delete("/:nickname", verifyJWT, async (req, res) => {
 	try {
 		const { nickname } = req.params;
 		const user = req.user;
@@ -183,12 +158,11 @@ router.delete("/tags/:nickname", verifyJWT, async (req, res) => {
 
 		res.status(200).json({ message: `Tag "${nickname}" deleted.` });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
 
-router.post("/tags/share/:nickname", verifyUUID, async (req, res) => {
+router.post("/share/:nickname", verifyUUID, async (req, res) => {
 	try {
 		const { nickname } = req.params;
 		const user = req.user;
@@ -213,12 +187,11 @@ router.post("/tags/share/:nickname", verifyUUID, async (req, res) => {
 
 		res.status(200).json({ shareCode: shareCode.shareCode });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
 
-router.get("/tags/share/:code", verifyUUID, async (req, res) => {
+router.get("/share/:code", verifyUUID, async (req, res) => {
 	try {
 		const { code } = req.params;
 		const user = req.user;
@@ -246,12 +219,11 @@ router.get("/tags/share/:code", verifyUUID, async (req, res) => {
 
 		res.status(200).json({ message: "Tag shared." });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });
 
 module.exports = {
-	path: "/jrn",
+	path: "/tags",
 	router,
 };

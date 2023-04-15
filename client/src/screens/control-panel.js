@@ -10,7 +10,6 @@ import { AuthContext } from "../contexts/authContext";
 
 export default function AdminScreen(props) {
 	const [listData, setListData] = useState({
-		count: 0,
 		tags: [],
 		filteredTags: [],
 	});
@@ -20,11 +19,10 @@ export default function AdminScreen(props) {
 
 	useEffect(() => {
 		getTags(user?._token)
-			.then(res => {
+			.then(tags => {
 				setListData({
-					count: res.count,
-					tags: res.tags,
-					filteredTags: res.tags,
+					tags,
+					filteredTags: tags,
 				});
 			})
 			.catch(err => {

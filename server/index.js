@@ -77,6 +77,7 @@ try {
 		})
 	);
 } catch (err) {
+	console.log(err);
 	app.all("*", (_, res) =>
 		res.status(500).json({
 			message: "Internal server error",

@@ -19,7 +19,6 @@ async function verifyJWT(req, res, next) {
 				valid: false,
 			});
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 
