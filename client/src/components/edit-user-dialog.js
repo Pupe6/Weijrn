@@ -1,4 +1,4 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -13,6 +13,7 @@ import { AuthContext } from "../contexts/authContext";
 import { updateUser } from "../services/userService";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { LoadingContext } from "../contexts/loadingContext";
 
 function validatePassword(password, confirmPassword) {
 	if (!password && !confirmPassword) return true;
@@ -22,20 +23,34 @@ function validatePassword(password, confirmPassword) {
 
 export default function EditUserDialog() {
 	const [isOpen, setIsOpen] = useState(false);
-	const { user, setUser } = useContext(AuthContext);
 	const [newUser, setNewUser] = useState({
-		username: user?.username,
-		email: user?.email,
+		username: "",
+		email: "",
 		password: "",
 		newPassword: "",
 		confirmNewPassword: "",
 	});
 
+	const onClose = () => setIsOpen(false);
+
 	const navigation = useNavigation();
 
-	const onClose = () => setIsOpen(false);
 	const cancelRef = useRef(null);
+
+	const { user, setUser } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
+
 	const toast = useToast();
+
+	useEffect(() => {
+		setNewUser({
+			username: user?.username,
+			email: user?.email,
+			password: "",
+			newPassword: "",
+			confirmNewPassword: "",
+		});
+	}, [user, isOpen]);
 
 	return (
 		<Center>
@@ -139,11 +154,12 @@ export default function EditUserDialog() {
 							</Button>
 							<Button
 								colorScheme="amber"
-								onPress={async () => {
+								onPress={() => {
 									const valid = validatePassword(
 										newUser.newPassword,
 										newUser.confirmNewPassword
 									);
+
 									if (!valid) {
 										toast.show({
 											avoidKeyboard: true,
@@ -159,41 +175,45 @@ export default function EditUserDialog() {
 										return;
 									}
 
-									const updatedUser = await updateUser(
-										newUser,
-										user?._id,
-										user?._token
-									).catch(err => {
-										if (
-											err.message ===
-											"Token is not valid."
-										) {
-											toast.show({
-												avoidKeyboard: true,
-												title: "Session expired",
-												description:
-													"Please log in again.",
-											});
-
-											setUser(null);
-										} else
-											toast.show({
-												avoidKeyboard: true,
-												title: "Error updating user",
-												description: err.message,
-											});
-									});
-
-									setUser(updatedUser);
-
-									toast.show({
-										avoidKeyboard: true,
-										title: "User successfully updated",
-									});
-
 									onClose();
 
-									navigation.navigate("Profile");
+									setLoading(true);
+
+									updateUser(newUser, user?._id, user?._token)
+										.then(updatedUser => {
+											setLoading(false);
+
+											setUser(updatedUser);
+
+											toast.show({
+												avoidKeyboard: true,
+												title: "User successfully updated",
+											});
+
+											navigation.navigate("Profile");
+										})
+										.catch(err => {
+											if (
+												err.message ===
+												"Token is not valid."
+											) {
+												toast.show({
+													avoidKeyboard: true,
+													title: "Session expired",
+													description:
+														"Please log in again.",
+												});
+
+												setUser(null);
+											} else
+												toast.show({
+													avoidKeyboard: true,
+													title: "Error updating user",
+													description: err.message,
+												});
+
+											setLoading(false);
+										});
 								}}>
 								Edit
 							</Button>

@@ -1,9 +1,8 @@
-import { Box, Menu, useColorModeValue, Icon, ToastProvider } from "native-base";
 import { Pressable } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
+import { Box, Menu, useColorModeValue, Icon, ToastProvider } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import SignOut from "./sign-out";
-import { useNavigation } from "@react-navigation/native";
 
 export default function MiniProfile({ toast }) {
 	const textColor = useColorModeValue("coolGray.800", "warmGray.50");

@@ -4,13 +4,33 @@ const { updateUser, deleteUser } = require("../utils/users");
 
 const verifyJWT = require("../middleware/verifyJWT");
 
+const {
+	formatValidationError,
+	formatDuplicateError,
+} = require("../utils/validationErrorFormatter");
+
 // Update User
 router.put("/:id", verifyJWT, async (req, res) => {
 	try {
 		const user = await updateUser(req.params.id, req.body);
 
+		// Check For Validation Errors
+		if (user.err) {
+			let { err } = user;
+			let duplicateErrCodes = [11000, 11001];
+
+			if (duplicateErrCodes.includes(err.code)) {
+				return res
+					.status(409)
+					.json({ message: formatDuplicateError(err) });
+			}
+
+			return res
+				.status(400)
+				.json({ message: formatValidationError(err) });
+		}
+
 		user.password = undefined;
-		user.uuid = undefined;
 
 		res.status(200).json(user);
 	} catch (err) {

@@ -1,16 +1,17 @@
 import { useContext } from "react";
-import { AuthContext } from "../contexts/authContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { HStack, useColorModeValue, useToast } from "native-base";
 import SignInScreen from "../screens/sign-in";
 import SignUpScreen from "../screens/sign-up";
 import AdminScreen from "../screens/control-panel";
 import ProfileScreen from "../screens/profile";
+import { AuthContext } from "../contexts/authContext";
+import { LoadingContext } from "../contexts/loadingContext";
 import ThemeToggle from "./theme-toggle";
 import MiniProfile from "./mini-profile";
-import CustomDrawerContent from "../components/custom-drawer-content";
-import { LoadingContext } from "../contexts/loadingContext";
+import CustomDrawerContent from "./custom-drawer-content";
 import Loading from "./loading";
+
 const Drawer = createDrawerNavigator();
 
 export default function Navbar() {

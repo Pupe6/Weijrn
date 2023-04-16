@@ -39,6 +39,7 @@ router.post("/register", async (req, res) => {
 			username,
 			email: email.toLowerCase(),
 			password: encryptedPassword,
+			lastActivity: new Date(),
 		});
 
 		// Check For Validation Errors
@@ -47,10 +48,14 @@ router.post("/register", async (req, res) => {
 			let duplicateErrCodes = [11000, 11001];
 
 			if (duplicateErrCodes.includes(err.code)) {
-				return res.status(409).json(formatDuplicateError(err));
+				return res
+					.status(409)
+					.json({ message: formatDuplicateError(err) });
 			}
 
-			return res.status(400).json(formatValidationError(err));
+			return res
+				.status(400)
+				.json({ message: formatValidationError(err) });
 		}
 
 		user._token = jwt.sign(
@@ -80,6 +85,12 @@ router.post("/login", async (req, res) => {
 				.json({ message: "Please fullfil all fields." });
 
 		let user = (await getUsers({ email })).users[0];
+
+		if (user.err) {
+			return res.status(400).json({
+				message: user.err.message,
+			});
+		}
 
 		if (user && (await bcrypt.compare(password, user.password))) {
 			const token = jwt.sign(

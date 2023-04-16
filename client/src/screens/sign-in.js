@@ -45,7 +45,7 @@ export default function SignInScreen({ navigation }) {
 				.catch(err => {
 					toast.show({
 						avoidKeyboard: true,
-						title: "Error",
+						title: "Error signing in",
 						description: err.message,
 					});
 				});

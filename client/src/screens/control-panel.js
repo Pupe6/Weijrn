@@ -3,7 +3,7 @@ import { Center, Box, Heading, HStack, useToast } from "native-base";
 import { getTags } from "../services/tagService";
 import { ScrollView } from "react-native";
 import ControlPanelRow from "../components/control-panel-row";
-import GetSharedTagDialog from "../components/get-shared-tag-dialog";
+import ImportTagDialog from "../components/import-tag-dialog";
 import CreateTagDialog from "../components/create-tag-dialog";
 import SearchBar from "../components/search-bar";
 import { AuthContext } from "../contexts/authContext";
@@ -15,6 +15,7 @@ export default function AdminScreen(props) {
 		filteredTags: [],
 	});
 	const [noTags, setNoTags] = useState(false);
+	const [noSearchResults, setNoSearchResults] = useState(false);
 
 	const { user, setUser } = useContext(AuthContext);
 	const { setLoading } = useContext(LoadingContext);
@@ -55,6 +56,12 @@ export default function AdminScreen(props) {
 				setLoading(false);
 			});
 	}, [props?.route?.params?.refresh]);
+
+	useEffect(() => {
+		if (listData.filteredTags.length === 0) setNoSearchResults(true);
+		else setNoSearchResults(false);
+	}, [listData.filteredTags]);
+
 	return (
 		<Box
 			_dark={{
@@ -96,20 +103,26 @@ export default function AdminScreen(props) {
 						/>
 						<HStack space={2} p="4" pb="3" justifyContent="center">
 							<CreateTagDialog />
-							<GetSharedTagDialog />
+							<ImportTagDialog />
 						</HStack>
 					</HStack>
 
-					{noTags ? (
+					{noTags && (
 						<Center flex="1" mt="10">
 							<Heading size="lg">No tags yet...</Heading>
 						</Center>
-					) : (
-						<ScrollView showsVerticalScrollIndicator={false}>
-							{listData.filteredTags.map((tag, index) => (
-								<ControlPanelRow key={index} tag={tag} />
-							))}
-						</ScrollView>
+					)}
+
+					<ScrollView showsVerticalScrollIndicator={false}>
+						{listData.filteredTags.map((tag, index) => (
+							<ControlPanelRow key={index} tag={tag} />
+						))}
+					</ScrollView>
+
+					{noSearchResults && (
+						<Center flex="1" mt="10">
+							<Heading size="lg">No results found...</Heading>
+						</Center>
 					)}
 				</Box>
 			</Center>

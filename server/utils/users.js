@@ -11,7 +11,7 @@ async function getUsers(query = {}) {
 
 		return { count, users };
 	} catch (err) {
-		return { message: err.message };
+		return { err };
 	}
 }
 
@@ -49,7 +49,7 @@ async function updateUser(userId, body) {
 
 		return updatedUser;
 	} catch (err) {
-		return { message: err.message };
+		return { err };
 	}
 }
 
@@ -79,7 +79,7 @@ async function deleteUser(userId, userPassword) {
 
 		return { message: "User has been deleted." };
 	} catch (err) {
-		return { message: err.message };
+		return { err };
 	}
 }
 

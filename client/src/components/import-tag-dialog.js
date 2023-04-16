@@ -10,19 +10,25 @@ import {
 	Input,
 	Tooltip,
 } from "native-base";
+import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
+import { LoadingContext } from "../contexts/loadingContext";
 import { getSharedTag } from "../services/tagService";
-import { useNavigation } from "@react-navigation/native";
 
 export default function GetSharedTagDialog() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [shareCode, setShareCode] = useState("");
+
 	const onClose = () => setIsOpen(false);
 
 	const cancelRef = useRef(null);
+
 	const toast = useToast();
+
 	const { user } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
+
 	const navigation = useNavigation();
 
 	return (
@@ -74,28 +80,33 @@ export default function GetSharedTagDialog() {
 						</Button>
 						<Button
 							colorScheme="info"
-							onPress={async () => {
-								try {
-									await getSharedTag(shareCode, user?.uuid);
+							onPress={() => {
+								onClose();
 
-									toast.show({
-										avoidKeyboard: true,
-										title: "Tag imported successfully",
-									});
+								setLoading(true);
 
-									onClose();
+								getSharedTag(shareCode, user?.uuid)
+									.then(() => {
+										toast.show({
+											avoidKeyboard: true,
+											title: "Tag imported successfully",
+										});
 
-									navigation.navigate("Control Panel", {
-										refresh: ++global.refresh,
+										setLoading(false);
+
+										navigation.navigate("Control Panel", {
+											refresh: ++global.refresh,
+										});
+									})
+									.catch(err => {
+										toast.show({
+											avoidKeyboard: true,
+											title: "Error importing tag",
+											description: err.message,
+										});
+
+										setLoading(false);
 									});
-								} catch (error) {
-									toast.show({
-										avoidKeyboard: true,
-										title: "Error",
-										description: error.message,
-										status: "error",
-									});
-								}
 							}}>
 							Import
 						</Button>

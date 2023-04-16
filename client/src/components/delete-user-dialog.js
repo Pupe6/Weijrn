@@ -9,16 +9,22 @@ import {
 	FormControl,
 	Input,
 } from "native-base";
-import { AuthContext } from "../contexts/authContext";
 import { Entypo } from "@expo/vector-icons";
+import { AuthContext } from "../contexts/authContext";
+import { LoadingContext } from "../contexts/loadingContext";
 import { deleteUser } from "../services/userService";
 
 export default function DeleteTagDialog() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [confirmPassword, setConfirmPassword] = useState("");
+
 	const onClose = () => setIsOpen(false);
+
 	const cancelRef = useRef(null);
+
 	const { user, setUser } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
+
 	const toast = useToast();
 
 	return (
@@ -73,12 +79,18 @@ export default function DeleteTagDialog() {
 							<Button
 								colorScheme="danger"
 								onPress={() => {
+									onClose();
+
+									setLoading(true);
+
 									deleteUser(
 										user?._id,
 										user?._token,
 										confirmPassword
 									)
 										.then(() => {
+											setLoading(false);
+
 											setUser(null);
 
 											toast.show({
@@ -105,6 +117,8 @@ export default function DeleteTagDialog() {
 													title: "Error deleting user.",
 													description: err.message,
 												});
+
+											setLoading(false);
 										});
 								}}>
 								Delete

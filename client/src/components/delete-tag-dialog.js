@@ -9,6 +9,7 @@ import {
 	Tooltip,
 } from "native-base";
 import { AuthContext } from "../contexts/authContext";
+import { LoadingContext } from "../contexts/loadingContext";
 import { deleteTag } from "../services/tagService";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
@@ -19,8 +20,12 @@ export default function DeleteTagDialog({ tag }) {
 	const onClose = () => setIsOpen(false);
 
 	const cancelRef = useRef(null);
+
 	const { user, setUser } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
+
 	const toast = useToast();
+
 	const navigation = useNavigation();
 
 	return (
@@ -81,42 +86,52 @@ export default function DeleteTagDialog({ tag }) {
 							<Button
 								colorScheme="danger"
 								onPress={() => {
-									deleteTag(tag._id, user?._token)
-										.then(() => {
-											toast.show({
-												avoidKeyboard: true,
-												title: "Tag deleted",
+									onClose();
+
+									setLoading(true);
+
+									setTimeout(() => {
+										deleteTag(tag._id, user?._token)
+											.then(() => {
+												setLoading(false);
+
+												toast.show({
+													avoidKeyboard: true,
+													title: "Tag deleted",
+												});
+
+												navigation.navigate(
+													"Control Panel",
+													{
+														refresh:
+															++global.refresh,
+													}
+												);
+											})
+											.catch(err => {
+												if (
+													err.message ===
+													"Token is not valid."
+												) {
+													toast.show({
+														avoidKeyboard: true,
+														title: "Session expired",
+														description:
+															"Please login again",
+													});
+
+													setUser(null);
+												} else
+													toast.show({
+														avoidKeyboard: true,
+														title: "Error deleting tag",
+														description:
+															err.message,
+													});
+
+												setLoading(false);
 											});
-											onClose();
-											navigation.navigate(
-												"Control Panel",
-												{
-													refresh: ++global.refresh,
-												}
-											);
-										})
-										.catch(err => {
-											if (
-												err.message ===
-												"Token is not valid."
-											) {
-												toast.show({
-													avoidKeyboard: true,
-													title: "Session expired",
-													description:
-														"Please login again",
-												});
-
-												setUser(null);
-											} else
-												toast.show({
-													avoidKeyboard: true,
-													title: "Error deleting tag",
-													description: err.message,
-												});
-
-											console.log(err);
-										});
+									}, 3000);
 								}}>
 								Delete
 							</Button>

@@ -15,15 +15,21 @@ import { AuthContext } from "../contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
 
 import { updateTag } from "../services/tagService";
+import { LoadingContext } from "../contexts/loadingContext";
 
 export default function EditTagDialog(props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [nickname, setNickname] = useState(props.tag.nickname);
+
 	const onClose = () => setIsOpen(false);
 
 	const cancelRef = useRef(null);
+
 	const toast = useToast();
+
 	const { user, setUser } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
+
 	const navigation = useNavigation();
 
 	return (
@@ -90,18 +96,24 @@ export default function EditTagDialog(props) {
 							</Button>
 							<Button
 								colorScheme="amber"
-								onPress={async () => {
+								onPress={() => {
+									onClose();
+
+									setLoading(true);
+
 									updateTag(
 										props.tag._id,
 										user?._token,
 										nickname
 									)
 										.then(() => {
+											setLoading(false);
+
 											toast.show({
 												avoidKeyboard: true,
 												title: "Tag updated",
 											});
-											onClose();
+
 											navigation.navigate(
 												"Control Panel",
 												{
@@ -128,6 +140,8 @@ export default function EditTagDialog(props) {
 													title: "Error updating tag",
 													description: err.message,
 												});
+
+											setLoading(false);
 										});
 								}}>
 								Edit

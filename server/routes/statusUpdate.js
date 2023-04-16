@@ -157,21 +157,25 @@ router.post("/resolve", verifyUUID, async (req, res) => {
 	try {
 		const { uuid } = req.user;
 
-		await Status.findOneAndUpdate(
-			{ uuid },
-			{
-				raspiReceive: {
-					status: false,
-					pending: false,
-					tag: null,
-				},
-				raspiSend: {
-					status: false,
-					pending: false,
-					nickname: null,
-				},
-			}
-		);
+		let status = await Status.findOne({ uuid });
+
+		if (!status) {
+			status = new Status({ uuid });
+		} else {
+			status.raspiSend = {
+				status: false,
+				pending: false,
+				nickname: null,
+			};
+
+			status.raspiReceive = {
+				status: false,
+				pending: false,
+				tag: null,
+			};
+		}
+
+		await status.save();
 
 		res.status(200).json({ message: "Success" });
 	} catch (err) {

@@ -65,7 +65,7 @@ export default function SignOut({ toast }) {
 										.catch(err => {
 											toast.show({
 												avoidKeyboard: true,
-												title: "Error",
+												title: "Error signing out",
 												description: err.message,
 											});
 										});

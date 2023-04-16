@@ -52,7 +52,7 @@ export default function SignUpScreen({ navigation }) {
 				.catch(err => {
 					toast.show({
 						avoidKeyboard: true,
-						title: "Error",
+						title: "Error signing up",
 						description: err.message,
 					});
 				});

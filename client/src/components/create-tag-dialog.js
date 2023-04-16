@@ -134,7 +134,7 @@ export default function CreateTagDialog() {
 														.catch(err => {
 															toast.show({
 																avoidKeyboard: true,
-																title: "Error",
+																title: "Error getting status update",
 																description:
 																	err.message,
 																duration: null,
@@ -159,7 +159,7 @@ export default function CreateTagDialog() {
 									.catch(err => {
 										toast.show({
 											avoidKeyboard: true,
-											title: "Error",
+											title: "Error creating tag",
 											description: err.message,
 										});
 									});

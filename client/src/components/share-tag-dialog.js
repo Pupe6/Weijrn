@@ -13,6 +13,7 @@ import {
 import { Entypo, Feather } from "@expo/vector-icons";
 import { shareTag } from "../services/tagService";
 import { AuthContext } from "../contexts/authContext";
+import { LoadingContext } from "../contexts/loadingContext";
 
 export default function ShareTagDialog({ tag }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -21,10 +22,13 @@ export default function ShareTagDialog({ tag }) {
 	const onClose = () => setIsOpen(false);
 
 	const cancelRef = useRef(null);
+
 	const toast = useToast();
+
 	const { onCopy } = useClipboard();
 
 	const { user } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
 
 	return (
 		<Center>
@@ -34,11 +38,30 @@ export default function ShareTagDialog({ tag }) {
 				accessibilityLabel="Share tag">
 				<Button
 					colorScheme="info"
-					onPress={async () => {
-						const res = await shareTag(tag._id, user?.uuid);
+					onPress={() => {
+						onClose();
+						setLoading(true);
 
-						setShareCode(res.shareCode);
-						setIsOpen(!isOpen);
+						shareTag(tag._id, user?.uuid)
+							.then(shareCode => {
+								setLoading(false);
+
+								setShareCode(shareCode);
+
+								toast.show({
+									avoidKeyboard: true,
+									title: "Share code generated",
+								});
+							})
+							.catch(err => {
+								setLoading(false);
+
+								toast.show({
+									avoidKeyboard: true,
+									title: "Error generating share code",
+									description: err.message,
+								});
+							});
 					}}>
 					<Icon
 						as={<Entypo name="share" />}
@@ -83,6 +106,7 @@ export default function ShareTagDialog({ tag }) {
 							<Button
 								onPress={() => {
 									onCopy(shareCode);
+
 									toast.show({
 										avoidKeyboard: true,
 										title: "Copied to clipboard",

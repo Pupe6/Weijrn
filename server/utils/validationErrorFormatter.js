@@ -1,8 +1,8 @@
 function formatValidationError(error) {
-	let formattedError = {};
+	let formattedError = "";
 
 	for (let key in error.errors) {
-		formattedError[key] =
+		formattedError[key] +=
 			error.errors[key].message || error.errors[key].properties.message;
 	}
 
@@ -10,13 +10,10 @@ function formatValidationError(error) {
 }
 
 function formatDuplicateError(error) {
-	let formattedError = {};
+	let formattedError = "";
 
-	for (let key in error.keyValue) {
-		formattedError[
-			key
-		] = `The ${key} "${error.keyValue[key]}" is already taken.`;
-	}
+	for (let key in error.keyValue)
+		formattedError += `The ${key} "${error.keyValue[key]}" is already taken.`;
 
 	return formattedError;
 }
