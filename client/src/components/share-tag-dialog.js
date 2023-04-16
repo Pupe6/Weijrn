@@ -84,6 +84,7 @@ export default function ShareTagDialog({ tag }) {
 								onPress={() => {
 									onCopy(shareCode);
 									toast.show({
+										avoidKeyboard: true,
 										title: "Copied to clipboard",
 									});
 								}}

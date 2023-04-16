@@ -1,4 +1,4 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import {
 	AlertDialog,
 	Button,
@@ -29,7 +29,9 @@ export default function CreateTagDialog() {
 	const { user } = useContext(AuthContext);
 	const navigation = useNavigation();
 
-	const [loading, setLoading] = useState(null);
+	useEffect(() => {
+		return () => resolveStatusUpdate(user?.uuid);
+	}, []);
 
 	const intervalRef = useRef(null);
 
@@ -89,6 +91,7 @@ export default function CreateTagDialog() {
 										}
 									);
 								}
+
 								onClose();
 							}}
 							ref={cancelRef}>
@@ -109,6 +112,7 @@ export default function CreateTagDialog() {
 																	.status
 															) {
 																toast.show({
+																	avoidKeyboard: true,
 																	title: "Tag synced",
 																});
 
@@ -129,6 +133,7 @@ export default function CreateTagDialog() {
 														})
 														.catch(err => {
 															toast.show({
+																avoidKeyboard: true,
 																title: "Error",
 																description:
 																	err.message,
@@ -140,17 +145,20 @@ export default function CreateTagDialog() {
 											);
 
 											toast.show({
+												avoidKeyboard: true,
 												title: "Syncing tag",
 												duration: null,
 											});
 										} else {
 											toast.show({
+												avoidKeyboard: true,
 												title: "Tag already syncing, please wait",
 											});
 										}
 									})
 									.catch(err => {
 										toast.show({
+											avoidKeyboard: true,
 											title: "Error",
 											description: err.message,
 										});

@@ -1,8 +1,9 @@
 import { useState, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/authContext";
 import { AlertDialog, Button, Center } from "native-base";
+import { LoadingContext } from "../contexts/loadingContext";
 
-export default function SignOut() {
+export default function SignOut({ toast }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const onClose = () => {
@@ -10,7 +11,9 @@ export default function SignOut() {
 	};
 
 	const cancelRef = useRef(null);
+
 	const { logout, user } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
 
 	return (
 		<Center>
@@ -43,11 +46,29 @@ export default function SignOut() {
 							</Button>
 							<Button
 								colorScheme="danger"
-								onPress={async () => {
-									await logout(user?._token);
+								onPress={() => {
+									setLoading(true);
 
 									onClose();
-									await logout(user?._token);
+
+									logout(user?._token)
+										.then(() => {
+											toast.show({
+												avoidKeyboard: true,
+												title: "Signed out",
+												description:
+													"You have been signed out",
+											});
+
+											setLoading(false);
+										})
+										.catch(err => {
+											toast.show({
+												avoidKeyboard: true,
+												title: "Error",
+												description: err.message,
+											});
+										});
 								}}>
 								Sign Out
 							</Button>

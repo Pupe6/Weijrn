@@ -67,11 +67,13 @@ export default function ControlPanelRow({ tag }) {
 									tag._id
 								);
 								toast.show({
+									avoidKeyboard: true,
 									title: res.message,
 									duration: 3000,
 								});
 							} catch {
 								toast.show({
+									avoidKeyboard: true,
 									title: "Error receiving status update",
 									duration: 3000,
 								});

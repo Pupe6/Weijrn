@@ -15,7 +15,7 @@ import {
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignUpForm } from "../utils/validation";
 import { AuthContext } from "../contexts/authContext";
-import Loading from "../components/loading";
+import { LoadingContext } from "../contexts/loadingContext";
 
 export default function SignUpScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
@@ -30,10 +30,10 @@ export default function SignUpScreen({ navigation }) {
 			validateSignUpForm
 		);
 
-	const [loading, setLoading] = useState(false);
+	const { register } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
 
 	const bg = useColorModeValue("white", "coolGray.800");
-	const { register } = useContext(AuthContext);
 
 	const toast = useToast();
 
@@ -44,12 +44,14 @@ export default function SignUpScreen({ navigation }) {
 			register(values)
 				.then(() => {
 					toast.show({
-						title: "Signed Up",
-						description: "You have successfully signed up.",
+						avoidKeyboard: true,
+						title: "Signed up",
+						description: "You have been signed up",
 					});
 				})
 				.catch(err => {
 					toast.show({
+						avoidKeyboard: true,
 						title: "Error",
 						description: err.message,
 					});
@@ -59,7 +61,6 @@ export default function SignUpScreen({ navigation }) {
 
 	return (
 		<Box flex="1" safeArea bg={bg}>
-			{loading && <Loading />}
 			<Center w="100%">
 				<Box safeArea p="2" w="90%" maxW="290" py="8">
 					<Heading

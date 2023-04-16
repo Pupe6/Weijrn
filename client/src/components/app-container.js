@@ -1,7 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { Text } from "native-base";
 import { AuthProvider } from "../contexts/authContext";
 import { ThemeProvider } from "../contexts/themeContext";
+import { LoadingProvider } from "../contexts/loadingContext";
+import Loading from "./loading";
 
 export default function AppContainer({ children }) {
 	global.refresh = 0;
@@ -19,13 +20,15 @@ export default function AppContainer({ children }) {
 
 	return (
 		<AuthProvider>
-			<ThemeProvider>
-				<NavigationContainer
-					linking={linking}
-					fallback={<Text>Loading...</Text>}>
-					{children}
-				</NavigationContainer>
-			</ThemeProvider>
+			<LoadingProvider>
+				<ThemeProvider>
+					<NavigationContainer
+						linking={linking}
+						fallback={<Loading />}>
+						{children}
+					</NavigationContainer>
+				</ThemeProvider>
+			</LoadingProvider>
 		</AuthProvider>
 	);
 }

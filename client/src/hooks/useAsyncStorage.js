@@ -16,6 +16,7 @@ export const useAsyncStorage = (item, initialValue) => {
 			})
 			.catch(err => {
 				toast.show({
+					avoidKeyboard: true,
 					title: "Error",
 					description: err.message,
 				});
@@ -28,6 +29,7 @@ export const useAsyncStorage = (item, initialValue) => {
 			setValue(value);
 		} catch (err) {
 			toast.show({
+				avoidKeyboard: true,
 				title: "Error",
 				description: err.message,
 			});

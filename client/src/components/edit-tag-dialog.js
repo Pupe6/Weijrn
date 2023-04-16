@@ -98,6 +98,7 @@ export default function EditTagDialog(props) {
 									)
 										.then(() => {
 											toast.show({
+												avoidKeyboard: true,
 												title: "Tag updated",
 											});
 											onClose();
@@ -114,6 +115,7 @@ export default function EditTagDialog(props) {
 												"Token is not valid."
 											) {
 												toast.show({
+													avoidKeyboard: true,
 													title: "Session expired",
 													description:
 														"Please log in again.",
@@ -122,6 +124,7 @@ export default function EditTagDialog(props) {
 												setUser(null);
 											} else
 												toast.show({
+													avoidKeyboard: true,
 													title: "Error updating tag",
 													description: err.message,
 												});

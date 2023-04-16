@@ -84,6 +84,7 @@ export default function DeleteTagDialog({ tag }) {
 									deleteTag(tag._id, user?._token)
 										.then(() => {
 											toast.show({
+												avoidKeyboard: true,
 												title: "Tag deleted",
 											});
 											onClose();
@@ -100,6 +101,7 @@ export default function DeleteTagDialog({ tag }) {
 												"Token is not valid."
 											) {
 												toast.show({
+													avoidKeyboard: true,
 													title: "Session expired",
 													description:
 														"Please login again",
@@ -108,6 +110,7 @@ export default function DeleteTagDialog({ tag }) {
 												setUser(null);
 											} else
 												toast.show({
+													avoidKeyboard: true,
 													title: "Error deleting tag",
 													description: err.message,
 												});

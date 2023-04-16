@@ -7,17 +7,17 @@ import GetSharedTagDialog from "../components/get-shared-tag-dialog";
 import CreateTagDialog from "../components/create-tag-dialog";
 import SearchBar from "../components/search-bar";
 import { AuthContext } from "../contexts/authContext";
-import Loading from "../components/loading";
+import { LoadingContext } from "../contexts/loadingContext";
 
 export default function AdminScreen(props) {
 	const [listData, setListData] = useState({
 		tags: [],
 		filteredTags: [],
 	});
-	const [loading, setLoading] = useState(false);
 	const [noTags, setNoTags] = useState(false);
 
 	const { user, setUser } = useContext(AuthContext);
+	const { setLoading } = useContext(LoadingContext);
 
 	const toast = useToast();
 
@@ -39,6 +39,7 @@ export default function AdminScreen(props) {
 			.catch(err => {
 				if (err.message === "Token is not valid.") {
 					toast.show({
+						avoidKeyboard: true,
 						title: "Session expired",
 						description: "Please log in again.",
 					});
@@ -46,6 +47,7 @@ export default function AdminScreen(props) {
 					setUser(null);
 				} else
 					toast.show({
+						avoidKeyboard: true,
 						title: "Error getting tags",
 						description: err.message,
 					});
@@ -64,8 +66,6 @@ export default function AdminScreen(props) {
 			flex="1"
 			safeAreaTop
 			w={["100%", "100%", "100%", "100%"]}>
-			{loading && <Loading />}
-
 			<Center>
 				<Box
 					_dark={{

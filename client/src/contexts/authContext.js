@@ -6,7 +6,6 @@ import {
 	logoutUser,
 	checkTokenValidity,
 } from "../services/userService";
-import { useToast } from "native-base";
 
 export const AuthContext = createContext({
 	user: {
@@ -20,6 +19,7 @@ export const AuthContext = createContext({
 	register: async () => {},
 	logout: async () => {},
 	setUser: () => {},
+	outOfContext: true,
 });
 
 export const AuthProvider = ({ children }) => {
@@ -31,54 +31,19 @@ export const AuthProvider = ({ children }) => {
 		_token: "",
 	});
 
-	const toast = useToast();
-
 	const login = async (username, password) => {
-		const user = await loginUser(username, password).catch(err => {
-			toast.show({
-				title: "Error",
-				description: err.message,
-				duration: 2000,
-			});
-		});
+		const user = await loginUser(username, password);
 		setUser(user);
-		toast.show({
-			title: "Signed in",
-			description: "You have been signed in",
-			duration: 2000,
-		});
 	};
 
 	const register = async data => {
-		const user = await registerUser(data).catch(err => {
-			toast.show({
-				title: "Error",
-				description: err.message,
-				duration: 2000,
-			});
-		});
+		const user = await registerUser(data);
 		setUser(user);
-		toast.show({
-			title: "Signed up",
-			description: "You have been signed up",
-			duration: 2000,
-		});
 	};
 
 	const logout = async () => {
-		await logoutUser(user?._token).catch(err => {
-			toast.show({
-				title: "Error",
-				description: err.message,
-				duration: 2000,
-			});
-		});
+		await logoutUser(user?._token);
 		setUser(null);
-		toast.show({
-			title: "Signed out",
-			description: "You have been signed out",
-			duration: 2000,
-		});
 	};
 
 	// Check if token is valid and log out if not

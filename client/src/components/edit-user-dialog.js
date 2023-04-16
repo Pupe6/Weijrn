@@ -146,6 +146,7 @@ export default function EditUserDialog() {
 									);
 									if (!valid) {
 										toast.show({
+											avoidKeyboard: true,
 											title: "Password mismatch",
 											description:
 												"Please check your passwords",
@@ -168,6 +169,7 @@ export default function EditUserDialog() {
 											"Token is not valid."
 										) {
 											toast.show({
+												avoidKeyboard: true,
 												title: "Session expired",
 												description:
 													"Please log in again.",
@@ -176,6 +178,7 @@ export default function EditUserDialog() {
 											setUser(null);
 										} else
 											toast.show({
+												avoidKeyboard: true,
 												title: "Error updating user",
 												description: err.message,
 											});
@@ -184,6 +187,7 @@ export default function EditUserDialog() {
 									setUser(updatedUser);
 
 									toast.show({
+										avoidKeyboard: true,
 										title: "User successfully updated",
 									});
 

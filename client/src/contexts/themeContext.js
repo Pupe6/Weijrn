@@ -2,7 +2,11 @@ import { createContext } from "react";
 import { useAsyncStorage } from "../hooks/useAsyncStorage";
 import { extendTheme, NativeBaseProvider } from "native-base";
 
-export const ThemeContext = createContext();
+export const ThemeContext = createContext({
+	theme: { colorMode: "light" },
+	setTheme: () => {},
+	outOfContext: true,
+});
 
 export const ThemeProvider = ({ children }) => {
 	const [theme, setTheme] = useAsyncStorage("theme", { colorMode: "light" });

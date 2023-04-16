@@ -82,6 +82,7 @@ export default function DeleteTagDialog() {
 											setUser(null);
 
 											toast.show({
+												avoidKeyboard: true,
 												title: "User deleted.",
 											});
 										})
@@ -91,6 +92,7 @@ export default function DeleteTagDialog() {
 												"Token is not valid."
 											) {
 												toast.show({
+													avoidKeyboard: true,
 													title: "Session expired",
 													description:
 														"Please log in again.",
@@ -99,6 +101,7 @@ export default function DeleteTagDialog() {
 												setUser(null);
 											} else
 												toast.show({
+													avoidKeyboard: true,
 													title: "Error deleting user.",
 													description: err.message,
 												});

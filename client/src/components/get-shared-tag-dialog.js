@@ -79,6 +79,7 @@ export default function GetSharedTagDialog() {
 									await getSharedTag(shareCode, user?.uuid);
 
 									toast.show({
+										avoidKeyboard: true,
 										title: "Tag imported successfully",
 									});
 
@@ -89,6 +90,7 @@ export default function GetSharedTagDialog() {
 									});
 								} catch (error) {
 									toast.show({
+										avoidKeyboard: true,
 										title: "Error",
 										description: error.message,
 										status: "error",
