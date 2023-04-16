@@ -29,7 +29,9 @@ export default function CreateTagDialog() {
 	const { user } = useContext(AuthContext);
 	const navigation = useNavigation();
 
-	const [intervalId, setIntervalId] = useState(null);
+	const [loading, setLoading] = useState(null);
+
+	const intervalRef = useRef(null);
 
 	return (
 		<Center>
@@ -77,9 +79,10 @@ export default function CreateTagDialog() {
 							variant="unstyled"
 							colorScheme="coolGray"
 							onPress={async () => {
-								if (intervalId) {
-									clearInterval(intervalId);
-									setIntervalId(null);
+								if (intervalRef.current) {
+									clearInterval(intervalRef.current);
+									intervalRef.current = null;
+
 									await resolveStatusUpdate(user?.uuid).then(
 										() => {
 											toast.closeAll();
@@ -96,46 +99,45 @@ export default function CreateTagDialog() {
 							onPress={async () => {
 								await createTag(tagNickname, user?.uuid)
 									.then(() => {
-										if (!intervalId) {
-											const id = setInterval(() => {
-												statusUpdate(user?.uuid)
-													.then(res => {
-														if (
-															!res.raspiSend
-																.status
-														) {
+										if (!intervalRef.current) {
+											intervalRef.current = setInterval(
+												() => {
+													statusUpdate(user?.uuid)
+														.then(res => {
+															if (
+																!res.raspiSend
+																	.status
+															) {
+																toast.show({
+																	title: "Tag synced",
+																});
+
+																clearInterval(
+																	intervalRef.current
+																);
+																intervalRef.current =
+																	null;
+
+																toast.closeAll();
+
+																onClose();
+
+																navigation.navigate(
+																	"Control Panel"
+																);
+															}
+														})
+														.catch(err => {
 															toast.show({
-																title: "Tag synced",
+																title: "Error",
+																description:
+																	err.message,
+																duration: null,
 															});
-
-															navigation.navigate(
-																"Control Panel",
-																{
-																	refresh:
-																		++global.refresh,
-																}
-															);
-
-															clearInterval(
-																intervalId
-															);
-
-															toast.closeAll();
-
-															onClose();
-														}
-													})
-													.catch(err => {
-														toast.show({
-															title: "Error",
-															description:
-																err.message,
-															duration: null,
 														});
-													});
-											}, 2000);
-
-											setIntervalId(id);
+												},
+												2000
+											);
 
 											toast.show({
 												title: "Syncing tag",

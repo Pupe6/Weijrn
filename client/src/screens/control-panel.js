@@ -7,23 +7,34 @@ import GetSharedTagDialog from "../components/get-shared-tag-dialog";
 import CreateTagDialog from "../components/create-tag-dialog";
 import SearchBar from "../components/search-bar";
 import { AuthContext } from "../contexts/authContext";
+import Loading from "../components/loading";
 
 export default function AdminScreen(props) {
 	const [listData, setListData] = useState({
 		tags: [],
 		filteredTags: [],
 	});
+	const [loading, setLoading] = useState(false);
+	const [noTags, setNoTags] = useState(false);
+
 	const { user, setUser } = useContext(AuthContext);
 
 	const toast = useToast();
 
 	useEffect(() => {
+		setLoading(true);
+
 		getTags(user?._token)
 			.then(tags => {
 				setListData({
 					tags,
 					filteredTags: tags,
 				});
+
+				if (tags.length === 0) setNoTags(true);
+				else setNoTags(false);
+
+				setLoading(false);
 			})
 			.catch(err => {
 				if (err.message === "Token is not valid.") {
@@ -38,6 +49,8 @@ export default function AdminScreen(props) {
 						title: "Error getting tags",
 						description: err.message,
 					});
+
+				setLoading(false);
 			});
 	}, [props?.route?.params?.refresh]);
 	return (
@@ -51,6 +64,8 @@ export default function AdminScreen(props) {
 			flex="1"
 			safeAreaTop
 			w={["100%", "100%", "100%", "100%"]}>
+			{loading && <Loading />}
+
 			<Center>
 				<Box
 					_dark={{
@@ -85,11 +100,17 @@ export default function AdminScreen(props) {
 						</HStack>
 					</HStack>
 
-					<ScrollView showsVerticalScrollIndicator={false}>
-						{listData.filteredTags.map((tag, index) => (
-							<ControlPanelRow key={index} tag={tag} />
-						))}
-					</ScrollView>
+					{noTags ? (
+						<Center flex="1" mt="10">
+							<Heading size="lg">No tags yet...</Heading>
+						</Center>
+					) : (
+						<ScrollView showsVerticalScrollIndicator={false}>
+							{listData.filteredTags.map((tag, index) => (
+								<ControlPanelRow key={index} tag={tag} />
+							))}
+						</ScrollView>
+					)}
 				</Box>
 			</Center>
 		</Box>

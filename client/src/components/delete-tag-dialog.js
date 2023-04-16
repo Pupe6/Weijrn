@@ -111,6 +111,8 @@ export default function DeleteTagDialog({ tag }) {
 													title: "Error deleting tag",
 													description: err.message,
 												});
+
+											console.log(err);
 										});
 								}}>
 								Delete

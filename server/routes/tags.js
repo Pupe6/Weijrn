@@ -149,7 +149,7 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 			});
 		}
 
-		await Tag.deleteOne({ nickname, _owner: user._id });
+		await Tag.deleteOne({ _id: id, _owner: user._id });
 
 		// Remove Tag From All Users
 		await User.updateMany(
@@ -166,17 +166,20 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 	}
 });
 
-router.post("/share/:nickname", verifyUUID, async (req, res) => {
+router.post("/share/:id", verifyUUID, async (req, res) => {
 	try {
-		const { nickname } = req.params;
+		const { id: _id } = req.params;
 		const user = req.user;
 
-		const tagId = user._tags.find(tag => tag.nickname === nickname)?._id;
+		const tagToShare = await Tag.findOne({ _id });
 
-		if (!tagId)
-			return res
-				.status(404)
-				.json({ message: `Tag "${nickname}" not found.` });
+		if (!tagToShare)
+			return res.status(404).json({ message: `Tag not found.` });
+
+		if (!tagToShare._owner.equals(user._id))
+			return res.status(403).json({
+				message: "You are not authorized to share this tag.",
+			});
 
 		let randomCode = randomCodeGenerator(6);
 
@@ -185,7 +188,7 @@ router.post("/share/:nickname", verifyUUID, async (req, res) => {
 			randomCode = randomCodeGenerator(6);
 
 		const shareCode = await ShareCode.create({
-			_tag: tagId,
+			_tag: _id,
 			shareCode: randomCode,
 		});
 

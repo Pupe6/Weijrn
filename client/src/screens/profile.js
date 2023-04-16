@@ -17,7 +17,7 @@ import { Feather } from "@expo/vector-icons";
 import EditUserDialog from "../components/edit-user-dialog";
 import DeleteUserDialog from "../components/delete-user-dialog";
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen() {
 	const [showUUID, setShowUUID] = useState(false);
 
 	const { user } = useContext(AuthContext);
@@ -150,7 +150,7 @@ export default function ProfileScreen({ navigation }) {
 											color: "coolGray.800",
 										}}
 										fontWeight={600}>
-										{"  "}***-***-***-***{"  "}
+										{"  "}___-___-___-___{"  "}
 									</Text>
 									<Tooltip
 										label="Show UUID"

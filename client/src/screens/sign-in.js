@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
 	FormControl,
 	Input,
@@ -6,7 +6,6 @@ import {
 	Center,
 	Heading,
 	VStack,
-	Link,
 	Button,
 	HStack,
 	Text,
@@ -16,10 +15,13 @@ import {
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignInForm } from "../utils/validation";
 import { AuthContext } from "../contexts/authContext";
+import Loading from "../components/loading";
 
 export default function SignInScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
 		useFormValidation({ email: "", password: "" }, validateSignInForm);
+
+	const [loading, setLoading] = useState(false);
 
 	const { login } = useContext(AuthContext);
 	const bg = useColorModeValue("white", "coolGray.800");
@@ -27,9 +29,13 @@ export default function SignInScreen({ navigation }) {
 	const toast = useToast();
 
 	useEffect(() => {
+		if (isSubmitting) setLoading(true);
+
 		if (isSubmitting && Object.values(errors).some(error => !error)) {
 			login(values)
 				.then(() => {
+					setLoading(false);
+
 					toast.show({
 						title: "Signed In",
 						description: "You have successfully signed in.",
@@ -46,6 +52,7 @@ export default function SignInScreen({ navigation }) {
 
 	return (
 		<Box flex="1" safeArea bg={bg} width="100%">
+			{loading && <Loading />}
 			<Center w="100%">
 				<Box safeArea p="2" py="8" w="90%" maxW="290">
 					<Heading

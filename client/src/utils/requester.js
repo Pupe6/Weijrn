@@ -1,4 +1,4 @@
-const baseUrl = "http://127.0.0.1:8393";
+export const baseUrl = "http://127.0.0.1:8393";
 
 const requester = async (
 	method,

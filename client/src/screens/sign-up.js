@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
 	FormControl,
 	Input,
@@ -10,10 +10,12 @@ import {
 	HStack,
 	Text,
 	useColorModeValue,
+	useToast,
 } from "native-base";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignUpForm } from "../utils/validation";
 import { AuthContext } from "../contexts/authContext";
+import Loading from "../components/loading";
 
 export default function SignUpScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =
@@ -27,12 +29,17 @@ export default function SignUpScreen({ navigation }) {
 			},
 			validateSignUpForm
 		);
+
+	const [loading, setLoading] = useState(false);
+
 	const bg = useColorModeValue("white", "coolGray.800");
 	const { register } = useContext(AuthContext);
 
 	const toast = useToast();
 
 	useEffect(() => {
+		if (isSubmitting) setLoading(true);
+
 		if (isSubmitting && Object.values(errors).some(error => !error)) {
 			register(values)
 				.then(() => {
@@ -52,6 +59,7 @@ export default function SignUpScreen({ navigation }) {
 
 	return (
 		<Box flex="1" safeArea bg={bg}>
+			{loading && <Loading />}
 			<Center w="100%">
 				<Box safeArea p="2" w="90%" maxW="290" py="8">
 					<Heading

@@ -96,11 +96,11 @@ export const getSharedTag = async (code, uuid) => {
 	return response;
 };
 
-// POST /tags/share/:nickname
+// POST /tags/share/:id
 
-export const shareTag = async (nickname, uuid) => {
+export const shareTag = async (id, uuid) => {
 	const response = await requester
-		.post(`/tags/share/${nickname}`, undefined, null, uuid)
+		.post(`/tags/share/${id}`, undefined, null, uuid)
 		.catch(err => {
 			throw err;
 		});

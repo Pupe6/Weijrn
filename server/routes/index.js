@@ -10,6 +10,12 @@ router.get("/favicon", (_, res) => {
 	});
 });
 
+router.get("/loading", (_, res) => {
+	res.status(200).sendFile("loading.gif", {
+		root: "./public",
+	});
+});
+
 module.exports = {
 	path: "/",
 	router,
