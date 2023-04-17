@@ -50,6 +50,7 @@ export default function SignUpScreen({ navigation }) {
 					});
 				})
 				.catch(err => {
+					setLoading(false);
 					toast.show({
 						avoidKeyboard: true,
 						title: "Error signing up",

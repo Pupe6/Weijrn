@@ -43,6 +43,7 @@ export default function SignInScreen({ navigation }) {
 					});
 				})
 				.catch(err => {
+					setLoading(false);
 					toast.show({
 						avoidKeyboard: true,
 						title: "Error signing in",
