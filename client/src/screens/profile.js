@@ -33,7 +33,7 @@ export default function ProfileScreen() {
 				bg: "white",
 			}}
 			w="100%">
-			<Center>
+			<Center h={["100%", "100%", "100%", "100%"]}>
 				<Box
 					_dark={{
 						bg: "coolGray.800",
@@ -112,7 +112,8 @@ export default function ProfileScreen() {
 											color: "coolGray.800",
 										}}
 										fontSize="sm"
-										fontWeight={600}>
+										fontWeight={600}
+										w={120}>
 										{user?.uuid}
 									</Text>
 									<Tooltip
@@ -149,7 +150,8 @@ export default function ProfileScreen() {
 										_light={{
 											color: "coolGray.800",
 										}}
-										fontWeight={600}>
+										fontWeight={600}
+										w={120}>
 										{"  "}___-___-___-___{"  "}
 									</Text>
 									<Tooltip

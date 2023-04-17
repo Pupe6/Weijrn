@@ -84,7 +84,7 @@ export default function AdminScreen(props) {
 			flex="1"
 			safeAreaTop
 			w={["100%", "100%", "100%", "100%"]}>
-			<Center>
+			<Center h={["100%", "100%", "100%", "100%"]}>
 				<Box
 					_dark={{
 						bg: "coolGray.800",
