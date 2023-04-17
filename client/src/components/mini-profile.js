@@ -10,7 +10,7 @@ export default function MiniProfile({ toast }) {
 
 	return (
 		<ToastProvider>
-			<Box flex="1" safeArea>
+			<Box safeArea>
 				<Menu
 					closeOnSelect
 					trigger={triggerProps => (

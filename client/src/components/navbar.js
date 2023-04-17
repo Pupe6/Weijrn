@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { HStack, useColorModeValue, useToast } from "native-base";
+import { Flex, HStack, useColorModeValue, useToast } from "native-base";
 import SignInScreen from "../screens/sign-in";
 import SignUpScreen from "../screens/sign-up";
 import AdminScreen from "../screens/control-panel";
@@ -33,12 +33,20 @@ export default function Navbar() {
 					},
 
 					headerRight: () => (
-						<HStack space={5} mr={2} alignItems="center">
+						<Flex
+							alignItems="flex-end"
+							gap={4}
+							direction="row"
+							_android={{ mb: 5 }}
+							mr={2}>
 							<ThemeToggle />
 							{user?._id && <MiniProfile toast={toast} />}
-						</HStack>
+						</Flex>
 					),
-					headerTintColor: useColorModeValue("coolGray.800", "white"),
+					headerTintColor: useColorModeValue(
+						"rgb(31, 41, 55)",
+						"white"
+					),
 					drawerStyle: {
 						backgroundColor: useColorModeValue(
 							"white",

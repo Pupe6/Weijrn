@@ -42,6 +42,7 @@ export default function CreateTagDialog() {
 				placement="top"
 				accessibilityLabel="Create tag">
 				<Button
+					w={12}
 					colorScheme="success"
 					onPress={() => setIsOpen(!isOpen)}>
 					<Icon

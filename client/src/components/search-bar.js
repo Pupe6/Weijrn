@@ -24,8 +24,6 @@ export default function SearchBar({ listData, setListData }) {
 		}
 	}, [search]);
 
-	// make search expandable on mobile and full width on desktop
-	const isMobile = useBreakpointValue({ base: true, md: false });
 	return (
 		<Input
 			onChangeText={setSearch}
