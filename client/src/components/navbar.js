@@ -30,15 +30,14 @@ export default function Navbar() {
 				screenOptions={{
 					headerStyle: {
 						backgroundColor: bg,
+						shadowColor: useColorModeValue(
+							"rgb(31, 41, 55)",
+							"white"
+						),
 					},
 
 					headerRight: () => (
-						<Flex
-							alignItems="flex-end"
-							gap={4}
-							direction="row"
-							_android={{ mb: 5 }}
-							mr={2}>
+						<Flex alignItems="center" gap={4} direction="row">
 							<ThemeToggle />
 							{user?._id && <MiniProfile toast={toast} />}
 						</Flex>
@@ -52,7 +51,7 @@ export default function Navbar() {
 							"white",
 							"rgb(31, 41, 55)"
 						),
-						color: useColorModeValue("coolGray.800", "white"),
+						color: useColorModeValue("rgb(31, 41, 55)", "white"),
 					},
 					drawerActiveTintColor: useColorModeValue(
 						"coolGray.800",
