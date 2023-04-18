@@ -1,16 +1,48 @@
-import { useContext } from "react";
+import { useContext, lazy, Suspense } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Flex, HStack, useColorModeValue, useToast } from "native-base";
-import SignInScreen from "../screens/sign-in";
-import SignUpScreen from "../screens/sign-up";
-import AdminScreen from "../screens/control-panel";
-import ProfileScreen from "../screens/profile";
+import { Flex, useColorModeValue, useToast } from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { LoadingContext } from "../contexts/loadingContext";
 import ThemeToggle from "./theme-toggle";
 import MiniProfile from "./mini-profile";
-import CustomDrawerContent from "./custom-drawer-content";
 import Loading from "./loading";
+import FallbackSkeleton from "./fallback-skeleton";
+
+const SignInScreen = lazy(() => import("../screens/sign-in"));
+const SignUpScreen = lazy(() => import("../screens/sign-up"));
+const ControlPanel = lazy(() => import("../screens/control-panel"));
+const ProfileScreen = lazy(() => import("../screens/profile"));
+const CustomDrawerContent = lazy(() => import("./custom-drawer-content"));
+
+const LazySignInScreen = props => (
+	<Suspense width="100%" height="100%" fallback={<FallbackSkeleton />}>
+		<SignInScreen {...props} />
+	</Suspense>
+);
+
+const LazySignUpScreen = props => (
+	<Suspense fallback={<FallbackSkeleton />}>
+		<SignUpScreen {...props} />
+	</Suspense>
+);
+
+const LazyControlPanel = props => (
+	<Suspense fallback={<FallbackSkeleton />}>
+		<ControlPanel {...props} />
+	</Suspense>
+);
+
+const LazyProfileScreen = props => (
+	<Suspense fallback={<FallbackSkeleton />}>
+		<ProfileScreen {...props} />
+	</Suspense>
+);
+
+const LazyCustomDrawerContent = props => (
+	<Suspense>
+		<CustomDrawerContent {...props} />
+	</Suspense>
+);
 
 const Drawer = createDrawerNavigator();
 
@@ -75,28 +107,30 @@ export default function Navbar() {
 						"rgb(31, 41, 55)"
 					),
 				}}
-				drawerContent={props => <CustomDrawerContent {...props} />}>
+				drawerContent={props => <LazyCustomDrawerContent {...props} />}>
 				{!user?._token ? (
 					<>
 						<Drawer.Screen
 							name="Sign In"
-							component={SignInScreen}
+							component={LazySignInScreen}
 						/>
+
 						<Drawer.Screen
 							name="Sign Up"
-							component={SignUpScreen}
+							component={LazySignUpScreen}
 						/>
 					</>
 				) : (
 					<>
 						<Drawer.Screen
 							name="Control Panel"
-							component={AdminScreen}
+							component={LazyControlPanel}
 							initialParams={{ refresh: ++global.refresh }}
 						/>
+
 						<Drawer.Screen
 							name="Profile"
-							component={ProfileScreen}
+							component={LazyProfileScreen}
 						/>
 					</>
 				)}

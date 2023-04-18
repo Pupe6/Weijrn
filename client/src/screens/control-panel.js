@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, lazy, Suspense } from "react";
 import {
 	Center,
 	Box,
@@ -10,15 +10,34 @@ import {
 	Flex,
 } from "native-base";
 import { getTags } from "../services/tagService";
-import { ScrollView } from "react-native";
-import ControlPanelRow from "../components/control-panel-row";
 import ImportTagDialog from "../components/import-tag-dialog";
 import CreateTagDialog from "../components/create-tag-dialog";
 import SearchBar from "../components/search-bar";
 import { AuthContext } from "../contexts/authContext";
 import { LoadingContext } from "../contexts/loadingContext";
 
-export default function AdminScreen(props) {
+const ControlPanelRow = lazy(() => import("../components/control-panel-row"));
+
+const LazyControlPanelRow = props => (
+	<Suspense
+		fallback={
+			<Center
+				mt={{ base: 5, md: 10 }}
+				rounded="lg"
+				_dark={{
+					bg: "coolGray.900",
+				}}
+				_light={{
+					bg: "coolGray.100",
+				}}
+				p="8"
+			/>
+		}>
+		<ControlPanelRow {...props} />
+	</Suspense>
+);
+
+export default function ControlPanel(props) {
 	const [listData, setListData] = useState({
 		tags: [],
 		filteredTags: [],
@@ -36,13 +55,13 @@ export default function AdminScreen(props) {
 
 		getTags(user?._token)
 			.then(tags => {
+				if (tags.length === 0) setNoTags(true);
+				else setNoTags(false);
+
 				setListData({
 					tags,
 					filteredTags: tags,
 				});
-
-				if (tags.length === 0) setNoTags(true);
-				else setNoTags(false);
 
 				setLoading(false);
 			})
@@ -150,7 +169,7 @@ export default function AdminScreen(props) {
 						<FlatList
 							data={listData.filteredTags}
 							renderItem={tag => (
-								<ControlPanelRow tag={tag.item} />
+								<LazyControlPanelRow tag={tag.item} />
 							)}
 							keyExtractor={tag => tag._id}
 						/>
