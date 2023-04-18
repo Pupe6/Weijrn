@@ -135,23 +135,25 @@ export default function AdminScreen(props) {
 					</Flex>
 
 					{noTags && (
-						<Center flex="1" mt="10">
-							<Heading size="lg">No tags yet...</Heading>
+						<Center mt={{ base: 5, md: 10 }}>
+							<Heading size="md">No tags yet...</Heading>
 						</Center>
 					)}
 
-					{/* <ScrollView showsVerticalScrollIndicator={false}> */}
-					<FlatList
-						data={listData.filteredTags}
-						renderItem={tag => <ControlPanelRow tag={tag.item} />}
-						keyExtractor={tag => tag._id}
-					/>
-					{/* </ScrollView> */}
-
-					{noSearchResults && (
-						<Center flex="1" mt="10">
-							<Heading size="lg">No results found...</Heading>
+					{!noTags && noSearchResults && (
+						<Center mt={{ base: 5, md: 10 }}>
+							<Heading size="md">No results found...</Heading>
 						</Center>
+					)}
+
+					{!noTags && !noSearchResults && (
+						<FlatList
+							data={listData.filteredTags}
+							renderItem={tag => (
+								<ControlPanelRow tag={tag.item} />
+							)}
+							keyExtractor={tag => tag._id}
+						/>
 					)}
 				</Box>
 			</Center>

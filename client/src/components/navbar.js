@@ -37,7 +37,11 @@ export default function Navbar() {
 					},
 
 					headerRight: () => (
-						<Flex alignItems="center" gap={4} direction="row">
+						<Flex
+							alignItems="center"
+							gap={4}
+							mr={{ base: 2, md: 4 }}
+							direction="row">
 							<ThemeToggle />
 							{user?._id && <MiniProfile toast={toast} />}
 						</Flex>

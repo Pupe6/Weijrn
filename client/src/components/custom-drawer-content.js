@@ -16,22 +16,59 @@ import { getIcon } from "../utils/getIcon";
 
 export default function CustomDrawerContent(props) {
 	const { user } = useContext(AuthContext);
-	const iconColor = useColorModeValue("coolGray.600", "white");
+	// rgba(75,85,99,255) is coolGray.600
+	const textColors = {
+		light: "rgba(75,85,99,255)",
+		dark: "rgb(255, 255, 255)",
+	};
+	const textColor = useColorModeValue(textColors.light, textColors.dark);
 
 	return (
 		<DrawerContentScrollView {...props} safeArea>
 			<VStack space="6" my="2" mx="1">
 				<Box px="4">
-					<Text bold color={iconColor}>
+					<Text bold color={textColor}>
 						Account
 					</Text>
 					<Text
 						fontSize="14"
 						mt="1"
 						fontWeight="500"
-						color={iconColor}>
+						color={textColor}>
 						{user?.email ? user?.email : "Not signed in"}
 					</Text>
+					{/* Add a close button for web */}
+					<Pressable
+						onPress={() => props.navigation.closeDrawer()}
+						position="absolute"
+						right="3"
+						top="3"
+						rounded="full"
+						p="2"
+						display="none"
+						_web={{
+							display: "flex",
+						}}
+						style={{
+							transition: "all 0.2s ease-in-out",
+						}}
+						_hover={{
+							bg:
+								textColor === textColors.light
+									? "rgba(75, 85, 99, 0.5)"
+									: "rgba(255, 255, 255, 0.5)",
+						}}
+						bg={
+							textColor === textColors.light
+								? "rgba(75, 85, 99, 0.2)"
+								: "rgba(255, 255, 255, 0.2)"
+						}>
+						<Icon
+							color={textColor}
+							size="5"
+							as={<MaterialCommunityIcons name="close" />}
+						/>
+					</Pressable>
 				</Box>
 				<VStack divider={<Divider />} space="4">
 					<VStack space="3">
@@ -54,7 +91,7 @@ export default function CustomDrawerContent(props) {
 										color={
 											index === props.state.index
 												? "primary.500"
-												: iconColor
+												: textColor
 										}
 										size="5"
 										as={
@@ -68,7 +105,7 @@ export default function CustomDrawerContent(props) {
 										color={
 											index === props.state.index
 												? "primary.500"
-												: iconColor
+												: textColor
 										}>
 										{name}
 									</Text>
