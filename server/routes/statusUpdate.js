@@ -75,10 +75,6 @@ router.post("/send", verifyUUID, async (req, res) => {
 			await statusUpdate.save();
 		}
 
-		// Make sure we are not receiving a tag while sending one
-		if (statusUpdate.raspiSend.status)
-			return res.status(400).json({ message: "Already sending a tag." });
-
 		// Make sure we are not sending a tag while receiving one
 		if (statusUpdate.raspiReceive.status)
 			return res
@@ -121,12 +117,6 @@ router.post("/receive", verifyUUID, async (req, res) => {
 		// Make sure we are not receiving a tag while sending one
 		if (statusUpdate.raspiSend.status)
 			return res.status(400).json({ message: "Already sending a tag." });
-
-		// Make sure we are not sending a tag while receiving one
-		if (statusUpdate.raspiReceive.status)
-			return res
-				.status(400)
-				.json({ message: "Already receiving a tag." });
 
 		const { _id } = req.body;
 
