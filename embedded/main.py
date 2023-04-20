@@ -1,12 +1,24 @@
+import os
 import time
 import requests
+
+from Crypto.Cipher import AES
+from Crypto.Util import Padding
 
 from pn532pi import Pn532, Pn532I2c, Pn532Spi, Pn532Hsu
 
 # Custom modules
 import read
 import write
-from encryption import decrypt
+import formatcard
+import ndeftoclassic
+
+import RPi.GPIO as GPIO
+import time
+
+# from myinterface import turnOff
+
+# Set GPIO mode to BCM
 
 # Load environment variables
 from dotenv import load_dotenv
@@ -23,13 +35,53 @@ elif interface == "HSU":
     PN532_HSU = Pn532Hsu(0)
     nfc = Pn532(PN532_HSU)
 elif interface == "I2C":
-    PN532_I2C = Pn532I2c(1)
+    PN532_I2C = Pn532I2c(1) 
     nfc = Pn532(PN532_I2C)
 
 # Constants
-SERVER_URL = "http://localhost:8393"
+ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY").encode("utf-8")
+IV_LENGTH = 16
+
+SERVER_URL = "https://66cf-78-154-14-184.ngrok-free.app"
 UUID = "32d-ef2-7e5-4f0"
+
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(4, GPIO.OUT)
+
+#---------------------------
+
+# GPIO.setup(26, GPIO.OUT)
+
+# GPIO.output(26, GPIO.HIGH)
+
+
 # MAC_ADDRESS = "00:00:00:00:00:00"
+
+
+def encrypt(data: str) -> str:
+    iv = os.urandom(IV_LENGTH)
+
+    cipher = AES.new(bytes(ENCRYPTION_KEY), AES.MODE_CBC, iv)
+
+    padded_data = Padding.pad(data.encode(), AES.block_size)
+
+    encrypted = cipher.encrypt(padded_data)
+
+    return f"{iv.hex()}:{encrypted.hex()}"
+
+
+def decrypt(data: str) -> str:
+    [iv_hex, encrypted_data] = data.split(":")
+    iv = bytes.fromhex(iv_hex)
+
+    cipher = AES.new(bytes(ENCRYPTION_KEY), AES.MODE_CBC, iv)
+
+    decrypted = cipher.decrypt(bytes.fromhex(encrypted_data))
+
+    unpadded = Padding.unpad(decrypted, AES.block_size)
+
+    return unpadded.decode("utf-8")
 
 
 # Requests
@@ -43,10 +95,12 @@ def get_status_checker():
 
         response = requests.get(status_update_url, headers=headers)
         data = response.json()
-
+        # print(data)
+        
         raspiSend = data["raspiSend"]
         raspiReceive = data["raspiReceive"]
 
+        # print(raspiReceive)
         time.sleep(5)
 
         # Check if the status is pending
@@ -55,17 +109,18 @@ def get_status_checker():
 
         if raspiSend["status"]:
             # Set the status to pending
+            print("Im in RaspiSend")
             requests.post(f"{status_update_url}/pending", headers=headers)
 
             read.setup_read()
-
+            
             # Start trying to read from the tag
             read_data = None
             while True:
                 print("Waiting for an ISO14443A card")
                 try:
                     read_data = read.loop_read()
-                    # print(read_data)
+                    print(read_data)
 
                     if not read_data:
                         continue
@@ -78,21 +133,33 @@ def get_status_checker():
 
             # Set the status to resolved
             requests.post(f"{status_update_url}/resolve", headers=headers)
-
+        
         elif raspiReceive["status"]:
+            print("Im in RaspiReceive")
+            print(raspiReceive["tag"])
             # Set the status to pending
             requests.post(f"{status_update_url}/pending", headers=headers)
 
             data = decrypt(raspiReceive["tag"]["data"])
-            # print(data)
+            print(data)
 
             # Start trying to write to the tag
             write.setup_write()
+            # formatcard.setup_format()
 
             is_written = False
             while True:
                 try:
                     is_written = write.loop_write(data)
+                    
+                    print("I have successfully formated")
+                    is_written = write.loop_write(data)
+                    print("After write")
+
+
+                    
+                    print(f"is written: {is_written}")
+
 
                     if not is_written:
                         continue
@@ -100,6 +167,11 @@ def get_status_checker():
                         break
                 except Exception:
                     pass
+
+            # GPIO.output(26, GPIO.LOW)# turn on module
+            # time.sleep(5)
+            # GPIO.output(4, GPIO.LOW)# turn off emulation relay
+
 
             # Set the status to resolved
             requests.post(f"{status_update_url}/resolve", headers=headers)
