@@ -16,6 +16,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
 import { LoadingContext } from "../contexts/loadingContext";
 import { getSharedTag } from "../services/tagService";
+import { Platform } from "react-native";
 
 export default function GetSharedTagDialog() {
 	const [isOpen, setIsOpen] = useState(false);

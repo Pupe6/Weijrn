@@ -14,6 +14,7 @@ import { Entypo } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
 import { LoadingContext } from "../contexts/loadingContext";
 import { deleteUser } from "../services/userService";
+import { Platform } from "react-native";
 
 export default function DeleteTagDialog() {
 	const [isOpen, setIsOpen] = useState(false);

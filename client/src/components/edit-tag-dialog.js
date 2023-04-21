@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { updateTag } from "../services/tagService";
 import { LoadingContext } from "../contexts/loadingContext";
+import { Platform } from "react-native";
 
 export default function EditTagDialog(props) {
 	const [isOpen, setIsOpen] = useState(false);

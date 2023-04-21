@@ -6,6 +6,7 @@ import {
 	KeyboardAvoidingView,
 } from "native-base";
 import { FontAwesome } from "@expo/vector-icons";
+import { Platform } from "react-native";
 
 export default function SearchBar({ listData, setListData }) {
 	const [search, setSearch] = useState("");

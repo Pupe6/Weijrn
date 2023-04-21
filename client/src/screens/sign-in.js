@@ -17,6 +17,7 @@ import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignInForm } from "../utils/validation";
 import { AuthContext } from "../contexts/authContext";
 import { LoadingContext } from "../contexts/loadingContext";
+import { Platform } from "react-native";
 
 export default function SignInScreen({ navigation }) {
 	const { values, errors, isSubmitting, handleChange, handleSubmit } =

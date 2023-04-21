@@ -15,6 +15,7 @@ import { updateUser } from "../services/userService";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LoadingContext } from "../contexts/loadingContext";
+import { Platform } from "react-native";
 
 function validatePassword(password, confirmPassword) {
 	if (!password && !confirmPassword) return true;

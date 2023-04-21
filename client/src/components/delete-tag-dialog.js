@@ -90,48 +90,44 @@ export default function DeleteTagDialog({ tag }) {
 
 									setLoading(true);
 
-									setTimeout(() => {
-										deleteTag(tag._id, user?._token)
-											.then(() => {
-												setLoading(false);
+									deleteTag(tag._id, user?._token)
+										.then(() => {
+											setLoading(false);
 
+											toast.show({
+												avoidKeyboard: true,
+												title: "Tag deleted",
+											});
+
+											navigation.navigate(
+												"Control Panel",
+												{
+													refresh: ++global.refresh,
+												}
+											);
+										})
+										.catch(err => {
+											if (
+												err.message ===
+												"Token is not valid."
+											) {
 												toast.show({
 													avoidKeyboard: true,
-													title: "Tag deleted",
+													title: "Session expired",
+													description:
+														"Please login again",
 												});
 
-												navigation.navigate(
-													"Control Panel",
-													{
-														refresh:
-															++global.refresh,
-													}
-												);
-											})
-											.catch(err => {
-												if (
-													err.message ===
-													"Token is not valid."
-												) {
-													toast.show({
-														avoidKeyboard: true,
-														title: "Session expired",
-														description:
-															"Please login again",
-													});
+												setUser(null);
+											} else
+												toast.show({
+													avoidKeyboard: true,
+													title: "Error deleting tag",
+													description: err.message,
+												});
 
-													setUser(null);
-												} else
-													toast.show({
-														avoidKeyboard: true,
-														title: "Error deleting tag",
-														description:
-															err.message,
-													});
-
-												setLoading(false);
-											});
-									}, 3000);
+											setLoading(false);
+										});
 								}}>
 								Delete
 							</Button>
