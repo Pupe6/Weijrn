@@ -1,4 +1,4 @@
-export const baseUrl = "http://localhost:8393";
+export const baseUrl = "http://weijrnserver.onrender.com";
 
 const requester = async (
 	method,
