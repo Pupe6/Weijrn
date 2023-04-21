@@ -198,6 +198,11 @@ def get_status_checker():
 
 
 
+            # GPIO.output(26, GPIO.LOW)# turn on module
+            # time.sleep(5)
+            # GPIO.output(4, GPIO.LOW)# turn off emulation relay
+
+
             # Set the status to resolved
             requests.post(f"{status_update_url}/resolve", headers=headers)
 
