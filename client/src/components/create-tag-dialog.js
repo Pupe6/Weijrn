@@ -138,8 +138,14 @@ export default function CreateTagDialog() {
 																title: "Error getting status update",
 																description:
 																	err.message,
-																duration: null,
 															});
+
+															clearInterval(
+																intervalRef.current
+															);
+
+															intervalRef.current =
+																null;
 														});
 												},
 												2000

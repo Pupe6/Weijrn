@@ -7,6 +7,7 @@ const path = require("path");
 const fs = require("fs");
 
 const ShareCode = require("./models/ShareCode");
+const Status = require("./models/Status");
 
 const app = express();
 
@@ -63,6 +64,29 @@ setInterval(async () => {
 		}
 	});
 }, 1000 * 60 * 5);
+
+// Check All Statuses And Clear Them If They Haven't Been Used In 30 Seconds; This Runs Every 10 Seconds
+setInterval(async () => {
+	const statuses = await Status.find();
+
+	statuses.forEach(async status => {
+		const now = new Date();
+
+		const diff = now.getTime() - status.updatedAt.getTime();
+
+		if (diff >= 30 * 1000) {
+			status.raspiSend.status = false;
+			status.raspiSend.pending = false;
+			status.raspiSend.nickname = null;
+
+			status.raspiReceive.status = false;
+			status.raspiReceive.pending = false;
+			status.raspiReceive.tag = null;
+
+			await status.save();
+		}
+	});
+}, 10 * 1000);
 
 // Register Routes
 try {
