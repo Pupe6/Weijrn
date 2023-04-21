@@ -11,6 +11,7 @@ import {
 	Text,
 	useColorModeValue,
 	useToast,
+	KeyboardAvoidingView,
 } from "native-base";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignInForm } from "../utils/validation";
@@ -78,66 +79,72 @@ export default function SignInScreen({ navigation }) {
 					</Heading>
 
 					<VStack space={3} mt="5">
-						<FormControl isInvalid={errors?.email}>
-							<FormControl.Label>Email</FormControl.Label>
-							<Input
-								onChangeText={text =>
-									handleChange("email", text)
-								}
-							/>
+						<KeyboardAvoidingView
+							behavior={
+								Platform.OS === "ios" ? "padding" : "height"
+							}
+							height="auto">
+							<FormControl isInvalid={errors?.email}>
+								<FormControl.Label>Email</FormControl.Label>
+								<Input
+									onChangeText={text =>
+										handleChange("email", text)
+									}
+								/>
 
-							<FormControl.ErrorMessage>
-								{errors?.email}
-							</FormControl.ErrorMessage>
-						</FormControl>
-						<FormControl isInvalid={errors?.password}>
-							<FormControl.Label>Password</FormControl.Label>
-							<Input
-								type="password"
-								onChangeText={text =>
-									handleChange("password", text)
-								}
-							/>
+								<FormControl.ErrorMessage>
+									{errors?.email}
+								</FormControl.ErrorMessage>
+							</FormControl>
+							<FormControl isInvalid={errors?.password}>
+								<FormControl.Label>Password</FormControl.Label>
+								<Input
+									type="password"
+									onChangeText={text =>
+										handleChange("password", text)
+									}
+								/>
 
-							<FormControl.ErrorMessage>
-								{errors?.password}
-							</FormControl.ErrorMessage>
-						</FormControl>
-						<Button
-							mt="2"
-							colorScheme="indigo"
-							onPress={async () => handleSubmit()}
-							_disabled={isSubmitting}>
-							Sign in
-						</Button>
-						<HStack
-							mt="6"
-							alignItems="center"
-							justifyContent="center">
-							<Text
-								fontSize="sm"
-								color="coolGray.600"
-								_dark={{
-									color: "warmGray.200",
-								}}>
-								I'm a new user.{" "}
-							</Text>
+								<FormControl.ErrorMessage>
+									{errors?.password}
+								</FormControl.ErrorMessage>
+							</FormControl>
 							<Button
-								variant="link"
-								onPress={() => {
-									navigation.navigate("Sign Up");
-								}}>
-								<Text
-									fontWeight="bold"
-									color="indigo.500"
-									underline
-									_dark={{
-										color: "indigo.300",
-									}}>
-									Sign Up
-								</Text>
+								mt="2"
+								colorScheme="indigo"
+								onPress={async () => handleSubmit()}
+								_disabled={isSubmitting}>
+								Sign in
 							</Button>
-						</HStack>
+							<HStack
+								mt="6"
+								alignItems="center"
+								justifyContent="center">
+								<Text
+									fontSize="sm"
+									color="coolGray.600"
+									_dark={{
+										color: "warmGray.200",
+									}}>
+									I'm a new user.{" "}
+								</Text>
+								<Button
+									variant="link"
+									onPress={() => {
+										navigation.navigate("Sign Up");
+									}}>
+									<Text
+										fontWeight="bold"
+										color="indigo.500"
+										underline
+										_dark={{
+											color: "indigo.300",
+										}}>
+										Sign Up
+									</Text>
+								</Button>
+							</HStack>
+						</KeyboardAvoidingView>
 					</VStack>
 				</Box>
 			</Center>

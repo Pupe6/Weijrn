@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { Input, useBreakpointValue, Icon } from "native-base";
+import {
+	Input,
+	useBreakpointValue,
+	Icon,
+	KeyboardAvoidingView,
+} from "native-base";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function SearchBar({ listData, setListData }) {
@@ -25,35 +30,39 @@ export default function SearchBar({ listData, setListData }) {
 	}, [search]);
 
 	return (
-		<Input
-			onChangeText={setSearch}
-			placeholder="Search Tags"
-			_light={{
-				placeholderTextColor: "blueGray.400",
-			}}
-			_dark={{
-				placeholderTextColor: "blueGray.50",
-			}}
-			borderRadius={4}
-			py={3}
-			px={1}
-			fontSize={14}
-			_web={{
-				_focus: {
-					borderColor: "muted.300",
-					style: {
-						boxShadow: "none",
+		<KeyboardAvoidingView
+			behavior={Platform.OS === "ios" ? "padding" : "height"}
+			height="auto">
+			<Input
+				onChangeText={setSearch}
+				placeholder="Search Tags"
+				_light={{
+					placeholderTextColor: "blueGray.400",
+				}}
+				_dark={{
+					placeholderTextColor: "blueGray.50",
+				}}
+				borderRadius={4}
+				py={3}
+				px={1}
+				fontSize={14}
+				_web={{
+					_focus: {
+						borderColor: "muted.300",
+						style: {
+							boxShadow: "none",
+						},
 					},
-				},
-			}}
-			InputLeftElement={
-				<Icon
-					as={<FontAwesome name="search" />}
-					size="sm"
-					ml={2}
-					color="muted.400"
-				/>
-			}
-		/>
+				}}
+				InputLeftElement={
+					<Icon
+						as={<FontAwesome name="search" />}
+						size="sm"
+						ml={2}
+						color="muted.400"
+					/>
+				}
+			/>
+		</KeyboardAvoidingView>
 	);
 }

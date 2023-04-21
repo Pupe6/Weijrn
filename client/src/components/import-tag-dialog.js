@@ -9,6 +9,7 @@ import {
 	FormControl,
 	Input,
 	Tooltip,
+	KeyboardAvoidingView,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -58,16 +59,22 @@ export default function GetSharedTagDialog() {
 					<AlertDialog.Body>
 						<FormControl>
 							<FormControl.Label>Code</FormControl.Label>
-							<Input
-								placeholder="Enter code"
-								_light={{
-									placeholderTextColor: "blueGray.400",
-								}}
-								_dark={{
-									placeholderTextColor: "blueGray.50",
-								}}
-								onChangeText={text => setShareCode(text)}
-							/>
+							<KeyboardAvoidingView
+								behavior={
+									Platform.OS === "ios" ? "padding" : "height"
+								}
+								height="auto">
+								<Input
+									placeholder="Enter code"
+									_light={{
+										placeholderTextColor: "blueGray.400",
+									}}
+									_dark={{
+										placeholderTextColor: "blueGray.50",
+									}}
+									onChangeText={text => setShareCode(text)}
+								/>
+							</KeyboardAvoidingView>
 						</FormControl>
 					</AlertDialog.Body>
 					<AlertDialog.Footer>

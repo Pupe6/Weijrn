@@ -9,6 +9,7 @@ import {
 	FormControl,
 	Input,
 	Tooltip,
+	KeyboardAvoidingView,
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
@@ -70,17 +71,26 @@ export default function EditTagDialog(props) {
 								<FormControl.Label>
 									New Nickname
 								</FormControl.Label>
-								<Input
-									placeholder="Enter nickname"
-									value={nickname}
-									_light={{
-										placeholderTextColor: "blueGray.400",
-									}}
-									_dark={{
-										placeholderTextColor: "blueGray.50",
-									}}
-									onChangeText={text => setNickname(text)}
-								/>
+								<KeyboardAvoidingView
+									behavior={
+										Platform.OS === "ios"
+											? "padding"
+											: "height"
+									}
+									height="auto">
+									<Input
+										placeholder="Enter nickname"
+										value={nickname}
+										_light={{
+											placeholderTextColor:
+												"blueGray.400",
+										}}
+										_dark={{
+											placeholderTextColor: "blueGray.50",
+										}}
+										onChangeText={text => setNickname(text)}
+									/>
+								</KeyboardAvoidingView>
 							</FormControl>
 						</AlertDialog.Body>
 						<AlertDialog.Footer>

@@ -7,8 +7,8 @@ export default function FallbackSkeleton({ w, h }) {
 			mt="3"
 			justifyItems="center"
 			alignSelf="center"
-			width={w || "50vh"}
-			height={h || "60vh"}
+			width={w || "50%"}
+			height={h || "60%"}
 			rounded="lg"
 			bg="warmGray.300"
 			_dark={{

@@ -8,6 +8,7 @@ import {
 	Text,
 	FormControl,
 	Input,
+	KeyboardAvoidingView,
 } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
@@ -60,11 +61,17 @@ export default function DeleteTagDialog() {
 							<FormControl.Label>
 								Confirm Password
 							</FormControl.Label>
-							<Input
-								type="password"
-								value={confirmPassword}
-								onChangeText={setConfirmPassword}
-							/>
+							<KeyboardAvoidingView
+								behavior={
+									Platform.OS === "ios" ? "padding" : "height"
+								}
+								height="auto">
+								<Input
+									type="password"
+									value={confirmPassword}
+									onChangeText={setConfirmPassword}
+								/>
+							</KeyboardAvoidingView>
 						</FormControl>
 					</AlertDialog.Body>
 					<AlertDialog.Footer>

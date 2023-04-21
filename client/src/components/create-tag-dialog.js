@@ -9,6 +9,7 @@ import {
 	FormControl,
 	Input,
 	Tooltip,
+	KeyboardAvoidingView,
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
@@ -18,6 +19,7 @@ import {
 	statusUpdate,
 	resolveStatusUpdate,
 } from "../services/tagService";
+import { Platform } from "react-native";
 
 export default function CreateTagDialog() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -65,16 +67,22 @@ export default function CreateTagDialog() {
 					<AlertDialog.Body>
 						<FormControl>
 							<FormControl.Label>Tag</FormControl.Label>
-							<Input
-								placeholder="Enter nickname"
-								_light={{
-									placeholderTextColor: "blueGray.400",
-								}}
-								_dark={{
-									placeholderTextColor: "blueGray.50",
-								}}
-								onChangeText={text => setTagNickname(text)}
-							/>
+							<KeyboardAvoidingView
+								behavior={
+									Platform.OS === "ios" ? "padding" : "height"
+								}
+								height="auto">
+								<Input
+									placeholder="Enter nickname"
+									_light={{
+										placeholderTextColor: "blueGray.400",
+									}}
+									_dark={{
+										placeholderTextColor: "blueGray.50",
+									}}
+									onChangeText={text => setTagNickname(text)}
+								/>
+							</KeyboardAvoidingView>
 						</FormControl>
 					</AlertDialog.Body>
 					<AlertDialog.Footer>

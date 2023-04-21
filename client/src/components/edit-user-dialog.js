@@ -8,6 +8,7 @@ import {
 	Text,
 	FormControl,
 	Input,
+	KeyboardAvoidingView,
 } from "native-base";
 import { AuthContext } from "../contexts/authContext";
 import { updateUser } from "../services/userService";
@@ -77,71 +78,81 @@ export default function EditUserDialog() {
 						</Text>
 					</AlertDialog.Header>
 					<AlertDialog.Body>
-						<FormControl>
-							<FormControl.Label>Username</FormControl.Label>
-							<Input
-								value={newUser.username}
-								onChangeText={text =>
-									setNewUser({
-										...newUser,
-										username: text,
-									})
-								}
-							/>
-						</FormControl>
-						<FormControl>
-							<FormControl.Label>Email</FormControl.Label>
-							<Input
-								value={newUser.email}
-								onChangeText={text =>
-									setNewUser({
-										...newUser,
-										email: text,
-									})
-								}
-							/>
-						</FormControl>
-						<FormControl>
-							<FormControl.Label>Old Password</FormControl.Label>
-							<Input
-								type="password"
-								value={newUser.password}
-								onChangeText={text =>
-									setNewUser({
-										...newUser,
-										password: text,
-									})
-								}
-							/>
-						</FormControl>
-						<FormControl>
-							<FormControl.Label>New Password</FormControl.Label>
-							<Input
-								type="password"
-								value={newUser.newPassword}
-								onChangeText={text =>
-									setNewUser({
-										...newUser,
-										newPassword: text,
-									})
-								}
-							/>
-						</FormControl>
-						<FormControl>
-							<FormControl.Label>
-								Confirm New Password
-							</FormControl.Label>
-							<Input
-								type="password"
-								value={newUser.confirmNewPassword}
-								onChangeText={text =>
-									setNewUser({
-										...newUser,
-										confirmNewPassword: text,
-									})
-								}
-							/>
-						</FormControl>
+						<KeyboardAvoidingView
+							behavior={
+								Platform.OS === "ios" ? "padding" : "height"
+							}
+							height="auto">
+							<FormControl>
+								<FormControl.Label>Username</FormControl.Label>
+								<Input
+									value={newUser.username}
+									onChangeText={text =>
+										setNewUser({
+											...newUser,
+											username: text,
+										})
+									}
+								/>
+							</FormControl>
+							<FormControl>
+								<FormControl.Label>Email</FormControl.Label>
+								<Input
+									value={newUser.email}
+									onChangeText={text =>
+										setNewUser({
+											...newUser,
+											email: text,
+										})
+									}
+								/>
+							</FormControl>
+							<FormControl>
+								<FormControl.Label>
+									Old Password
+								</FormControl.Label>
+								<Input
+									type="password"
+									value={newUser.password}
+									onChangeText={text =>
+										setNewUser({
+											...newUser,
+											password: text,
+										})
+									}
+								/>
+							</FormControl>
+							<FormControl>
+								<FormControl.Label>
+									New Password
+								</FormControl.Label>
+								<Input
+									type="password"
+									value={newUser.newPassword}
+									onChangeText={text =>
+										setNewUser({
+											...newUser,
+											newPassword: text,
+										})
+									}
+								/>
+							</FormControl>
+							<FormControl>
+								<FormControl.Label>
+									Confirm New Password
+								</FormControl.Label>
+								<Input
+									type="password"
+									value={newUser.confirmNewPassword}
+									onChangeText={text =>
+										setNewUser({
+											...newUser,
+											confirmNewPassword: text,
+										})
+									}
+								/>
+							</FormControl>
+						</KeyboardAvoidingView>
 					</AlertDialog.Body>
 					<AlertDialog.Footer>
 						<Button.Group space={2}>

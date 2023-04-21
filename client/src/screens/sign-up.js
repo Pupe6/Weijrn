@@ -11,6 +11,7 @@ import {
 	Text,
 	useColorModeValue,
 	useToast,
+	KeyboardAvoidingView,
 } from "native-base";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { validateSignUpForm } from "../utils/validation";
@@ -84,120 +85,126 @@ export default function SignUpScreen({ navigation }) {
 						Sign up to continue!
 					</Heading>
 					<VStack space={3} mt="5">
-						<FormControl isInvalid={errors?.username}>
-							<FormControl.Label>Username</FormControl.Label>
-							<Input
-								onChangeText={text =>
-									handleChange("username", text)
-								}
-							/>
+						<KeyboardAvoidingView
+							behavior={
+								Platform.OS === "ios" ? "padding" : "height"
+							}
+							height="auto">
+							<FormControl isInvalid={errors?.username}>
+								<FormControl.Label>Username</FormControl.Label>
+								<Input
+									onChangeText={text =>
+										handleChange("username", text)
+									}
+								/>
 
-							<FormControl.ErrorMessage>
-								{errors?.username}
-							</FormControl.ErrorMessage>
-						</FormControl>
-						<FormControl isInvalid={errors?.email}>
-							<FormControl.Label>Email</FormControl.Label>
-							<Input
-								onChangeText={text =>
-									handleChange("email", text)
-								}
-							/>
+								<FormControl.ErrorMessage>
+									{errors?.username}
+								</FormControl.ErrorMessage>
+							</FormControl>
+							<FormControl isInvalid={errors?.email}>
+								<FormControl.Label>Email</FormControl.Label>
+								<Input
+									onChangeText={text =>
+										handleChange("email", text)
+									}
+								/>
 
-							<FormControl.ErrorMessage>
-								{errors?.email}
-							</FormControl.ErrorMessage>
-						</FormControl>
-						<FormControl isInvalid={errors?.password}>
-							<FormControl.Label>Password</FormControl.Label>
-							<Input
-								type="password"
-								onChangeText={text =>
-									handleChange("password", text)
-								}
-							/>
+								<FormControl.ErrorMessage>
+									{errors?.email}
+								</FormControl.ErrorMessage>
+							</FormControl>
+							<FormControl isInvalid={errors?.password}>
+								<FormControl.Label>Password</FormControl.Label>
+								<Input
+									type="password"
+									onChangeText={text =>
+										handleChange("password", text)
+									}
+								/>
 
-							<FormControl.ErrorMessage>
-								{errors?.password}
-							</FormControl.ErrorMessage>
-						</FormControl>
-						<FormControl isInvalid={errors?.confirmPassword}>
-							<FormControl.Label>
-								Confirm Password
-							</FormControl.Label>
-							<Input
-								type="password"
-								onChangeText={text =>
-									handleChange("confirmPassword", text)
-								}
-							/>
+								<FormControl.ErrorMessage>
+									{errors?.password}
+								</FormControl.ErrorMessage>
+							</FormControl>
+							<FormControl isInvalid={errors?.confirmPassword}>
+								<FormControl.Label>
+									Confirm Password
+								</FormControl.Label>
+								<Input
+									type="password"
+									onChangeText={text =>
+										handleChange("confirmPassword", text)
+									}
+								/>
 
-							<FormControl.ErrorMessage>
-								{errors?.confirmPassword}
-							</FormControl.ErrorMessage>
-						</FormControl>
-						<FormControl isInvalid={errors?.uuid}>
-							<FormControl.Label>UUID</FormControl.Label>
-							<Input
-								onChangeText={text => {
-									let uuid = text
-										.trim()
-										.replace(
-											/[^0-9a-zA-Z]([0-9a-zA-Z])/g,
-											"$1"
-										);
+								<FormControl.ErrorMessage>
+									{errors?.confirmPassword}
+								</FormControl.ErrorMessage>
+							</FormControl>
+							<FormControl isInvalid={errors?.uuid}>
+								<FormControl.Label>UUID</FormControl.Label>
+								<Input
+									onChangeText={text => {
+										let uuid = text
+											.trim()
+											.replace(
+												/[^0-9a-zA-Z]([0-9a-zA-Z])/g,
+												"$1"
+											);
 
-									// place "-" every 3 characters
-									uuid = uuid.replace(/(.{3})/g, "$1-");
+										// place "-" every 3 characters
+										uuid = uuid.replace(/(.{3})/g, "$1-");
 
-									// remove last "-" if it exists
-									if (uuid[uuid.length - 1] === "-")
-										uuid = uuid.slice(0, -1);
+										// remove last "-" if it exists
+										if (uuid[uuid.length - 1] === "-")
+											uuid = uuid.slice(0, -1);
 
-									handleChange("uuid", uuid);
-								}}
-							/>
+										handleChange("uuid", uuid);
+									}}
+								/>
 
-							<FormControl.ErrorMessage>
-								{errors?.uuid}
-							</FormControl.ErrorMessage>
-						</FormControl>
-						<Button
-							mt="2"
-							colorScheme="indigo"
-							onPress={handleSubmit}
-							_disabled={isSubmitting}>
-							Sign up
-						</Button>
-						<HStack
-							mt="6"
-							alignItems="center"
-							justifyContent="center">
-							<Text
-								fontSize="sm"
-								color="coolGray.800"
-								_dark={{
-									color: "warmGray.50",
-								}}
-								fontWeight={400}>
-								Already have an account?{" "}
-							</Text>
+								<FormControl.ErrorMessage>
+									{errors?.uuid}
+								</FormControl.ErrorMessage>
+							</FormControl>
 							<Button
-								variant="link"
-								onPress={() => {
-									navigation.goBack();
-								}}>
-								<Text
-									fontWeight="bold"
-									color="indigo.500"
-									underline
-									_dark={{
-										color: "indigo.300",
-									}}>
-									Sign In
-								</Text>
+								mt="2"
+								colorScheme="indigo"
+								onPress={handleSubmit}
+								_disabled={isSubmitting}>
+								Sign up
 							</Button>
-						</HStack>
+							<HStack
+								mt="6"
+								alignItems="center"
+								justifyContent="center">
+								<Text
+									fontSize="sm"
+									color="coolGray.800"
+									_dark={{
+										color: "warmGray.50",
+									}}
+									fontWeight={400}>
+									Already have an account?{" "}
+								</Text>
+								<Button
+									variant="link"
+									onPress={() => {
+										navigation.goBack();
+									}}>
+									<Text
+										fontWeight="bold"
+										color="indigo.500"
+										underline
+										_dark={{
+											color: "indigo.300",
+										}}>
+										Sign In
+									</Text>
+								</Button>
+							</HStack>
+						</KeyboardAvoidingView>
 					</VStack>
 				</Box>
 			</Center>
