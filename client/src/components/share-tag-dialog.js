@@ -39,14 +39,15 @@ export default function ShareTagDialog({ tag }) {
 				<Button
 					colorScheme="info"
 					onPress={() => {
-						onClose();
 						setLoading(true);
 
 						shareTag(tag._id, user?.uuid)
-							.then(shareCode => {
+							.then(({ shareCode }) => {
 								setLoading(false);
 
 								setShareCode(shareCode);
+
+								setIsOpen(true);
 
 								toast.show({
 									avoidKeyboard: true,
