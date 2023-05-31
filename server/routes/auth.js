@@ -86,7 +86,7 @@ router.post("/login", async (req, res) => {
 
 		let user = (await getUsers({ email })).users[0];
 
-		if (user.err) {
+		if (user?.err) {
 			return res.status(400).json({
 				message: user.err.message,
 			});
@@ -115,6 +115,7 @@ router.post("/login", async (req, res) => {
 			res.status(400).json({ message: "Invalid Credentials." });
 		}
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ message: err.message });
 	}
 });

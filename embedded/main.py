@@ -14,7 +14,6 @@ import formatcard
 import ndeftoclassic
 
 import RPi.GPIO as GPIO
-import time
 
 # from myinterface import turnOff
 
@@ -35,7 +34,7 @@ elif interface == "HSU":
     PN532_HSU = Pn532Hsu(0)
     nfc = Pn532(PN532_HSU)
 elif interface == "I2C":
-    PN532_I2C = Pn532I2c(1) 
+    PN532_I2C = Pn532I2c(1)
     nfc = Pn532(PN532_I2C)
 
 # Constants
@@ -52,7 +51,7 @@ GPIO.setup(4, GPIO.OUT)
 GPIO.output(4, GPIO.LOW)
 
 
-#---------------------------
+# ---------------------------
 
 GPIO.setup(26, GPIO.OUT)
 
@@ -103,7 +102,7 @@ def get_status_checker():
         response = requests.get(status_update_url, headers=headers)
         data = response.json()
         # print(data)
-        
+
         raspiSend = data["raspiSend"]
         raspiReceive = data["raspiReceive"]
 
@@ -120,7 +119,7 @@ def get_status_checker():
             requests.post(f"{status_update_url}/pending", headers=headers)
 
             read.setup_read()
-            
+
             # Start trying to read from the tag
             read_data = None
             while True:
@@ -147,7 +146,6 @@ def get_status_checker():
 
             GPIO.output(26, GPIO.HIGH)
 
-        
         elif raspiReceive["status"]:
             print("Im in RaspiReceive")
             print(raspiReceive["tag"])
@@ -166,11 +164,11 @@ def get_status_checker():
 
             while True:
                 try:
-                    GPIO.output(4, GPIO.LOW)# turn off emulation relay
+                    GPIO.output(4, GPIO.LOW)  # turn off emulation relay
                     is_written = write.loop_write(data)
                     print("I tried to write to card")
-                    
-                    #print(f"is written: {is_written}")
+
+                    # print(f"is written: {is_written}")
                     GPIO.output(4, GPIO.HIGH)
                     print("I have set emulation on")
                     formatcard.loop_format()
@@ -187,21 +185,18 @@ def get_status_checker():
                         break
                 except Exception:
                     pass
-            
-            GPIO.output(26, GPIO.LOW)# turn off module
-            
+
+            GPIO.output(26, GPIO.LOW)  # turn off module
+
             time.sleep(10)
 
-            GPIO.output(4, GPIO.LOW)# turn off emulation relay
+            GPIO.output(4, GPIO.LOW)  # turn off emulation relay
 
-            GPIO.output(26, GPIO.HIGH)# turn on module
-
-
+            GPIO.output(26, GPIO.HIGH)  # turn on module
 
             # GPIO.output(26, GPIO.LOW)# turn on module
             # time.sleep(5)
             # GPIO.output(4, GPIO.LOW)# turn off emulation relay
-
 
             # Set the status to resolved
             requests.post(f"{status_update_url}/resolve", headers=headers)
